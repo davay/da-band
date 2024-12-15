@@ -19,10 +19,6 @@ da-band/
 └── ios/     # Tuist-managed Xcode project for iOS app
 ```
 
-## TODO 
-
-1. uMyo sensor supports 3 modes right now: RF24, RF52, and BLE Advertising mode. If we want to connect to iOS, BLE Advertising mode limits bandwidth too much. Need to reverse engineer and flash a firmware with BLE GATT capabilities.
-
 ## Band
 
 ### Dependencies
@@ -30,14 +26,22 @@ da-band/
 1. PlatformIO
 
 ```
-TODO
+brew install platformio
 ```
+
+2. TODO 
 
 ### Quick Start 
 
 ```
 TODO
 ```
+
+### TODO
+
+1. uMyo sensor supports 3 modes right now: RF24, RF52, and BLE Advertising mode. If we want to connect to iOS, BLE Advertising mode limits bandwidth too much. Need to reverse engineer and flash a firmware with BLE GATT capabilities.
+2. How to flash-over-the-air quickly
+3. If we're not going to be using the other modes, remap one of the button presses to pairing or something
 
 ## iOS
 
