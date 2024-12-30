@@ -1,0 +1,84 @@
+# yaml-language-server: $schema=https://squidfunk.github.io/mkdocs-material/schema.json
+# NOTE: don't uncomment the above, it will tell the language server to fetch the schema 
+site_name: da-band
+site_url: https://davay.github.io/da-band
+repo_url: https://github.com/davay/da-band
+edit_uri: edit/main/docs/
+nav:
+  - Home: index.md
+  - Band: band.md 
+  - iOS App: ios.md
+  - Docs: docs.md
+  - Glossary: glossary.md
+######################################################################################
+plugins:
+  - search
+  - git-revision-date-localized:
+      type: timeago
+  - glightbox
+extra:
+  generator: false
+markdown_extensions:
+  - abbr
+  - attr_list
+  - admonition
+  - def_list
+  - footnotes
+  - tables
+  - pymdownx.snippets
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.blocks.caption
+  - toc:
+      permalink: true
+  - pymdownx.betterem
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+
+theme:
+  name: material
+  features:
+    - content.action.edit
+    - search.suggest
+    - search.share
+    - content.tooltips
+    - navigation.tracking
+    - navigation.sections
+    - toc.integrate
+    - toc.follow
+    - navigation.expand
+    - navigation.footer
+  icon:
+    repo: fontawesome/brands/git-alt
+    edit: material/pencil 
+  palette: # auto/light/dark color scheme toggles
+    - media: "(prefers-color-scheme)"
+      primary: brown
+      accent: deep orange
+      toggle:
+        icon: material/brightness-auto
+        name: Switch to light mode
+
+    - media: "(prefers-color-scheme: light)"
+      primary: brown
+      accent: deep orange
+      scheme: default 
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+
+    - media: "(prefers-color-scheme: dark)"
+      primary: brown
+      accent: deep orange
+      scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Switch to system preference
