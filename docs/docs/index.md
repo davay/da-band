@@ -44,9 +44,10 @@ graph LR
 
 ```
 da-band/
-├── band/    # PlatformIO-managed arduino project for wristband firmware
-├── ios/     # Tuist-managed Xcode project for iOS app
-└── docs/    # Mkdocs-material docs for this project
+├── api/    # A FastAPI server, for certain ML tasks like initial model creation
+├── band/   # A PlatformIO-managed arduino project for wristband firmware
+├── docs/   # An Mkdocs-material docs for this project
+└── ios/    # A Tuist-managed Xcode project for the iOS app
 ```
 
 ## Milestones
