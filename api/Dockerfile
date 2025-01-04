@@ -10,7 +10,6 @@ SHELL ["conda", "run", "-n", "da-band", "/bin/bash", "-c"]
 # Start server
 COPY . .
 EXPOSE 8000
-ENV PYTHONUNBUFFERED=1
 CMD ["conda", "run", "-n", "da-band", "--no-capture-output", "fastapi", "dev", "--host", "0.0.0.0", "main.py"]
 
 # PROD
@@ -34,5 +33,4 @@ SHELL ["conda", "run", "-n", "da-band", "/bin/bash", "-c"]
 # Start server
 COPY . .
 EXPOSE 8000
-# By default, "run" already uses host 0.0.0.0
-CMD ["conda", "run", "-n", "--no-capture-output", "da-band", "fastapi", "run", "main.py"] 
+CMD ["conda", "run", "-n", "da-band", "--no-capture-output", "fastapi", "run", "--host", "0.0.0.0", "main.py"] 
