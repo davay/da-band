@@ -1,15 +1,18 @@
 services:
+  api:
+    profiles: ["default"]
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
 
   api-dev:
     profiles: ["dev"]
     build:
-      context: .
-      dockerfile: Dockerfile
       target: dev
     volumes: 
       - .:/app # hot reload
-    ports:
-      - "8000:8000"
 
   api-prod:
     profiles: ["prod"]
