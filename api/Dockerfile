@@ -1,0 +1,37 @@
+# DEV 
+FROM continuumio/miniconda3 AS dev
+WORKDIR /app
+COPY environment.yml .
+RUN conda env create -f environment.yml
+
+# RUN must use conda env
+SHELL ["conda", "run", "-n", "da-band", "/bin/bash", "-c"]
+
+# Start server
+COPY . .
+EXPOSE 8000
+ENV PYTHONUNBUFFERED=1
+CMD ["conda", "run", "-n", "da-band", "--no-capture-output", "fastapi", "dev", "--host", "0.0.0.0", "main.py"]
+
+# PROD
+FROM nvidia/cuda:12.6.3-cudnn-runtime-ubuntu24.04 AS prod
+WORKDIR /app
+
+# Install miniconda
+RUN apt-get update && \
+  apt-get install -y wget && \
+  wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh && \
+  bash miniconda.sh -b -p /opt/conda && \
+  rm miniconda.sh
+
+COPY environment.yml .
+RUN conda env create -f environment.yml
+
+# RUN must use conda env
+SHELL ["conda", "run", "-n", "da-band", "/bin/bash", "-c"]
+
+# Start server
+COPY . .
+EXPOSE 8000
+# By default, "run" already uses host 0.0.0.0
+CMD ["conda", "run", "-n", "--no-capture-output", "da-band", "fastapi", "run", "main.py"] 

@@ -44,10 +44,12 @@ graph LR
 
 ```
 da-band/
-├── api/    # A FastAPI server, for certain ML tasks like initial model creation
-├── band/   # A PlatformIO-managed arduino project for wristband firmware
-├── docs/   # An Mkdocs-material docs for this project
-└── ios/    # A Tuist-managed Xcode project for the iOS app
+├── api/       # A FastAPI server, for certain ML tasks like initial model creation
+├── band/      # A PlatformIO-managed arduino project for wristband firmware
+├── docs/      # An Mkdocs-material docs for this project
+├── ios/       # A Tuist-managed Xcode project for the iOS app
+├── models/    # Trained PyTorch/CoreML models
+└── notebooks/ # Jupyter notebooks used for exploration
 ```
 
 ## Milestones

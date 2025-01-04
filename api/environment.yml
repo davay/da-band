@@ -1,0 +1,12 @@
+name: da-band
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.12
+  - fastapi
+  - pytorch
+  - pandas
+  - numpy
+  - scikit-learn=1.5.1 # coremltools maximum supported version
+  - coremltools
