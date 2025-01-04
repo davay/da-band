@@ -4,9 +4,6 @@ WORKDIR /app
 COPY environment.yml .
 RUN conda env create -f environment.yml
 
-# RUN must use conda env
-SHELL ["conda", "run", "-n", "da-band", "/bin/bash", "-c"]
-
 # Start server
 COPY . .
 EXPOSE 8000
@@ -26,9 +23,6 @@ ENV PATH="/opt/conda/bin:${PATH}"
 
 COPY environment.yml .
 RUN conda env create -f environment.yml
-
-# RUN must use conda env
-SHELL ["conda", "run", "-n", "da-band", "/bin/bash", "-c"]
 
 # Start server
 COPY . .
