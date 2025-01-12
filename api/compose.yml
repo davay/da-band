@@ -1,0 +1,27 @@
+services:
+  api-dev:
+    profiles: ["dev"]
+    ports:
+      - "8000:8000"
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: dev
+    volumes: 
+      - .:/app # hot reload
+
+  api-prod:
+    profiles: ["prod"]
+    ports:
+      - "8000:8000"
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: prod
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]

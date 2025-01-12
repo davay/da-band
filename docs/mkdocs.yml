@@ -8,6 +8,7 @@ nav:
   - Home: index.md
   - Band: band.md 
   - iOS App: ios.md
+  - API: api.md
   - Docs: docs.md
   - Glossary: glossary.md
 ######################################################################################
