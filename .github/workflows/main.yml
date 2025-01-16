@@ -34,3 +34,10 @@ jobs:
       - name: Deploy API 
         working-directory: ./api
         run: ./start.sh
+
+      - name: Health Check
+        run: |
+          echo "Wait 10 seconds before health check..."
+          sleep 10
+          curl -s http://localhost:8000/health || echo "API health check failed"
+
