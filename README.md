@@ -1,4 +1,4 @@
-[![CI](https://github.com/davay/da-band/actions/workflows/main.yml/badge.svg)](https://github.com/{davay}/da-band/actions/workflows/main.yml)
+[![CI](https://github.com/davay/da-band/actions/workflows/main.yml/badge.svg)](https://github.com/davay/da-band/actions/workflows/main.yml)
 
 # da-band
 
