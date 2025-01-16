@@ -3,7 +3,7 @@
 site_name: da-band
 site_url: https://davay.github.io/da-band
 repo_url: https://github.com/davay/da-band
-edit_uri: edit/main/docs/
+edit_uri: edit/main/docs/docs/
 nav:
   - Home: index.md
   - Band: band.md 

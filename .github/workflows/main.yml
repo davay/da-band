@@ -1,4 +1,4 @@
-name: ci 
+name: main 
 on:
   push:
     branches:
@@ -6,7 +6,7 @@ on:
 permissions:
   contents: write
 jobs:
-  deploy:
+  deploy-docs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -26,3 +26,11 @@ jobs:
             mkdocs-material-
       - run: pip install mkdocs-material mkdocs-git-revision-date-localized-plugin mkdocs-glightbox
       - run: mkdocs gh-deploy --force --config-file docs/mkdocs.yml
+  
+  deploy-api:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy API 
+        working-directory: ./api
+        run: ./start.sh
