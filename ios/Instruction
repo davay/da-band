@@ -1,0 +1,7 @@
+1. There are two project here, one is bluetooth-test, the other one is da-band-new,
+bluetooth-test can directly use by copy, it is not a tuist project. I cloned Devin's previous
+tuist project to work on da-band-new. So it should be a tuist project.
+
+2. For bluetooth-test, you need to connect with your phone and enable bluetooth and developer mode first.
+
+3. A lot of stuff is diconnected with da-band-new, it won't work properly for now.
