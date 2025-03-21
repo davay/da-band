@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download Machine Learning Model</title>
+    <script>
+        async function downloadModel() {
+            try {
+                const response = await fetch('/ml_model/download/', {
+                    method: 'GET'
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'gesture_model.h5';
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+                window.URL.revokeObjectURL(url);
+            } catch (error) {
+                document.getElementById('result').innerText = `Error: ${error.message}`;
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Download Machine Learning Model</h1>
+    <button onclick="downloadModel()">Download Model</button>
+    <p id="result">Click the button to download the model.</p>
+</body>
+</html>
