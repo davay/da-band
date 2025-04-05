@@ -14,7 +14,8 @@ This API server's primary purpose is to receive data from the iOS app and train 
 To make this simpler, there will be no user accounts.
 Instead, operations will be tied to a wristband_id (since each dataset and model is specific to a wristband anyway).
 
-The flow will look something like: 
+The flow will look something like this: 
+
 1. Generate a random UUID when creating/connecting a new wristband in the app
 2. Use this UUID in all request headers
 3. Add basic rate limiting per UUID (e.g., 100 requests per hour)
@@ -22,6 +23,7 @@ The flow will look something like:
 This should be enough to stop the simplest of attacks -- the goal here isn't to make a commercial product, this is a personal project. 
 
 In the future, we have many options to improve security:
+
 - Implement user accounts; OR 
 - Generate the wristband_id by hashing a combination of each uMyo's device IDs (1 wristband can have many uMyos); OR 
 - IDs are generated per iOS device, and we can use hardware identifiers + DeviceCheck API for attestation
