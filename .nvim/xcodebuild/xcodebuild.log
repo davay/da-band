@@ -1,0 +1,15 @@
+note: Building targets in dependency order
+note: Target dependency graph (1 target)
+[x] /Users/davay/Repos/Personal/da-band/ios/bluetooth-test/bluetooth-test.xcodeproj: Provisioning profile "iOS Team Provisioning Profile: com.davay.bluetooth-test" doesn't include the currently selected device "da-mac" (identifier 00006001-000408803E02801E). (in target 'bluetooth-test' from project 'bluetooth-test')
+
+Result bundle written to path:
+
+-----------------------------
+-- xcodebuild.nvim summary --
+-----------------------------
+
+Errors:
+  ✖ Provisioning profile "iOS Team Provisioning Profile: com.davay.bluetooth-test" doesn't include the currently selected device "da-mac" (identifier 00006001-000408803E02801E). (in target 'bluetooth-test' from project 'bluetooth-test')
+
+  Build Failed
+

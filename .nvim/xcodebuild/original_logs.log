@@ -1,0 +1,49 @@
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild build -project /Users/davay/Repos/Personal/da-band/ios/bluetooth-test/bluetooth-test.xcodeproj -scheme bluetooth-test -destination id=00006001-000408803E02801E -resultBundlePath /Users/davay/Repos/Personal/da-band/.nvim/xcodebuild/build.xcresult -parallelizeTargets
+
+Writing result bundle at path:
+	/Users/davay/Repos/Personal/da-band/.nvim/xcodebuild/build.xcresult
+
+ComputePackagePrebuildTargetDependencyGraph
+
+Prepare packages
+
+CreateBuildRequest
+
+SendProjectDescription
+
+CreateBuildOperation
+
+ComputeTargetDependencyGraph
+note: Building targets in dependency order
+note: Target dependency graph (1 target)
+    Target 'bluetooth-test' in project 'bluetooth-test' (no dependencies)
+
+GatherProvisioningInputs
+
+CreateBuildDescription
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -v -E -dM -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.5.sdk -x c -c /dev/null
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/usr/bin/actool --print-asset-tag-combinations --output-format xml1 /Users/davay/Repos/Personal/da-band/ios/bluetooth-test/bluetooth-test/Preview Content/Preview Assets.xcassets /Users/davay/Repos/Personal/da-band/ios/bluetooth-test/bluetooth-test/Assets.xcassets
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/usr/bin/actool --version --output-format xml1
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc --version
+
+** BUILD FAILED **
+
+
+The following build commands failed:
+	Building project bluetooth-test with scheme bluetooth-test
+(1 failure)
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ld -version_details
+
+Build description signature: aa6e7f0e4d6e55ca354dac6e5f86b4de
+Build description path: /Users/davay/Library/Developer/Xcode/DerivedData/bluetooth-test-fmaxbfhliknwskcbbgkvhvoxpuzm/Build/Intermediates.noindex/XCBuildData/aa6e7f0e4d6e55ca354dac6e5f86b4de.xcbuilddata
+/Users/davay/Repos/Personal/da-band/ios/bluetooth-test/bluetooth-test.xcodeproj: error: Provisioning profile "iOS Team Provisioning Profile: com.davay.bluetooth-test" doesn't include the currently selected device "da-mac" (identifier 00006001-000408803E02801E). (in target 'bluetooth-test' from project 'bluetooth-test')
+
+Result bundle written to path:
+	/Users/davay/Repos/Personal/da-band/.nvim/xcodebuild/build.xcresult
+
+
