@@ -1,0 +1,158 @@
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild build -project /Users/davay/Repos/Personal/da-band/ios/da-band.xcodeproj -scheme da-band -destination id=DDFBA962-32FF-4A91-9860-58362119C0E4 -resultBundlePath /Users/davay/Repos/Personal/da-band/ios/.nvim/xcodebuild/build.xcresult -parallelizeTargets
+
+Writing result bundle at path:
+	/Users/davay/Repos/Personal/da-band/ios/.nvim/xcodebuild/build.xcresult
+
+--- xcodebuild: WARNING: Using the first of multiple matching destinations:
+{ platform:iOS Simulator, arch:arm64, id:DDFBA962-32FF-4A91-9860-58362119C0E4, OS:18.5, name:iPhone 16 Pro Max }
+{ platform:iOS Simulator, arch:x86_64, id:DDFBA962-32FF-4A91-9860-58362119C0E4, OS:18.5, name:iPhone 16 Pro Max }
+ComputePackagePrebuildTargetDependencyGraph
+
+Prepare packages
+
+CreateBuildRequest
+
+SendProjectDescription
+
+CreateBuildOperation
+
+ComputeTargetDependencyGraph
+note: Building targets in dependency order
+note: Target dependency graph (1 target)
+    Target 'da-band' in project 'da-band' (no dependencies)
+
+GatherProvisioningInputs
+
+CreateBuildDescription
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -v -E -dM -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator18.5.sdk -x c -c /dev/null
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/usr/bin/actool --print-asset-tag-combinations --output-format xml1 /Users/davay/Repos/Personal/da-band/ios/da-band/Assets.xcassets
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/usr/bin/actool --version --output-format xml1
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc --version
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ld -version_details
+
+Build description signature: 0d5f38905e1d0408d2d03932171936ad
+Build description path: /Users/davay/Library/Developer/Xcode/DerivedData/da-band-fgjsulanfrfaeqgbxbklaobhaqtq/Build/Intermediates.noindex/XCBuildData/0d5f38905e1d0408d2d03932171936ad.xcbuilddata
+ClangStatCache /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang-stat-cache /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator18.5.sdk /Users/davay/Library/Developer/Xcode/DerivedData/SDKStatCaches.noindex/iphonesimulator18.5-22F76-d5fc8ad4295d2ef488fb7d0f804ce0c4.sdkstatcache
+    cd /Users/davay/Repos/Personal/da-band/ios/da-band.xcodeproj
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang-stat-cache /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator18.5.sdk -o /Users/davay/Library/Developer/Xcode/DerivedData/SDKStatCaches.noindex/iphonesimulator18.5-22F76-d5fc8ad4295d2ef488fb7d0f804ce0c4.sdkstatcache
+
+WriteAuxiliaryFile /Users/davay/Library/Developer/Xcode/DerivedData/da-band-fgjsulanfrfaeqgbxbklaobhaqtq/Build/Intermediates.noindex/da-band.build/Debug-iphonesimulator/da-band.build/Objects-normal/arm64/da-band.LinkFileList (in target 'da-band' from project 'da-band')
+    cd /Users/davay/Repos/Personal/da-band/ios
+    write-file /Users/davay/Library/Developer/Xcode/DerivedData/da-band-fgjsulanfrfaeqgbxbklaobhaqtq/Build/Intermediates.noindex/da-band.build/Debug-iphonesimulator/da-band.build/Objects-normal/arm64/da-band.LinkFileList
+
+WriteAuxiliaryFile /Users/davay/Library/Developer/Xcode/DerivedData/da-band-fgjsulanfrfaeqgbxbklaobhaqtq/Build/Intermediates.noindex/da-band.build/Debug-iphonesimulator/da-band.build/Objects-normal/arm64/da-band.SwiftFileList (in target 'da-band' from project 'da-band')
+    cd /Users/davay/Repos/Personal/da-band/ios
+    write-file /Users/davay/Library/Developer/Xcode/DerivedData/da-band-fgjsulanfrfaeqgbxbklaobhaqtq/Build/Intermediates.noindex/da-band.build/Debug-iphonesimulator/da-band.build/Objects-normal/arm64/da-band.SwiftFileList
+
+WriteAuxiliaryFile /Users/davay/Library/Developer/Xcode/DerivedData/da-band-fgjsulanfrfaeqgbxbklaobhaqtq/Build/Intermediates.noindex/da-band.build/Debug-iphonesimulator/da-band.build/Objects-normal/arm64/da-band.SwiftConstValuesFileList (in target 'da-band' from project 'da-band')
+    cd /Users/davay/Repos/Personal/da-band/ios
+    write-file /Users/davay/Library/Developer/Xcode/DerivedData/da-band-fgjsulanfrfaeqgbxbklaobhaqtq/Build/Intermediates.noindex/da-band.build/Debug-iphonesimulator/da-band.build/Objects-normal/arm64/da-band.SwiftConstValuesFileList
+
+ProcessProductPackaging "" /Users/davay/Library/Developer/Xcode/DerivedData/da-band-fgjsulanfrfaeqgbxbklaobhaqtq/Build/Intermediates.noindex/da-band.build/Debug-iphonesimulator/da-band.build/da-band.app-Simulated.xcent (in target 'da-band' from project 'da-band')
+    cd /Users/davay/Repos/Personal/da-band/ios
+    
+    Entitlements:
+    
+    {
+    "application-identifier" = "RZBGD3ZL8Z.im.devinl.da-band";
+}
+    
+    builtin-productPackagingUtility -entitlements -format xml -o /Users/davay/Library/Developer/Xcode/DerivedData/da-band-fgjsulanfrfaeqgbxbklaobhaqtq/Build/Intermediates.noindex/da-band.build/Debug-iphonesimulator/da-band.build/da-band.app-Simulated.xcent
+
+WriteAuxiliaryFile /Users/davay/Library/Developer/Xcode/DerivedData/da-band-fgjsulanfrfaeqgbxbklaobhaqtq/Build/Intermediates.noindex/da-band.build/Debug-iphonesimulator/da-band.build/Objects-normal/arm64/da-band-OutputFileMap.json (in target 'da-band' from project 'da-band')
+    cd /Users/davay/Repos/Personal/da-band/ios
+    write-file /Users/davay/Library/Developer/Xcode/DerivedData/da-band-fgjsulanfrfaeqgbxbklaobhaqtq/Build/Intermediates.noindex/da-band.build/Debug-iphonesimulator/da-band.build/Objects-normal/arm64/da-band-OutputFileMap.json
+
+ProcessProductPackagingDER /Users/davay/Library/Developer/Xcode/DerivedData/da-band-fgjsulanfrfaeqgbxbklaobhaqtq/Build/Intermediates.noindex/da-band.build/Debug-iphonesimulator/da-band.build/da-band.app-Simulated.xcent /Users/davay/Library/Developer/Xcode/DerivedData/da-band-fgjsulanfrfaeqgbxbklaobhaqtq/Build/Intermediates.noindex/da-band.build/Debug-iphonesimulator/da-band.build/da-band.app-Simulated.xcent.der (in target 'da-band' from project 'da-band')
+    cd /Users/davay/Repos/Personal/da-band/ios
+    /usr/bin/derq query -f xml -i /Users/davay/Library/Developer/Xcode/DerivedData/da-band-fgjsulanfrfaeqgbxbklaobhaqtq/Build/Intermediates.noindex/da-band.build/Debug-iphonesimulator/da-band.build/da-band.app-Simulated.xcent -o /Users/davay/Library/Developer/Xcode/DerivedData/da-band-fgjsulanfrfaeqgbxbklaobhaqtq/Build/Intermediates.noindex/da-band.build/Debug-iphonesimulator/da-band.build/da-band.app-Simulated.xcent.der --raw
+
+SwiftDriver da-band normal arm64 com.apple.xcode.tools.swift.compiler (in target 'da-band' from project 'da-band')
+    cd /Users/davay/Repos/Personal/da-band/ios
+    builtin-SwiftDriver -- /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc -module-name da_band -Onone -enforce-exclusivity\=checked @/Users/davay/Library/Developer/Xcode/DerivedData/da-band-fgjsulanfrfaeqgbxbklaobhaqtq/Build/Intermediates.noindex/da-band.build/Debug-iphonesimulator/da-band.build/Objects-normal/arm64/da-band.SwiftFileList -DDEBUG -enable-bare-slash-regex -enable-experimental-feature DebugDescriptionMacro -sdk /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator18.5.sdk -target arm64-apple-ios18.5-simulator -g -module-cache-path /Users/davay/Library/Developer/Xcode/DerivedData/ModuleCache.noindex -Xfrontend -serialize-debugging-options -profile-coverage-mapping -profile-generate -enable-testing -index-store-path /Users/davay/Library/Developer/Xcode/DerivedData/da-band-fgjsulanfrfaeqgbxbklaobhaqtq/Index.noindex/DataStore -swift-version 5 -I /Users/davay/Library/Developer/Xcode/DerivedData/da-band-fgjsulanfrfaeqgbxbklaobhaqtq/Build/Products/Debug-iphonesimulator -F /Users/davay/Library/Developer/Xcode/DerivedData/da-band-fgjsulanfrfaeqgbxbklaobhaqtq/Build/Products/Debug-iphonesimulator -emit-localized-strings -emit-localized-strings-path /Users/davay/Library/Developer/Xcode/DerivedData/da-band-fgjsulanfrfaeqgbxbklaobhaqtq/Build/Intermediates.noindex/da-band.build/Debug-iphonesimulator/da-band.build/Objects-normal/arm64 -c -j10 -enable-batch-mode -incremental -Xcc -ivfsstatcache -Xcc /Users/davay/Library/Developer/Xcode/DerivedData/SDKStatCaches.noindex/iphonesimulator18.5-22F76-d5fc8ad4295d2ef488fb7d0f804ce0c4.sdkstatcache -output-file-map /Users/davay/Library/Developer/Xcode/DerivedData/da-band-fgjsulanfrfaeqgbxbklaobhaqtq/Build/Intermediates.noindex/da-band.build/Debug-iphonesimulator/da-band.build/Objects-normal/arm64/da-band-OutputFileMap.json -use-frontend-parseable-output -save-temps -no-color-diagnostics -serialize-diagnostics -emit-dependencies -emit-module -emit-module-path /Users/davay/Library/Developer/Xcode/DerivedData/da-band-fgjsulanfrfaeqgbxbklaobhaqtq/Build/Intermediates.noindex/da-band.build/Debug-iphonesimulator/da-band.build/Objects-normal/arm64/da_band.swiftmodule -validate-clang-modules-once -clang-build-session-file /Users/davay/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/Session.modulevalidation -Xcc -I/Users/davay/Library/Developer/Xcode/DerivedData/da-band-fgjsulanfrfaeqgbxbklaobhaqtq/Build/Intermediates.noindex/da-band.build/Debug-iphonesimulator/da-band.build/swift-overrides.hmap -emit-const-values -Xfrontend -const-gather-protocols-file -Xfrontend /Users/davay/Library/Developer/Xcode/DerivedData/da-band-fgjsulanfrfaeqgbxbklaobhaqtq/Build/Intermediates.noindex/da-band.build/Debug-iphonesimulator/da-band.build/Objects-normal/arm64/da-band_const_extract_protocols.json -Xcc -iquote -Xcc /Users/davay/Library/Developer/Xcode/DerivedData/da-band-fgjsulanfrfaeqgbxbklaobhaqtq/Build/Intermediates.noindex/da-band.build/Debug-iphonesimulator/da-band.build/da-band-generated-files.hmap -Xcc -I/Users/davay/Library/Developer/Xcode/DerivedData/da-band-fgjsulanfrfaeqgbxbklaobhaqtq/Build/Intermediates.noindex/da-band.build/Debug-iphonesimulator/da-band.build/da-band-own-target-headers.hmap -Xcc -I/Users/davay/Library/Developer/Xcode/DerivedData/da-band-fgjsulanfrfaeqgbxbklaobhaqtq/Build/Intermediates.noindex/da-band.build/Debug-iphonesimulator/da-band.build/da-band-all-target-headers.hmap -Xcc -iquote -Xcc /Users/davay/Library/Developer/Xcode/DerivedData/da-band-fgjsulanfrfaeqgbxbklaobhaqtq/Build/Intermediates.noindex/da-band.build/Debug-iphonesimulator/da-band.build/da-band-project-headers.hmap -Xcc -I/Users/davay/Library/Developer/Xcode/DerivedData/da-band-fgjsulanfrfaeqgbxbklaobhaqtq/Build/Products/Debug-iphonesimulator/include -Xcc -I/Users/davay/Library/Developer/Xcode/DerivedData/da-band-fgjsulanfrfaeqgbxbklaobhaqtq/Build/Intermediates.noindex/da-band.build/Debug-iphonesimulator/da-band.build/DerivedSources-normal/arm64 -Xcc -I/Users/davay/Library/Developer/Xcode/DerivedData/da-band-fgjsulanfrfaeqgbxbklaobhaqtq/Build/Intermediates.noindex/da-band.build/Debug-iphonesimulator/da-band.build/DerivedSources/arm64 -Xcc -I/Users/davay/Library/Developer/Xcode/DerivedData/da-band-fgjsulanfrfaeqgbxbklaobhaqtq/Build/Intermediates.noindex/da-band.build/Debug-iphonesimulator/da-band.build/DerivedSources -Xcc -DDEBUG\=1 -emit-objc-header -emit-objc-header-path /Users/davay/Library/Developer/Xcode/DerivedData/da-band-fgjsulanfrfaeqgbxbklaobhaqtq/Build/Intermediates.noindex/da-band.build/Debug-iphonesimulator/da-band.build/Objects-normal/arm64/da_band-Swift.h -working-directory /Users/davay/Repos/Personal/da-band/ios -experimental-emit-module-separately -disable-cmo
+
+SwiftCompile normal arm64 Compiling\ Model.swift /Users/davay/Repos/Personal/da-band/ios/da-band/Models/Model.swift (in target 'da-band' from project 'da-band')
+
+SwiftCompile normal arm64 /Users/davay/Repos/Personal/da-band/ios/da-band/Models/Model.swift (in target 'da-band' from project 'da-band')
+    cd /Users/davay/Repos/Personal/da-band/ios
+    
+
+SwiftEmitModule normal arm64 Emitting\ module\ for\ da_band (in target 'da-band' from project 'da-band')
+EmitSwiftModule normal arm64 (in target 'da-band' from project 'da-band')
+    cd /Users/davay/Repos/Personal/da-band/ios
+    
+
+SwiftCompile normal arm64 Compiling\ Device.swift /Users/davay/Repos/Personal/da-band/ios/da-band/Models/Device.swift (in target 'da-band' from project 'da-band')
+Failed frontend command:
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swift-frontend -frontend -c -primary-file /Users/davay/Repos/Personal/da-band/ios/da-band/Models/Device.swift /Users/davay/Repos/Personal/da-band/ios/da-band/Models/Gesture.swift /Users/davay/Repos/Personal/da-band/ios/da-band/Models/Measurement.swift /Users/davay/Repos/Personal/da-band/ios/da-band/Models/Model.swift /Users/davay/Repos/Personal/da-band/ios/da-band/Models/Sample.swift /Users/davay/Repos/Personal/da-band/ios/da-band/ContentView.swift /Users/davay/Repos/Personal/da-band/ios/da-band/da_bandApp.swift /Users/davay/Repos/Personal/da-band/ios/da-band/Item.swift /Users/davay/Library/Developer/Xcode/DerivedData/da-band-fgjsulanfrfaeqgbxbklaobhaqtq/Build/Intermediates.noindex/da-band.build/Debug-iphonesimulator/da-band.build/DerivedSources/GeneratedAssetSymbols.swift -emit-dependencies-path /Users/davay/Library/Developer/Xcode/DerivedData/da-band-fgjsulanfrfaeqgbxbklaobhaqtq/Build/Intermediates.noindex/da-band.build/Debug-iphonesimulator/da-band.build/Objects-normal/arm64/Device.d -emit-const-values-path /Users/davay/Library/Developer/Xcode/DerivedData/da-band-fgjsulanfrfaeqgbxbklaobhaqtq/Build/Intermediates.noindex/da-band.build/Debug-iphonesimulator/da-band.build/Objects-normal/arm64/Device.swiftconstvalues -emit-reference-dependencies-path /Users/davay/Library/Developer/Xcode/DerivedData/da-band-fgjsulanfrfaeqgbxbklaobhaqtq/Build/Intermediates.noindex/da-band.build/Debug-iphonesimulator/da-band.build/Objects-normal/arm64/Device.swiftdeps -serialize-diagnostics-path /Users/davay/Library/Developer/Xcode/DerivedData/da-band-fgjsulanfrfaeqgbxbklaobhaqtq/Build/Intermediates.noindex/da-band.build/Debug-iphonesimulator/da-band.build/Objects-normal/arm64/Device.dia -emit-localized-strings -emit-localized-strings-path /Users/davay/Library/Developer/Xcode/DerivedData/da-band-fgjsulanfrfaeqgbxbklaobhaqtq/Build/Intermediates.noindex/da-band.build/Debug-iphonesimulator/da-band.build/Objects-normal/arm64 -target arm64-apple-ios18.5-simulator -Xllvm -aarch64-use-tbi -enable-objc-interop -sdk /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator18.5.sdk -I /Users/davay/Library/Developer/Xcode/DerivedData/da-band-fgjsulanfrfaeqgbxbklaobhaqtq/Build/Products/Debug-iphonesimulator -F /Users/davay/Library/Developer/Xcode/DerivedData/da-band-fgjsulanfrfaeqgbxbklaobhaqtq/Build/Products/Debug-iphonesimulator -no-color-diagnostics -enable-testing -g -debug-info-format\=dwarf -dwarf-version\=5 -module-cache-path /Users/davay/Library/Developer/Xcode/DerivedData/ModuleCache.noindex -profile-generate -profile-coverage-mapping -swift-version 5 -enforce-exclusivity\=checked -Onone -D DEBUG -serialize-debugging-options -const-gather-protocols-file /Users/davay/Library/Developer/Xcode/DerivedData/da-band-fgjsulanfrfaeqgbxbklaobhaqtq/Build/Intermediates.noindex/da-band.build/Debug-iphonesimulator/da-band.build/Objects-normal/arm64/da-band_const_extract_protocols.json -enable-experimental-feature DebugDescriptionMacro -enable-bare-slash-regex -empty-abi-descriptor -validate-clang-modules-once -clang-build-session-file /Users/davay/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/Session.modulevalidation -Xcc -working-directory -Xcc /Users/davay/Repos/Personal/da-band/ios -resource-dir /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift -enable-anonymous-context-mangled-names -file-compilation-dir /Users/davay/Repos/Personal/da-band/ios -Xcc -ivfsstatcache -Xcc /Users/davay/Library/Developer/Xcode/DerivedData/SDKStatCaches.noindex/iphonesimulator18.5-22F76-d5fc8ad4295d2ef488fb7d0f804ce0c4.sdkstatcache -Xcc -I/Users/davay/Library/Developer/Xcode/DerivedData/da-band-fgjsulanfrfaeqgbxbklaobhaqtq/Build/Intermediates.noindex/da-band.build/Debug-iphonesimulator/da-band.build/swift-overrides.hmap -Xcc -iquote -Xcc /Users/davay/Library/Developer/Xcode/DerivedData/da-band-fgjsulanfrfaeqgbxbklaobhaqtq/Build/Intermediates.noindex/da-band.build/Debug-iphonesimulator/da-band.build/da-band-generated-files.hmap -Xcc -I/Users/davay/Library/Developer/Xcode/DerivedData/da-band-fgjsulanfrfaeqgbxbklaobhaqtq/Build/Intermediates.noindex/da-band.build/Debug-iphonesimulator/da-band.build/da-band-own-target-headers.hmap -Xcc -I/Users/davay/Library/Developer/Xcode/DerivedData/da-band-fgjsulanfrfaeqgbxbklaobhaqtq/Build/Intermediates.noindex/da-band.build/Debug-iphonesimulator/da-band.build/da-band-all-target-headers.hmap -Xcc -iquote -Xcc /Users/davay/Library/Developer/Xcode/DerivedData/da-band-fgjsulanfrfaeqgbxbklaobhaqtq/Build/Intermediates.noindex/da-band.build/Debug-iphonesimulator/da-band.build/da-band-project-headers.hmap -Xcc -I/Users/davay/Library/Developer/Xcode/DerivedData/da-band-fgjsulanfrfaeqgbxbklaobhaqtq/Build/Products/Debug-iphonesimulator/include -Xcc -I/Users/davay/Library/Developer/Xcode/DerivedData/da-band-fgjsulanfrfaeqgbxbklaobhaqtq/Build/Intermediates.noindex/da-band.build/Debug-iphonesimulator/da-band.build/DerivedSources-normal/arm64 -Xcc -I/Users/davay/Library/Developer/Xcode/DerivedData/da-band-fgjsulanfrfaeqgbxbklaobhaqtq/Build/Intermediates.noindex/da-band.build/Debug-iphonesimulator/da-band.build/DerivedSources/arm64 -Xcc -I/Users/davay/Library/Developer/Xcode/DerivedData/da-band-fgjsulanfrfaeqgbxbklaobhaqtq/Build/Intermediates.noindex/da-band.build/Debug-iphonesimulator/da-band.build/DerivedSources -Xcc -DDEBUG\=1 -module-name da_band -frontend-parseable-output -disable-clang-spi -target-sdk-version 18.5 -target-sdk-name iphonesimulator18.5 -external-plugin-path /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/lib/swift/host/plugins\#/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/swift-plugin-server -external-plugin-path /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/local/lib/swift/host/plugins\#/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/swift-plugin-server -in-process-plugin-server-path /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/host/libSwiftInProcPluginServer.dylib -plugin-path /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/host/plugins -plugin-path /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/local/lib/swift/host/plugins -o /Users/davay/Library/Developer/Xcode/DerivedData/da-band-fgjsulanfrfaeqgbxbklaobhaqtq/Build/Intermediates.noindex/da-band.build/Debug-iphonesimulator/da-band.build/Objects-normal/arm64/Device.o -index-unit-output-path /da-band.build/Debug-iphonesimulator/da-band.build/Objects-normal/arm64/Device.o -index-store-path /Users/davay/Library/Developer/Xcode/DerivedData/da-band-fgjsulanfrfaeqgbxbklaobhaqtq/Index.noindex/DataStore -index-system-modules
+
+SwiftCompile normal arm64 /Users/davay/Repos/Personal/da-band/ios/da-band/Models/Device.swift (in target 'da-band' from project 'da-band')
+    cd /Users/davay/Repos/Personal/da-band/ios
+    
+/Users/davay/Repos/Personal/da-band/ios/da-band/Models/Device.swift:19:5: error: return from initializer without initializing all stored properties
+    }
+    ^
+@__swiftmacro_7da_band6DeviceC10macAddress18_PersistedPropertyfMp_.swift:2:13: note: 'self._macAddress' not initialized
+private var _macAddress: _SwiftDataNoType
+            ^
+@__swiftmacro_7da_band6DeviceC10macAddress5ModelfMr3_.swift:1:1: note: in expansion of macro '_PersistedProperty' on property 'macAddress' here
+@_PersistedProperty
+^
+@__swiftmacro_7da_band6DeviceC10macAddress5ModelfMr3_.swift:1:1: note: in expansion of macro '_PersistedProperty' on property 'macAddress' here
+@_PersistedProperty
+^
+@__swiftmacro_7da_band6DeviceC8pairedAt18_PersistedPropertyfMp_.swift:2:13: note: 'self._pairedAt' not initialized
+private var _pairedAt: _SwiftDataNoType
+            ^
+@__swiftmacro_7da_band6DeviceC8pairedAt5ModelfMr4_.swift:1:1: note: in expansion of macro '_PersistedProperty' on property 'pairedAt' here
+@_PersistedProperty
+^
+@__swiftmacro_7da_band6DeviceC8pairedAt5ModelfMr4_.swift:1:1: note: in expansion of macro '_PersistedProperty' on property 'pairedAt' here
+@_PersistedProperty
+^
+@__swiftmacro_7da_band6DeviceC8isActive18_PersistedPropertyfMp_.swift:2:13: note: 'self._isActive' not initialized
+private var _isActive: _SwiftDataNoType
+            ^
+@__swiftmacro_7da_band6DeviceC8isActive5ModelfMr5_.swift:1:1: note: in expansion of macro '_PersistedProperty' on property 'isActive' here
+@_PersistedProperty
+^
+@__swiftmacro_7da_band6DeviceC8isActive5ModelfMr5_.swift:1:1: note: in expansion of macro '_PersistedProperty' on property 'isActive' here
+@_PersistedProperty
+^
+
+SwiftCompile normal arm64 Compiling\ Gesture.swift /Users/davay/Repos/Personal/da-band/ios/da-band/Models/Gesture.swift (in target 'da-band' from project 'da-band')
+
+SwiftCompile normal arm64 /Users/davay/Repos/Personal/da-band/ios/da-band/Models/Gesture.swift (in target 'da-band' from project 'da-band')
+    cd /Users/davay/Repos/Personal/da-band/ios
+    
+
+SwiftCompile normal arm64 Compiling\ Sample.swift /Users/davay/Repos/Personal/da-band/ios/da-band/Models/Sample.swift (in target 'da-band' from project 'da-band')
+
+SwiftCompile normal arm64 /Users/davay/Repos/Personal/da-band/ios/da-band/Models/Sample.swift (in target 'da-band' from project 'da-band')
+    cd /Users/davay/Repos/Personal/da-band/ios
+    
+
+SwiftCompile normal arm64 Compiling\ Measurement.swift /Users/davay/Repos/Personal/da-band/ios/da-band/Models/Measurement.swift (in target 'da-band' from project 'da-band')
+SwiftCompile normal arm64 /Users/davay/Repos/Personal/da-band/ios/da-band/Models/Measurement.swift (in target 'da-band' from project 'da-band')
+    cd /Users/davay/Repos/Personal/da-band/ios
+    
+
+
+Result bundle written to path:
+	/Users/davay/Repos/Personal/da-band/ios/.nvim/xcodebuild/build.xcresult
+
+** BUILD FAILED **
+
+
+The following build commands failed:
+	SwiftCompile normal arm64 Compiling\ Device.swift /Users/davay/Repos/Personal/da-band/ios/da-band/Models/Device.swift (in target 'da-band' from project 'da-band')
+	SwiftCompile normal arm64 /Users/davay/Repos/Personal/da-band/ios/da-band/Models/Device.swift (in target 'da-band' from project 'da-band')
+	Building project da-band with scheme da-band
+(3 failures)
+

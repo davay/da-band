@@ -30,7 +30,7 @@ B. **Gesture creation**:
 
 ![User Flow B](images/user_flow_b.png)
 
-C. **Gesture sample recording**:  
+- **Gesture sample recording**:  
   1. Once gesture is created, we navigate to the gesture details page which includes a section to show training samples along with a button to start recording samples.
   2. Clicking "Record Sample" shows a pop-up with a 3 seconds countdown before it begins recording. Once it begins, it will show a live serializer and record for 3 seconds.
   3. Once a sample is recorded, the live visualizer is replaced with a static waveform of the recording and three buttons: "Discard", "Retry", or "Keep".
@@ -39,7 +39,7 @@ C. **Gesture sample recording**:
 
 ![User Flow C](images/user_flow_c.png)
 
-D. **Model training**:  
+- **Model training**:  
   1. Once there is at least 10 training samples, user can go back to the device details page and click on "Train Model".
      - We are training a single multi-class model so it can distinguish between all gestures + a "none".
   2. The app will call an external endpoint and export the training data to train the model.
@@ -124,6 +124,7 @@ Represents a single raw measurement (data point) for a training sample.
 **Properties**:
 - id | pk 
 - sample_id | fk 
+- index
 - roll
 - pitch 
 - yaw 
