@@ -172,3 +172,31 @@ POST /train-model
 GET /health
 - Health check
 ```
+
+## uMyo Advertisement Data Packet Layout
+
+Notes: 
+
+- The first x bytes are skipped until we find the first 0x08 (byte value of 8). Byte 0 below is byte x + 1. 
+- Comments that indicate how something is used is based on [uMyo’s Arduino Library](https://github.com/ultimaterobotics/uMyo_BLE/tree/master) for parsing uMyo’s BLE data on nRF52x and ESP32-based Arduinos. 
+- Discussion around spectrum calculation is based on [uMyo’s firmware](https://github.com/ultimaterobotics/uMyo/blob/main/uMyo_fw_v3_1/main.c).
+
+| Byte | Content | Comment | Parsing Notes |
+|------|---------|---------|---------------|
+| 0 | 8 (0x08) | Start of header/useful data. Not meant to be used as the ASCII character ‘8’, this is the decimal 8. |   |
+| 1 | ‘u’ (0x75) | These next ones are ASCII characters. Perhaps useful to filter out useless packets? |   |
+| 2 | ‘M’ (0x4D) |   |   |
+| 3 | ‘y’ (0x79) |   |   |
+| 4 | ‘o’ (0x6F) |   |   |
+| 5+ | 255 (0xFF) | Location seems to vary — there maybe a gap between ‘o’ and 0xFF. <br>while(pack[pp] != 255 && pp < len) pp++; |   |
+| Next | adc_id | This is the packet sequence id — telling us the correct order of packets. |   |
+| Next+1 | batt_level | Battery level. To get the battery mv do: <br>2000 + batt_level*10 |   |
+| Next+2 | sp0 | Spectrum[0]. This is sent as 8-bits but it’s actually sent at reduced precision and must be left shifted to 16-bits. <br>Along with sp1, not really used to calculate anything.<br>The uMyo device performs FFT that takes in 8 input samples and produces 4 frequency bins (spectrum).<br>It seems that the later bins (2 and 3) represent higher frequencies than the earlier bins (0 and 1) — search for high_sp in main.c. | Left-shift 8 bits.<br>int16_t sp0 = pack[pp++]<<8; |
+| Next+3 | muscle_avg | Device-calculated average of muscle activity level. Shouldn’t be used directly; these are used to calculate device_avg_muscle_level. <br>Not the same as the user-calculated getMuscleLevel using spectrums. |   |
+| Next+4-5 | sp1 | Spectrum[1]. Along with sp0, not used to calculate anything. | 2 bytes in big-endian format. Left-shift 8 bits.<br>int16_t sp1 = (pack[pp]<<8) | pack[pp+1]; pp += 2; |
+| Next+6-7 | sp2 | Spectrum[2]. Used with sp3 to calculate muscleLevel. | 2 bytes in big-endian format. Left-shift 8 bits. |
+| Next+8-9 | sp3 | Spectrum[3]. Used with sp2 to calculate muscleLevel. Valued twice as much as sp2. <br>float lvl = devices[devidx].cur_spectrum[2] + 2*devices[devidx].cur_spectrum[3]; | 2 bytes in big-endian format. Left-shift 8 bits. |
+| Next+10-11 | qw | W component of the quaternion. <br>A quaternion is a mathematically convenient alternative to euler angle representation for 3D rotations and is made up of four parts {x, y, z, w}.<br>We can use these directly in our models or to compute roll, yaw, and pitch first. | 2 bytes in big-endian format. Left-shift 8 bits. |
+| Next+12 | qx | X component of the quaternion. | Left-shift 8 bits. |
+| Next+13 | qy | Y component of the quaternion. | Left-shift 8 bits. |
+| Next+14 | qz | Z component of the quaternion. | Left-shift 8 bits. |

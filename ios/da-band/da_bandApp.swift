@@ -1,32 +1,13 @@
-//
-//  da_bandApp.swift
-//  da-band
-//
-//  Created by davay on 7/31/25.
-//
-
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 @main
 struct da_bandApp: App {
-    var sharedModelContainer: ModelContainer = {
-        let schema = Schema([
-            Item.self,
-        ])
-        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
-
-        do {
-            return try ModelContainer(for: schema, configurations: [modelConfiguration])
-        } catch {
-            fatalError("Could not create ModelContainer: \(error)")
-        }
-    }()
-
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .preferredColorScheme(.light)
         }
-        .modelContainer(sharedModelContainer)
+        .modelContainer(for: [Device.self, Gesture.self, Sample.self, Measurement.self, Model.self])
     }
 }
