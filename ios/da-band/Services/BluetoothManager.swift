@@ -8,6 +8,10 @@ class BluetoothManager: NSObject, CBCentralManagerDelegate {
     var isScanning = false
     var bluetoothState: CBManagerState = .unknown
 
+    // just a global data buffer since only one device will be active anyway... right?
+    // NOTE: double check how multi-device umyo works
+    var sensorDataBuffer = SensorDataBuffer()
+
     override init() {
         super.init()
         centralManager = CBCentralManager(delegate: self, queue: nil)
@@ -39,17 +43,18 @@ class BluetoothManager: NSObject, CBCentralManagerDelegate {
         let manufacturerData = advertisementData[CBAdvertisementDataManufacturerDataKey] as? Data
         let sensorData = parseManufacturerData(manufacturerData: manufacturerData)
 
+        // FIX: bad design, sensor data should never be null here anyway
+        sensorDataBuffer.addDataPoint(sensorData!)
+
         // update existing device or add new one
         if let existingIndex = discoveredDevices.firstIndex(where: { $0.id == peripheral.identifier }) {
             discoveredDevices[existingIndex].rssi = RSSI
-            discoveredDevices[existingIndex].latestManufacturerData = manufacturerData
             discoveredDevices[existingIndex].latestSensorData = sensorData
         } else {
             let device = DiscoveredDevice(
                 peripheral: peripheral,
                 name: deviceName,
                 rssi: RSSI,
-                latestManufacturerData: manufacturerData,
                 latestSensorData: sensorData
             )
             discoveredDevices.append(device)
@@ -77,7 +82,7 @@ class BluetoothManager: NSObject, CBCentralManagerDelegate {
         let len = data.count
         if len < 15 { return nil }
 
-        // Parse data directly - no need to search for headers/delimiters
+        // parse data
         var index = 0
 
         let packetId = Int(data[index])

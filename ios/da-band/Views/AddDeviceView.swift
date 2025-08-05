@@ -2,8 +2,8 @@ import SwiftData
 import SwiftUI
 
 struct AddDeviceView: View {
-    @State private var bluetoothManager = BluetoothManager()
     @State private var isShowingSheet = false
+    @Environment(BluetoothManager.self) private var bluetoothManager
 
     var body: some View {
         VStack {
