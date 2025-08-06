@@ -6,50 +6,34 @@ This is a project using uMyo EMG sensors to make a wristband, which sends data t
 
 Each gesture can then be paired with an action. An action can be any API call that can be performed by the phone, such as HomeKit and Shortcuts APIs.
 
-## Milestones 
+## Milestones
 
-V1: Limit to basic gesture recognition flow, no API calls yet. Only allow one model at a time -- new model rewrites old model.
+V1: Limit to basic gesture recognition flow, no actions yet.
 
 V2: Build out action assignment flow.
 
-## V1 Core User Flows:
+## V1 Core User Flows
 
-A. **First-time setup and device pairing**:
-  1. Home page shows a list of paired devices with a button to add a device.
-     - Maybe show which device is active too right now, limit to one active device at a time.
-  2. Clicking on the button navigates to "Add Devices" page for BLE device discovery.
-     - Maybe good to limit results to uMyo devices only.
-  3. Clicking on a discovered device opens a pop-up with buttons to cancel or add the device along with a field to input a device name.
-     - Optional: provide a serializer in the same pop-up to show that the device is transmitting data.
+![User Flows](docs/images/user_flows.png)
 
-![User Flow A](images/user_flow_a.png)
+## Technical Architecture
 
-B. **Gesture creation**:
-  1. Gestures are specific to a device. After a device is paired, user can click on the device to show details and create a gesture.
-  2. Clicking on "Create Gesture" opens a pop-up requesting a name (e.g., "snap fingers") and a button to confirm. 
+![Technical Architecture](docs/images/architecture.png)
 
-![User Flow B](images/user_flow_b.png)
+The architecture for this project is fairly simple. All of the functionalities except for model training runs on-device, so we just need a client and a server with a training endpoint.
 
-- **Gesture sample recording**:  
-  1. Once gesture is created, we navigate to the gesture details page which includes a section to show training samples along with a button to start recording samples.
-  2. Clicking "Record Sample" shows a pop-up with a 3 seconds countdown before it begins recording. Once it begins, it will show a live serializer and record for 3 seconds.
-  3. Once a sample is recorded, the live visualizer is replaced with a static waveform of the recording and three buttons: "Discard", "Retry", or "Keep".
-  4. If user selects "Keep", the sample is saved and the pop-up is closed.
-     - If a user wants to record multiple samples in a row, they can just click Record Sample again. This might be jarring, but we can revisit later.
+### Endpoints
 
-![User Flow C](images/user_flow_c.png)
+```
+POST /train-model
+- Body: training data
+- Returns: CoreML model + metrics
+  
+GET /health
+- Health check
+```
 
-- **Model training**:  
-  1. Once there is at least 10 training samples, user can go back to the device details page and click on "Train Model".
-     - We are training a single multi-class model so it can distinguish between all gestures + a "none".
-  2. The app will call an external endpoint and export the training data to train the model.
-  3. For simplicity, our first version will just make the user wait until training is done.
-  4. Once training is complete, user will be shown model performance metrics and three buttons: "Discard", "Keep Training", or "Done" along with a live serializer and a "Detected Gesture" for live testing.
-  5. Clicking on "Done" will save the model on-device and allow the user to activate a device for real-time gesture recognition.
-
-![User Flow D](images/user_flow_d.png)
-
-## Discussions:
+## Discussions
 
 - **On-device training?**: So Apple has two ML frameworks: CreateML and CoreML. 
 CreateML is Apple's AutoML solution (automates things like feature engineering, algorithm selection, and hyperparameter tuning) to training models, 
@@ -66,111 +50,101 @@ Therefore, we'll be training models using Sklearn.
 
 ## Data Model
 
-![DB Schema](images/db_schema.png)
-
-### Device
-
-Represents a paired uMyo device. 
-
-**Relationships**:
-- Has many gestures 
-- Has one model
-
-**Properties**:
-- id | pk
-- name 
-- bluetooth_id
-- mac_address
-- paired_at
-- is_active 
-
-### Gesture
-
-Represents a user-defined gesture, specific to a device.
-
-**Relationships**:
-- Belongs to one device 
-- Has many training samples
-
-**Properties**:
-- id | pk
-- device_id | fk
-- name
-- created_at
-- times_triggered
-
-### Sample
-
-Represents a single training sample for a gesture. One training sample contains many measurements (depending on sample rate).
-
-**Relationships**:
-- Belongs to one gesture 
-- Has many data points
-
-**Properties**: 
-- id | pk 
-- gesture_id | fk 
-- recorded_at 
-- duration
-- sample_rate
-
-### Measurement
-
-Represents a single raw measurement (data point) for a training sample.
-
-**Relationships**:
-- Belongs to one training sample
-
-**Properties**:
-- id | pk 
-- sample_id | fk 
-- index
-- roll
-- pitch 
-- yaw 
-- muscle_level
-- avg_muscle_level
-- spectrum_0
-- spectrum_1
-- spectrum_2
-- spectrum_3
-
-### Model 
-
-Represents a trained multi-class classification model using samples from all gestures for a specific device.
-In v1, we won't be able to view/switch to old models, but eventually one device can have multiple models with one active at a time.
-
-**Relationships**: 
-- Belongs to one device 
-
-**Properties**:
-- id | pk 
-- device_id | fk 
-- trained_at
-- samples_used
-- supported_gesture_ids // not a fk or junction table because we just need to know which gestures this model supports
-- is_active
-- model
-- accuracy 
-- f1_score 
-- precision 
-- recall
-
-## Technical Architecture
-
-![Technical Architecture](images/architecture.png)
-
-The architecture for this project is fairly simple. All of the functionalities except for model training runs on-device, so we just need a client and a server with a training endpoint.
-
-### Endpoints
+![DB Schema](docs/images/db_schema.png)
 
 ```
-POST /train-model
-- Body: training data
-- Returns: CoreML model + metrics
+Table Configuration {
+  id integer [primary key, increment]
+  name varchar [not null]
+  created_at timestamp [not null, default: `now()`]
+  is_active boolean [not null, default: false]
+
+  Note: "Represents a logical grouping of one or more devices for gesture recognition. This is because when chaining multiple uMyo devices, each device still transmits data separately."
+}
+
+Table Device {
+  id integer [primary key, increment]
+  name varchar [not null]
+  bluetooth_id varchar [not null, unique]
+  mac_address varchar(17) [not null, unique]
+  paired_at timestamp [not null, default: `now()`]
+
+  Note: "Represents a paired uMyo device"
+}
+
+Table ConfigurationDevice {
+  id integer [primary key, increment]
+  configuration_id integer [not null, ref: > Configuration.id]
+  device_id integer [not null, ref: > Device.id]
+
+  indexes {
+    (configuration_id, device_id) [unique, note: "Prevent duplicate device assignments"]
+  }
+
+  Note: "Junction table to track which devices belong to what configurations"
+}
+
+Table Gesture {
+  id integer [primary key, increment]
+  configuration_id integer [not null, ref: > Configuration.id]
+  name varchar [not null]
+  created_at timestamp [not null, default: `now()`]
+  times_triggered integer [not null, default: 0]
+
+  Note: "Represents a user-defined gesture, specific to a device configuration"
+}
+
+Table Sample {
+  id integer [primary key, increment]
+  gesture_id integer [not null, ref: > Gesture.id]
+  recorded_at timestamp [not null, default: `now()`]
+  duration double [not null, note: "Duration in seconds"]
+
+  Note: "Represents a single training sample for a gesture. Contains measurements from all devices in the configuration"
+}
+
+Table Measurement {
+  id integer [primary key, increment]
+  sample_id integer [not null, ref: > Sample.id]
+  device_id integer [not null, ref: > Device.id]
   
-GET /health
-- Health check
+  // raw sensor data
+  packet_id integer [not null]
+  battery_level integer [not null]
+  spectrum_0 integer [not null]
+  muscle_avg integer [not null]
+  spectrum_1 integer [not null]
+  spectrum_2 integer [not null]
+  spectrum_3 integer [not null]
+  quaternion_w integer [not null]
+  quaternion_x integer [not null]
+  quaternion_y integer [not null]
+  quaternion_z integer [not null]
+
+  // computed attributes
+  roll double [not null]
+  pitch double [not null]
+  yaw double [not null]
+  muscle_level double [not null]
+
+  Note: "Represents a single measurement from a specific device during sample recording. Includes both raw and computed attributes."
+}
+
+Table Model {
+  id integer [primary key, increment]
+  configuration_id integer [not null, ref: > Configuration.id]
+  trained_at timestamp [not null, default: `now()`]
+  samples_used integer [not null]
+  supported_gesture_ids text [not null, note: "Array of gesture IDs"]
+  is_active boolean [not null, default: false]
+  model blob [not null, note: "CoreML binary"]
+  accuracy double [not null, note: "0.0 to 1.0"]
+  f1_score double [not null, note: "0.0 to 1.0"]
+  precision double [not null, note: "0.0 to 1.0"]
+  recall double [not null, note: "0.0 to 1.0"]
+
+  Note: "Represents a trained multi-class classification model for a device configuration"
+}
 ```
 
 ## uMyo Advertisement Data Packet Layout
