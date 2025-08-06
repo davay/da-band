@@ -27,7 +27,7 @@ struct SensorData {
 
     // as computed in the uMyo library -- using unnormalized spectrums
     // may not be needed? we can try two models one with and one without
-    var muscleLevel: Double {
+    var muscleLevel: Int16 {
         return spectrum2 + 2 * spectrum3
     }
 

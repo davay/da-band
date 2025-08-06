@@ -3,19 +3,23 @@ import SwiftData
 
 @Model
 final class Device {
-    var id: UUID = UUID()
+    var id: UUID // pass in peripheral.identifier
     var name: String
     var bluetoothId: String
-    @Attribute(.unique) var macAddress: String
     var pairedAt: Date = Date()
-    var isActive: Bool = false
+    var isConnected: Bool = false
 
-    @Relationship(deleteRule: .cascade) var gestures: [Gesture] = []
-    @Relationship(deleteRule: .cascade) var models: [Model] = []
+    @Relationship var configurations: [Configuration] = []
+    @Relationship(deleteRule: .cascade) var measurements: [Measurement] = []
 
-    init(name: String, bluetoothId: String, macAddress: String) {
+    /// Initializes a new Device
+    /// - Parameters:
+    ///     - id: Unique ID for the device. Pass peripheral identifier from CBPeripheral. Same device should always result in the same ID.
+    ///     - name: Display name of the device.
+    ///     - bluetoothId: Local name of the device.
+    init(id: UUID, name: String, bluetoothId: String) {
+        self.id = id
         self.name = name
         self.bluetoothId = bluetoothId
-        self.macAddress = macAddress
     }
 }

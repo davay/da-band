@@ -8,12 +8,11 @@ final class Gesture {
     var createdAt: Date = Date()
     var timesTriggered: Int = 0
 
-    var device: Device
-
+    @Relationship var configuration: Configuration
     @Relationship(deleteRule: .cascade) var samples: [Sample] = []
 
-    init(name: String, device: Device) {
+    init(name: String, configuration: Configuration) {
         self.name = name
-        self.device = device
+        self.configuration = configuration
     }
 }

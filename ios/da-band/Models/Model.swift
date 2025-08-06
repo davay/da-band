@@ -14,10 +14,10 @@ final class Model {
     var precision: Double
     var recall: Double
 
-    var device: Device
+    @Relationship var configuration: Configuration
 
     init(samplesUsed: Int, supportedGestureIds: [UUID], model: Data, accuracy: Double,
-         f1Score: Double, precision: Double, recall: Double, device: Device)
+         f1Score: Double, precision: Double, recall: Double, configuration: Configuration)
     {
         self.samplesUsed = samplesUsed
         self.supportedGestureIds = supportedGestureIds
@@ -26,6 +26,6 @@ final class Model {
         self.f1Score = f1Score
         self.precision = precision
         self.recall = recall
-        self.device = device
+        self.configuration = configuration
     }
 }

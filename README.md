@@ -52,7 +52,7 @@ Therefore, we'll be training models using Sklearn.
 
 ![DB Schema](docs/images/db_schema.png)
 
-```
+```dbml
 Table Configuration {
   id integer [primary key, increment]
   name varchar [not null]
@@ -63,15 +63,16 @@ Table Configuration {
 }
 
 Table Device {
-  id integer [primary key, increment]
+  id integer [primary key, increment] // in swift, this is based on peripheral.identifier
   name varchar [not null]
   bluetooth_id varchar [not null, unique]
-  mac_address varchar(17) [not null, unique]
   paired_at timestamp [not null, default: `now()`]
+  is_connected boolean [not null, default: false]
 
   Note: "Represents a paired uMyo device"
 }
 
+// in swiftdata we dont need junction tables it turns out
 Table ConfigurationDevice {
   id integer [primary key, increment]
   configuration_id integer [not null, ref: > Configuration.id]
@@ -122,7 +123,7 @@ Table Measurement {
   quaternion_z integer [not null]
 
   // computed attributes
-  normalized_spectrum_0 double[not null]
+  normalized_spectrum_0 double [not null]
   normalized_spectrum_1 double [not null]
   normalized_spectrum_2 double [not null]
   normalized_spectrum_3 double [not null]
@@ -130,7 +131,7 @@ Table Measurement {
   normalized_quaternion_x double [not null]
   normalized_quaternion_y double [not null]
   normalized_quaternion_z double [not null]
-  muscle_level double [not null]
+  muscle_level integer [not null]
 
   Note: "Represents a single measurement from a specific device during sample recording. Includes both raw and computed attributes."
 }
