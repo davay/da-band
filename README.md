@@ -122,9 +122,14 @@ Table Measurement {
   quaternion_z integer [not null]
 
   // computed attributes
-  roll double [not null]
-  pitch double [not null]
-  yaw double [not null]
+  normalized_spectrum_0 double[not null]
+  normalized_spectrum_1 double [not null]
+  normalized_spectrum_2 double [not null]
+  normalized_spectrum_3 double [not null]
+  normalized_quaternion_w double [not null]
+  normalized_quaternion_x double [not null]
+  normalized_quaternion_y double [not null]
+  normalized_quaternion_z double [not null]
   muscle_level double [not null]
 
   Note: "Represents a single measurement from a specific device during sample recording. Includes both raw and computed attributes."

@@ -118,6 +118,9 @@ class BluetoothManager: NSObject, CBCentralManagerDelegate {
         let quaternionZ = Int16(data[index]) << 8
         index += 1
 
+        // Calculate normalized values using helper methods
+        let normalizedQuaternion = SensorData.normalizeQuaternion(w: quaternionW, x: quaternionX, y: quaternionY, z: quaternionZ)
+
         let sensorData = SensorData(
             packetId: packetId,
             batteryLevel: batteryLevel,
@@ -129,7 +132,15 @@ class BluetoothManager: NSObject, CBCentralManagerDelegate {
             quaternionW: quaternionW,
             quaternionX: quaternionX,
             quaternionY: quaternionY,
-            quaternionZ: quaternionZ
+            quaternionZ: quaternionZ,
+            normalizedSpectrum0: SensorData.normalizeSpectrum(spectrum0),
+            normalizedSpectrum1: SensorData.normalizeSpectrum(spectrum1),
+            normalizedSpectrum2: SensorData.normalizeSpectrum(spectrum2),
+            normalizedSpectrum3: SensorData.normalizeSpectrum(spectrum3),
+            normalizedQuaternionW: normalizedQuaternion.w,
+            normalizedQuaternionX: normalizedQuaternion.x,
+            normalizedQuaternionY: normalizedQuaternion.y,
+            normalizedQuaternionZ: normalizedQuaternion.z
         )
 
         return sensorData
