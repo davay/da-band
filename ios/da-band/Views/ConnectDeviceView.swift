@@ -25,6 +25,15 @@ struct ConnectDeviceView: View {
                 Text("Quaternion X: \(device.latestSensorData?.quaternionX ?? 0)")
                 Text("Quaternion Y: \(device.latestSensorData?.quaternionY ?? 0)")
                 Text("Quaternion Z: \(device.latestSensorData?.quaternionZ ?? 0)")
+                Text("Normalized Spectrum 0: \(device.latestSensorData?.normalizedSpectrum0 ?? 0)")
+                Text("Normalized Spectrum 1: \(device.latestSensorData?.normalizedSpectrum1 ?? 0)")
+                Text("Normalized Spectrum 2: \(device.latestSensorData?.normalizedSpectrum2 ?? 0)")
+                Text("Normalized Spectrum 3: \(device.latestSensorData?.normalizedSpectrum3 ?? 0)")
+                Text("Normalized Quaternion W: \(device.latestSensorData?.normalizedQuaternionW ?? 0)")
+                Text("Normalized Quaternion X: \(device.latestSensorData?.normalizedQuaternionX ?? 0)")
+                Text("Normalized Quaternion Y: \(device.latestSensorData?.normalizedQuaternionY ?? 0)")
+                Text("Normalized Quaternion Z: \(device.latestSensorData?.normalizedQuaternionZ ?? 0)")
+                Text("Muscle Level: \(device.latestSensorData?.muscleLevel ?? 0)")
             }
         }
         .onDisappear {

@@ -1,3 +1,4 @@
+import Foundation
 import SwiftData
 
 enum MockData {
@@ -10,13 +11,12 @@ enum MockData {
 
         for idx in 0 ..< deviceNames.count {
             let device = Device(
+                id: UUID(),
                 name: deviceNames[idx],
                 bluetoothId: "DEV-\(String(format: "%03d", idx + 1))",
-                macAddress: "AA:BB:CC:DD:EE:\(String(format: "%02X", idx + 1))"
             )
-            if idx == 0 { device.isActive = true }
+            if idx == 0 { device.isConnected = true }
             container.mainContext.insert(device)
         }
     }
 }
-

@@ -13,7 +13,7 @@ struct MuscleActivityChart: View {
                 ForEach(Array(dataPoints.enumerated()), id: \.offset) { index, sensorData in
                     LineMark(
                         x: .value("Sample", index),
-                        y: .value("Muscle Level", sensorData.muscleAvg)
+                        y: .value("Muscle Level", sensorData.muscleLevel)
                     )
                     .foregroundStyle(.blue)
                 }
