@@ -6,14 +6,6 @@ struct DevicesView: View {
 
     var body: some View {
         VStack {
-            HStack {
-                Text("Devices")
-                    .font(.largeTitle)
-                Spacer()
-                NavigationLink("+ Pair Device", destination: PairDeviceView())
-            }
-            .padding()
-
             ScrollView {
                 LazyVStack(spacing: 12) {
                     ForEach(devices) { device in
@@ -21,11 +13,15 @@ struct DevicesView: View {
                             Text(device.name)
                         }
                     }
+                    NavigationLink(destination: PairDeviceView()) {
+                        Text("+")
+                            .frame(width: 80, height: 30)
+                    }
+                    .buttonStyle(.bordered)
                 }
                 .padding(.top, 8)
             }
         }
-        // .hideNavigationBar()
     }
 }
 
@@ -36,7 +32,7 @@ struct DevicesView: View {
     MockData.createSampleDevices(in: container)
 
     return NavigationStack {
-        DevicesView()
+        HomeView()
             .toolbar(.hidden, for: .navigationBar)
     }
     .modelContainer(container)

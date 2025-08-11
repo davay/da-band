@@ -2,9 +2,16 @@ import SwiftData
 import SwiftUI
 
 struct ContentView: View {
+    @Environment(\.modelContext) private var modelContext
     var body: some View {
         NavigationStack {
-            DevicesView()
+            HomeView()
+        }
+        // WARN: For testing only, delete after
+        .onAppear {
+            do {
+                try modelContext.delete(model: Device.self)
+            } catch {}
         }
     }
 }
