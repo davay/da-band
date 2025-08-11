@@ -12,6 +12,9 @@ final class Device {
     @Relationship var configurations: [Configuration] = []
     @Relationship(deleteRule: .cascade) var measurements: [Measurement] = []
 
+    // don't save, used for real-time inference and UI preview
+    @Transient var sensorBuffer: SensorDataBuffer = SensorDataBuffer()
+
     /// Initializes a new Device
     /// - Parameters:
     ///     - id: Unique ID for the device. Pass peripheral identifier from CBPeripheral. Same device should always result in the same ID.

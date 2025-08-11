@@ -18,7 +18,7 @@ struct MuscleActivityChart: View {
                     .foregroundStyle(.blue)
                 }
             }
-            .frame(height: 200)
+            .frame(height: 100)
             .chartYAxis {
                 AxisMarks(position: .leading)
             }
@@ -27,6 +27,7 @@ struct MuscleActivityChart: View {
                     AxisGridLine()
                 }
             }
+            .padding()
         }
     }
 }

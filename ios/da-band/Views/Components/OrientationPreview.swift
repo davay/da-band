@@ -10,14 +10,8 @@ struct OrientationPreview: View {
                 .font(.headline)
 
             RoundedRectangle(cornerRadius: 6)
-                .fill(
-                    LinearGradient(
-                        colors: [Color.blue, Color.blue.opacity(0.6)],
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    )
-                )
-                .frame(width: 80, height: 30)
+                .fill(Color.blue)
+                .frame(width: 100, height: 50)
                 // using quaternions -- seems to be smoother
                 .rotation3DEffect(
                     sensorData.quaternionRotation,
@@ -37,6 +31,7 @@ struct OrientationPreview: View {
                 //     axis: (x: 0, y: 0, z: 1)
                 // )
                 .shadow(radius: 4)
+                .padding(.top)
         }
     }
 }

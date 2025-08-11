@@ -40,23 +40,24 @@ class BluetoothManager: NSObject, CBCentralManagerDelegate {
             return
         }
 
-        let manufacturerData = advertisementData[CBAdvertisementDataManufacturerDataKey] as? Data
-        let sensorData = parseManufacturerData(manufacturerData: manufacturerData)
-
-        // FIX: bad design, sensor data should never be null here anyway
-        sensorDataBuffer.addDataPoint(sensorData!)
+        guard let manufacturerData =
+            advertisementData[CBAdvertisementDataManufacturerDataKey] as? Data,
+            let sensorData = parseManufacturerData(manufacturerData: manufacturerData)
+        else {
+            return
+        }
 
         // update existing device or add new one
         if let existingIndex = discoveredDevices.firstIndex(where: { $0.id == peripheral.identifier }) {
             discoveredDevices[existingIndex].rssi = RSSI
-            discoveredDevices[existingIndex].latestSensorData = sensorData
+            discoveredDevices[existingIndex].sensorDataBuffer.addDataPoint(sensorData)
         } else {
             let device = DiscoveredDevice(
                 peripheral: peripheral,
                 name: deviceName,
-                rssi: RSSI,
-                latestSensorData: sensorData
+                rssi: RSSI
             )
+            device.sensorDataBuffer.addDataPoint(sensorData)
             discoveredDevices.append(device)
         }
     }

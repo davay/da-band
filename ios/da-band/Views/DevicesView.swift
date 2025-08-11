@@ -10,7 +10,7 @@ struct DevicesView: View {
                 Text("Devices")
                     .font(.largeTitle)
                 Spacer()
-                NavigationLink("+ Add Device", destination: AddDeviceView())
+                NavigationLink("+ Pair Device", destination: PairDeviceView())
             }
             .padding()
 
