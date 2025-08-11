@@ -1,0 +1,94 @@
+import SwiftData
+import SwiftUI
+
+struct PairDeviceView: View {
+    @State private var isShowingModal = false
+    @State private var selectedDevice: DiscoveredDevice?
+    @Environment(BluetoothManager.self) private var bluetoothManager
+    @Query private var pairedDevices: [Device]
+    
+    private var unpairedDevices: [DiscoveredDevice] {
+        let pairedIds = Set(pairedDevices.map { $0.id })
+        return bluetoothManager.discoveredDevices.filter { !pairedIds.contains($0.id) }
+    }
+
+    var body: some View {
+        ZStack {
+            VStack {
+                HStack {
+                    Text("Pair Device")
+                        .font(.largeTitle)
+                    Spacer()
+                }
+                .padding()
+
+                if bluetoothManager.bluetoothState != .poweredOn {
+                    VStack {
+                        Text("Bluetooth Required")
+                            .font(.headline)
+                        Text("Please enable Bluetooth to scan for devices")
+                            .foregroundColor(.secondary)
+                    }
+                    .padding()
+                }
+
+                ScrollView {
+                    LazyVStack(spacing: 12) {
+                        ForEach(unpairedDevices) { device in
+                            Card(widthPercentage: 0.9) {
+                                HStack {
+                                    VStack(alignment: .leading) {
+                                        Text(device.name)
+                                            .font(.headline)
+                                        Text(device.id.uuidString)
+                                            .font(.caption)
+                                        Text("Signal: \(device.rssi) dBm")
+                                            .font(.caption)
+                                            .foregroundColor(.secondary)
+                                    }
+                                    Spacer()
+                                    Button("Connect") {
+                                        selectedDevice = device
+                                        isShowingModal = true
+                                    }
+                                }
+                                .padding()
+                            }
+                        }
+                    }
+                    .padding(.top, 8)
+                }
+            }
+            // .hideNavigationBar()
+            .onAppear {
+                if bluetoothManager.bluetoothState == .poweredOn {
+                    bluetoothManager.startScanning()
+                }
+            }
+
+            if isShowingModal, let device = selectedDevice {
+                Color.black.opacity(0.4)
+                    .ignoresSafeArea()
+                    .onTapGesture {
+                        isShowingModal = false
+                        selectedDevice = nil
+                    }
+
+                VStack {
+                    PairDeviceModal(
+                        isShowingModal: $isShowingModal,
+                        device: device
+                    )
+                }
+                .background(Color(.systemBackground))
+                .cornerRadius(16)
+                .shadow(radius: 20)
+                .padding(.horizontal, 20)
+            }
+        }
+    }
+}
+
+#Preview {
+    return PairDeviceView()
+}
