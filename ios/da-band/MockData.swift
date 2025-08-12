@@ -15,7 +15,6 @@ enum MockData {
                 name: deviceNames[idx],
                 bluetoothId: "DEV-\(String(format: "%03d", idx + 1))",
             )
-            if idx == 0 { device.isConnected = true }
             container.mainContext.insert(device)
         }
     }

@@ -4,6 +4,7 @@ import SwiftUI
 struct DevicesView: View {
     @Query private var devices: [Device]
     @Binding var selectedDevice: Device?
+    @Environment(BluetoothManager.self) private var bluetoothManager
 
     var body: some View {
         VStack {
@@ -12,9 +13,14 @@ struct DevicesView: View {
                     ForEach(devices) { device in
                         Card(widthPercentage: 0.9) {
                             VStack {
-                                Text(device.name)
-                                    .font(.headline)
-                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                HStack {
+                                    StatusIndicator(isActive: device.isActive(in: bluetoothManager), type: .device)
+
+                                    Text(device.name)
+                                        .font(.headline)
+                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                }
+
                                 Text("Paired on: \(device.pairedAt)")
                                     .font(.subheadline)
                                     .frame(maxWidth: .infinity, alignment: .leading)

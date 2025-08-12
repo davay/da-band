@@ -58,11 +58,6 @@ struct PairDeviceView: View {
                 }
             }
             // .hideNavigationBar()
-            .onAppear {
-                if bluetoothManager.bluetoothState == .poweredOn {
-                    bluetoothManager.startScanning()
-                }
-            }
 
             if let device = selectedDevice {
                 Color.black.opacity(0.4)

@@ -27,8 +27,9 @@ struct SensorData {
 
     // as computed in the uMyo library -- using unnormalized spectrums
     // may not be needed? we can try two models one with and one without
-    var muscleLevel: Int16 {
-        return spectrum2 + 2 * spectrum3
+    var muscleLevel: Int {
+        // prevent arithmetic overflow
+        return Int(spectrum2) + 2 * Int(spectrum3)
     }
 
     // most of these is AI generated, I don't understand quaternions

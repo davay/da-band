@@ -1,5 +1,6 @@
 import CoreBluetooth
 import Foundation
+import SwiftData
 
 @Observable
 class BluetoothManager: NSObject, CBCentralManagerDelegate {
@@ -7,10 +8,13 @@ class BluetoothManager: NSObject, CBCentralManagerDelegate {
     var discoveredDevices: [DiscoveredDevice] = []
     var isScanning = false
     var bluetoothState: CBManagerState = .unknown
+    private let deviceTimeout: TimeInterval = 1
+    private var cleanupTimer: Timer?
 
     override init() {
         super.init()
         centralManager = CBCentralManager(delegate: self, queue: nil)
+        startCleanupTimer()
     }
 
     func centralManagerDidUpdateState(_ central: CBCentralManager) {
@@ -46,7 +50,9 @@ class BluetoothManager: NSObject, CBCentralManagerDelegate {
         // update existing device or add new one
         if let existingIndex = discoveredDevices.firstIndex(where: { $0.id == peripheral.identifier }) {
             discoveredDevices[existingIndex].rssi = RSSI
+            discoveredDevices[existingIndex].lastSeen = CFAbsoluteTimeGetCurrent()
             discoveredDevices[existingIndex].sensorDataBuffer.addDataPoint(sensorData)
+
         } else {
             let device = DiscoveredDevice(
                 peripheral: peripheral,
@@ -72,7 +78,7 @@ class BluetoothManager: NSObject, CBCentralManagerDelegate {
                                           options: [CBCentralManagerScanOptionAllowDuplicatesKey: true])
     }
 
-    func parseManufacturerData(manufacturerData: Data?) -> SensorData? {
+    private func parseManufacturerData(manufacturerData: Data?) -> SensorData? {
         guard let data = manufacturerData else { return nil }
 
         // expect exactly 15 bytes
@@ -145,5 +151,22 @@ class BluetoothManager: NSObject, CBCentralManagerDelegate {
 
     func getDiscoveredDevice(for deviceId: UUID) -> DiscoveredDevice? {
         return discoveredDevices.first(where: { $0.id == deviceId })
+    }
+
+    private func startCleanupTimer() {
+        cleanupTimer = Timer.scheduledTimer(withTimeInterval: 0.9, repeats: true) { _ in
+            self.removeStaleDevices()
+        }
+    }
+
+    private func removeStaleDevices() {
+        let now = CFAbsoluteTimeGetCurrent()
+        discoveredDevices.removeAll { device in
+            now - device.lastSeen > deviceTimeout
+        }
+    }
+
+    deinit {
+        cleanupTimer?.invalidate()
     }
 }

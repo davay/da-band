@@ -16,14 +16,16 @@ struct DeviceDetailsModal: View {
                     .fontWeight(.bold)
                     .padding(.top)
 
+                VStack(alignment: .leading) {
+                    Text("BLE ID: \(device.bluetoothId)")
+                    Text("Device ID: \(device.id)")
+                    Text("Paired on: \(device.pairedAt)")
+                }
+                .padding()
                 if let discoveredDevice = discoveredDevice {
-                    VStack(alignment: .leading) {
-                        Text("BLE ID: \(device.bluetoothId)")
-                        Text("Device ID: \(device.id)")
-                        Text("Signal strength: \(discoveredDevice.rssi) dBm")
-                        Text("Paired on: \(device.pairedAt)")
-                    }
-                    .padding()
+                    Text("Signal strength: \(discoveredDevice.rssi) dBm")
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding()
 
                     MuscleActivityChart(dataPoints: discoveredDevice.sensorDataBuffer.dataPoints)
                         .onDisappear {
@@ -35,6 +37,9 @@ struct DeviceDetailsModal: View {
                         OrientationPreview(sensorData: latestData)
                             .padding(.top, 2)
                     }
+                } else {
+                    Text("Device offline")
+                        .padding()
                 }
             }
             .padding()

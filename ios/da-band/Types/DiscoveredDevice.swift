@@ -8,6 +8,7 @@ class DiscoveredDevice: Identifiable {
     let name: String
     var rssi: NSNumber
     var sensorDataBuffer = SensorDataBuffer()
+    var lastSeen: CFAbsoluteTime = CFAbsoluteTimeGetCurrent()
 
     init(peripheral: CBPeripheral, name: String, rssi: NSNumber) {
         self.peripheral = peripheral

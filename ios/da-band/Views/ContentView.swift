@@ -3,15 +3,21 @@ import SwiftUI
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
+    @Environment(BluetoothManager.self) private var bluetoothManager
     var body: some View {
         NavigationStack {
             HomeView()
         }
-        // WARN: For testing only, delete after
         .onAppear {
+            // WARN: For testing only, delete after
             do {
                 try modelContext.delete(model: Device.self)
             } catch {}
+        }
+        .onChange(of: bluetoothManager.bluetoothState) { _, newState in
+            if newState == .poweredOn {
+                bluetoothManager.startScanning()
+            }
         }
     }
 }
