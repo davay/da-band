@@ -14,18 +14,27 @@ struct DeviceDetailsModal: View {
                 Text(device.name)
                     .font(.title3)
                     .fontWeight(.bold)
-                    .padding(.top)
+                    .padding()
 
                 VStack(alignment: .leading) {
-                    Text("BLE ID: \(device.bluetoothId)")
-                    Text("Device ID: \(device.id)")
-                    Text("Paired on: \(device.pairedAt)")
+                    Text("BLE ID: ").font(.headline) + Text("\(device.bluetoothId)")
+                    (Text("Device ID: ").font(.headline) + Text("\(device.id)"))
+                        .lineLimit(1)
+                        .truncationMode(.middle)
+                    Text("Paired On: ").font(.headline) + Text("\(device.pairedAt.formatted(date: .abbreviated, time: .shortened))")
                 }
-                .padding()
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.horizontal)
+                .padding(.bottom)
+
                 if let discoveredDevice = discoveredDevice {
-                    Text("Signal strength: \(discoveredDevice.rssi) dBm")
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding()
+                    VStack(alignment: .leading) {
+                        Text("Signal Strength: ").font(.headline) + Text("\(discoveredDevice.rssi) dBm")
+                        Text("Battery Level: ").font(.headline) + Text("\(discoveredDevice.sensorDataBuffer.latest?.batteryLevel ?? 0)")
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.horizontal)
+                    .padding(.bottom)
 
                     MuscleActivityChart(dataPoints: discoveredDevice.sensorDataBuffer.dataPoints)
                         .onDisappear {
@@ -35,15 +44,23 @@ struct DeviceDetailsModal: View {
                     // ideally this should only ever be missing for a split second that it wouldn't be noticable
                     if let latestData = discoveredDevice.sensorDataBuffer.latest {
                         OrientationPreview(sensorData: latestData)
-                            .padding(.top, 2)
+                            .padding(.bottom)
                     }
                 } else {
                     Text("Device offline")
                         .padding()
                 }
+
+                HStack {
+                    Button("Close") {
+                        onDismiss()
+                    }
+                    .buttonStyle(.borderedProminent)
+
+                    Spacer()
+                }
+                .padding()
             }
-            .padding()
-            .padding(.bottom, 40)
         }
     }
 }

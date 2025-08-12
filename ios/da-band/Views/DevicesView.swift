@@ -21,7 +21,7 @@ struct DevicesView: View {
                                         .frame(maxWidth: .infinity, alignment: .leading)
                                 }
 
-                                Text("Paired on: \(device.pairedAt)")
+                                (Text("Paired On: ").fontWeight(.bold) + Text("\(device.pairedAt.formatted(date: .abbreviated, time: .shortened))"))
                                     .font(.subheadline)
                                     .frame(maxWidth: .infinity, alignment: .leading)
                             }

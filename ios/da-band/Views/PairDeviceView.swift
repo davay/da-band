@@ -41,6 +41,8 @@ struct PairDeviceView: View {
                                             .font(.headline)
                                         Text(device.id.uuidString)
                                             .font(.caption)
+                                            .lineLimit(1)
+                                            .truncationMode(.middle)
                                         Text("Signal: \(device.rssi) dBm")
                                             .font(.caption)
                                             .foregroundColor(.secondary)
@@ -49,8 +51,8 @@ struct PairDeviceView: View {
                                     Button("Connect") {
                                         selectedDevice = device
                                     }
+                                    .buttonStyle(.borderedProminent)
                                 }
-                                .padding()
                             }
                         }
                     }

@@ -15,18 +15,25 @@ struct PairDeviceModal: View {
     var body: some View {
         Modal(onDismiss: onDismiss) {
             VStack {
-                Text("Pair \(device.name) (\(device.id.uuidString.prefix(4)))")
+                Text("Pair \(device.name)")
                     .font(.title3)
                     .fontWeight(.bold)
-                    .padding(.top)
+                    .padding()
 
                 if let currentDevice = currentDevice {
+                    (Text("Device ID: ").font(.headline) + Text("\(device.id)"))
+                        .lineLimit(1)
+                        .truncationMode(.middle)
+                        .padding(.horizontal)
+                        .padding(.bottom)
+
                     VStack(alignment: .leading) { // without this one the signal is a bit indented
-                        Text("Signal: \(currentDevice.rssi) dBm")
-                        Text("Battery Level: \(currentDevice.sensorDataBuffer.latest?.batteryLevel ?? 0)")
+                        Text("Signal Strength: ").font(.headline) + Text("\(currentDevice.rssi) dBm")
+                        Text("Battery Level: ").font(.headline) + Text("\(currentDevice.sensorDataBuffer.latest?.batteryLevel ?? 0)")
                     }
                     .frame(maxWidth: .infinity, alignment: .leading) // somehow without this the text wouldnt be aligned
-                    .padding()
+                    .padding(.horizontal)
+                    .padding(.bottom)
 
                     MuscleActivityChart(dataPoints: currentDevice.sensorDataBuffer.dataPoints)
                         .onDisappear {
@@ -36,14 +43,15 @@ struct PairDeviceModal: View {
                     // ideally this should only ever be missing for a split second that it wouldn't be noticable
                     if let latestData = currentDevice.sensorDataBuffer.latest {
                         OrientationPreview(sensorData: latestData)
-                            .padding(.top, 2)
+                            .padding(.bottom)
                     }
 
                     VStack(alignment: .leading) {
                         Text("Device Nickname:")
-                            .padding(.top)
+                            .font(.headline)
                         TextField("", text: $deviceNickname)
                             .textFieldStyle(.roundedBorder)
+                            .padding(.bottom)
 
                         HStack {
                             Button("Cancel") {
@@ -65,7 +73,6 @@ struct PairDeviceModal: View {
                             .buttonStyle(.borderedProminent)
                             .disabled(deviceNickname.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
                         }
-                        .padding(.top)
 
                         // Text("Packet ID: \(device.latestSensorData.packetId)")
                         // Text("Battery Level: \(device.latestSensorData.batteryLevel)")
