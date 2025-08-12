@@ -8,10 +8,6 @@ class BluetoothManager: NSObject, CBCentralManagerDelegate {
     var isScanning = false
     var bluetoothState: CBManagerState = .unknown
 
-    // just a global data buffer since only one device will be active anyway... right?
-    // NOTE: double check how multi-device umyo works
-    var sensorDataBuffer = SensorDataBuffer()
-
     override init() {
         super.init()
         centralManager = CBCentralManager(delegate: self, queue: nil)
