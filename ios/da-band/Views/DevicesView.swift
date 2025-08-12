@@ -3,6 +3,7 @@ import SwiftUI
 
 struct DevicesView: View {
     @Query private var devices: [Device]
+    @Binding var selectedDevice: Device?
 
     var body: some View {
         VStack {
@@ -10,7 +11,17 @@ struct DevicesView: View {
                 LazyVStack(spacing: 12) {
                     ForEach(devices) { device in
                         Card(widthPercentage: 0.9) {
-                            Text(device.name)
+                            VStack {
+                                Text(device.name)
+                                    .font(.headline)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                Text("Paired on: \(device.pairedAt)")
+                                    .font(.subheadline)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                            }
+                        }
+                        .onTapGesture {
+                            selectedDevice = device
                         }
                     }
                     NavigationLink(destination: PairDeviceView()) {

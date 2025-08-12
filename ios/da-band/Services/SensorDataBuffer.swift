@@ -3,7 +3,7 @@ import Foundation
 class SensorDataBuffer {
     var dataPoints: [SensorData] = []
     private let maxPoints = 100
-    
+
     var latest: SensorData? {
         dataPoints.last
     }

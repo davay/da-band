@@ -31,7 +31,7 @@ struct OrientationPreview: View {
                 //     axis: (x: 0, y: 0, z: 1)
                 // )
                 .shadow(radius: 4)
-                .padding(.top)
+                .padding(.top, 40)
         }
     }
 }

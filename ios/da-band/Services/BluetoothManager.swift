@@ -146,4 +146,8 @@ class BluetoothManager: NSObject, CBCentralManagerDelegate {
 
         return sensorData
     }
+
+    func getDiscoveredDevice(for deviceId: UUID) -> DiscoveredDevice? {
+        return discoveredDevices.first(where: { $0.id == deviceId })
+    }
 }

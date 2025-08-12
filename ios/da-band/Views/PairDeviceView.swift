@@ -2,11 +2,10 @@ import SwiftData
 import SwiftUI
 
 struct PairDeviceView: View {
-    @State private var isShowingModal = false
     @State private var selectedDevice: DiscoveredDevice?
     @Environment(BluetoothManager.self) private var bluetoothManager
     @Query private var pairedDevices: [Device]
-    
+
     private var unpairedDevices: [DiscoveredDevice] {
         let pairedIds = Set(pairedDevices.map { $0.id })
         return bluetoothManager.discoveredDevices.filter { !pairedIds.contains($0.id) }
@@ -49,7 +48,6 @@ struct PairDeviceView: View {
                                     Spacer()
                                     Button("Connect") {
                                         selectedDevice = device
-                                        isShowingModal = true
                                     }
                                 }
                                 .padding()
@@ -66,24 +64,16 @@ struct PairDeviceView: View {
                 }
             }
 
-            if isShowingModal, let device = selectedDevice {
+            if let device = selectedDevice {
                 Color.black.opacity(0.4)
                     .ignoresSafeArea()
                     .onTapGesture {
-                        isShowingModal = false
                         selectedDevice = nil
                     }
 
-                VStack {
-                    PairDeviceModal(
-                        isShowingModal: $isShowingModal,
-                        device: device
-                    )
+                PairDeviceModal(device: device) {
+                    selectedDevice = nil
                 }
-                .background(Color(.systemBackground))
-                .cornerRadius(16)
-                .shadow(radius: 20)
-                .padding(.horizontal, 20)
             }
         }
     }
