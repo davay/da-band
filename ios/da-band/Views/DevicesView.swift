@@ -5,6 +5,7 @@ struct DevicesView: View {
     @Query private var devices: [Device]
     @Binding var selectedDevice: Device?
     @Environment(BluetoothManager.self) private var bluetoothManager
+    @Environment(\.modelContext) private var modelContext
 
     var body: some View {
         VStack {
@@ -19,6 +20,19 @@ struct DevicesView: View {
                                     Text(device.name)
                                         .font(.headline)
                                         .frame(maxWidth: .infinity, alignment: .leading)
+
+                                    Spacer()
+
+                                    Menu {
+                                        Button("Delete", role: .destructive) {
+                                            modelContext.delete(device)
+                                        }
+                                    } label: {
+                                        Image(systemName: "ellipsis")
+                                            .foregroundStyle(.black)
+                                            .padding(.leading, 12) // so it's easier to tap
+                                            .padding(.bottom, 12)
+                                    }
                                 }
 
                                 (Text("Paired On: ").fontWeight(.bold) + Text("\(device.pairedAt.formatted(date: .abbreviated, time: .shortened))"))

@@ -8,7 +8,7 @@ final class Configuration {
     var createdAt: Date = Date()
     var isActive: Bool = false
 
-    @Relationship var devices: [Device] = []
+    @Relationship(inverse: \Device.configurations) var devices: [Device] = []
     @Relationship(deleteRule: .cascade) var gestures: [Gesture] = []
     @Relationship(deleteRule: .cascade) var models: [Model] = []
 

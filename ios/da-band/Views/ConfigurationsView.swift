@@ -4,6 +4,7 @@ import SwiftUI
 struct ConfigurationsView: View {
     @Query private var configurations: [Configuration]
     @Binding var showCreateConfiguration: Bool
+    @Environment(\.modelContext) private var modelContext
 
     var body: some View {
         VStack {
@@ -18,6 +19,19 @@ struct ConfigurationsView: View {
                                     Text(configuration.name)
                                         .font(.headline)
                                         .frame(maxWidth: .infinity, alignment: .leading)
+
+                                    Spacer()
+
+                                    Menu {
+                                        Button("Delete", role: .destructive) {
+                                            modelContext.delete(configuration)
+                                        }
+                                    } label: {
+                                        Image(systemName: "ellipsis")
+                                            .foregroundStyle(.black)
+                                            .padding(.leading, 12) // so it's easier to tap
+                                            .padding(.bottom, 12)
+                                    }
                                 }
 
                                 Text("\(configuration.devices.count) device(s)")

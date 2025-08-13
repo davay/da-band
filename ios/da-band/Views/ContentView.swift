@@ -8,13 +8,6 @@ struct ContentView: View {
         NavigationStack {
             HomeView()
         }
-        .onAppear {
-            // WARN: For testing only, delete after
-            do {
-                try modelContext.delete(model: Device.self)
-                try modelContext.delete(model: Configuration.self)
-            } catch {}
-        }
         .onChange(of: bluetoothManager.bluetoothState) { _, newState in
             if newState == .poweredOn {
                 bluetoothManager.startScanning()
