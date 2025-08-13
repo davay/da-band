@@ -4,6 +4,7 @@ import SwiftUI
 struct PairDeviceView: View {
     @State private var selectedDevice: DiscoveredDevice?
     @Environment(BluetoothManager.self) private var bluetoothManager
+    @Environment(\.dismiss) private var dismiss
     @Query private var pairedDevices: [Device]
 
     private var unpairedDevices: [DiscoveredDevice] {
@@ -30,6 +31,10 @@ struct PairDeviceView: View {
                             .foregroundColor(.secondary)
                     }
                     .padding()
+                } else if unpairedDevices.isEmpty {
+                    Text("Searching for unpaired uMyo devices...")
+                        .foregroundColor(.secondary)
+                        .frame(maxHeight: .infinity, alignment: .top)
                 }
 
                 ScrollView {
@@ -53,6 +58,7 @@ struct PairDeviceView: View {
                                         selectedDevice = device
                                     }
                                     .buttonStyle(.borderedProminent)
+                                    .tint(.black)
                                 }
                             }
                         }

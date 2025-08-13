@@ -3,6 +3,7 @@ import SwiftUI
 struct PairDeviceModal: View {
     @State private var deviceNickname: String = ""
     @Environment(\.modelContext) private var modelContext
+    @Environment(\.dismiss) private var dismiss
     let device: DiscoveredDevice
     let onDismiss: () -> Void
     @Environment(BluetoothManager.self) private var bluetoothManager
@@ -58,6 +59,7 @@ struct PairDeviceModal: View {
                                 onDismiss()
                             }
                             .buttonStyle(.borderedProminent)
+                            .tint(.black)
 
                             Spacer()
                             Button("Pair") {
@@ -69,8 +71,10 @@ struct PairDeviceModal: View {
 
                                 modelContext.insert(newDevice)
                                 onDismiss()
+                                dismiss()
                             }
                             .buttonStyle(.borderedProminent)
+                            .tint(.black)
                             .disabled(deviceNickname.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
                         }
 

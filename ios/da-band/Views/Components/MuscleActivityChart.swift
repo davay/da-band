@@ -15,7 +15,7 @@ struct MuscleActivityChart: View {
                         x: .value("Sample", index),
                         y: .value("Muscle Level", sensorData.muscleLevel)
                     )
-                    .foregroundStyle(.blue)
+                    .foregroundStyle(.gray)
                 }
             }
             .frame(height: 100)

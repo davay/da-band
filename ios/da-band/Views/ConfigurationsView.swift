@@ -24,6 +24,7 @@ struct ConfigurationsView: View {
                             .frame(width: 80, height: 30)
                     }
                     .buttonStyle(.borderedProminent)
+                    .tint(.black)
                 }
                 // prevent clipping
                 .padding(.top, 2)

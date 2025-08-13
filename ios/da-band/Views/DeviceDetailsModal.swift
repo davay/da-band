@@ -56,6 +56,7 @@ struct DeviceDetailsModal: View {
                         onDismiss()
                     }
                     .buttonStyle(.borderedProminent)
+                    .tint(.black)
 
                     Spacer()
                 }

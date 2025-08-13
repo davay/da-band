@@ -19,6 +19,7 @@ struct ContentView: View {
                 bluetoothManager.startScanning()
             }
         }
+        .tint(.black)
     }
 }
 

@@ -20,18 +20,18 @@ struct HomeView: View {
                     Button("Configurations") {
                         selectedTab = "configurations"
                     }
-                    .foregroundColor(selectedTab == "configurations" ? .white : .primary)
+                    .foregroundColor(selectedTab == "configurations" ? .white : .secondary)
                     .frame(maxWidth: .infinity)
                     .padding(12)
-                    .background(selectedTab == "configurations" ? Color.blue : Color.clear)
+                    .background(selectedTab == "configurations" ? Color.black : Color.clear)
 
                     Button("Devices") {
                         selectedTab = "devices"
                     }
-                    .foregroundColor(selectedTab == "devices" ? .white : .primary)
+                    .foregroundColor(selectedTab == "devices" ? .white : .secondary)
                     .frame(maxWidth: .infinity)
                     .padding(12)
-                    .background(selectedTab == "devices" ? Color.blue : Color.clear)
+                    .background(selectedTab == "devices" ? Color.black : Color.clear)
                 }
                 .background(Color.secondary.opacity(0.2))
                 .clipShape(RoundedRectangle(cornerRadius: 8))

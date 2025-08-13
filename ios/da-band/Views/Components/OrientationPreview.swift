@@ -10,7 +10,7 @@ struct OrientationPreview: View {
                 .font(.headline)
 
             RoundedRectangle(cornerRadius: 6)
-                .fill(Color.blue)
+                .fill(Color.gray)
                 .frame(width: 100, height: 50)
                 // using quaternions -- seems to be smoother
                 .rotation3DEffect(
