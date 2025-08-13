@@ -16,10 +16,11 @@ struct PairDeviceView: View {
             VStack {
                 HStack {
                     Text("Pair Device")
-                        .font(.largeTitle)
+                        .font(.title)
                     Spacer()
                 }
-                .padding()
+                .padding(.vertical, 8)
+                .padding(.horizontal)
 
                 if bluetoothManager.bluetoothState != .poweredOn {
                     VStack {
@@ -56,7 +57,8 @@ struct PairDeviceView: View {
                             }
                         }
                     }
-                    .padding(.top, 8)
+                    // prevents clipping with border
+                    .padding(.top, 2)
                 }
             }
             // .hideNavigationBar()

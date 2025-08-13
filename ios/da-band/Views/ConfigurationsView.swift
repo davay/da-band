@@ -3,6 +3,7 @@ import SwiftUI
 
 struct ConfigurationsView: View {
     @Query private var configurations: [Configuration]
+    @Binding var showCreateConfiguration: Bool
 
     var body: some View {
         VStack {
@@ -15,14 +16,18 @@ struct ConfigurationsView: View {
                             }
                         }
                     }
-                }
 
-                // FIX: style isnt consistent with Devices +
-                Button("+", action: {})
-                    .frame(width: 80, height: 30)
-                    .buttonStyle(.bordered)
+                    Button {
+                        showCreateConfiguration = true
+                    } label: {
+                        Text("+")
+                            .frame(width: 80, height: 30)
+                    }
+                    .buttonStyle(.borderedProminent)
+                }
+                // prevent clipping
+                .padding(.top, 2)
             }
         }
-        Text("Configurations")
     }
 }

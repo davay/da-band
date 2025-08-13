@@ -34,9 +34,10 @@ struct DevicesView: View {
                         Text("+")
                             .frame(width: 80, height: 30)
                     }
-                    .buttonStyle(.bordered)
+                    .buttonStyle(.borderedProminent)
                 }
-                .padding(.top, 8)
+                // prevents clipping
+                .padding(.top, 2)
             }
         }
     }
