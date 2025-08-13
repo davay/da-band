@@ -10,40 +10,48 @@ struct ConfigurationsView: View {
         VStack {
             ScrollView {
                 LazyVStack(spacing: 12) {
-                    ForEach(configurations) { configuration in
-                        NavigationLink(destination: ConfigurationDetailsView(configuration: configuration)) {
-                            Card(widthPercentage: 0.9) {
-                                VStack {
-                                    HStack {
-                                        StatusIndicator(isActive: configuration.isActive, type: .configuration)
+                    if configurations.isEmpty {
+                        Card(widthPercentage: 0.9) {
+                            Text("No configurations are available")
+                                .foregroundStyle(.secondary)
+                                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+                        }
+                    } else {
+                        ForEach(configurations) { configuration in
+                            NavigationLink(destination: ConfigurationDetailsView(configuration: configuration)) {
+                                Card(widthPercentage: 0.9) {
+                                    VStack {
+                                        HStack {
+                                            StatusIndicator(isActive: configuration.isActive, type: .configuration)
 
-                                        Text(configuration.name)
-                                            .font(.headline)
-                                            .frame(maxWidth: .infinity, alignment: .leading)
+                                            Text(configuration.name)
+                                                .font(.headline)
+                                                .frame(maxWidth: .infinity, alignment: .leading)
 
-                                        Spacer()
+                                            Spacer()
 
-                                        Menu {
-                                            Button {
-                                                configuration.toggleIsActive(in: modelContext)
+                                            Menu {
+                                                Button {
+                                                    configuration.toggleIsActive(in: modelContext)
+                                                } label: {
+                                                    Text(configuration.isActive ? "Deactivate" : "Activate")
+                                                }
+
+                                                Button("Delete", role: .destructive) {
+                                                    modelContext.delete(configuration)
+                                                }
                                             } label: {
-                                                Text(configuration.isActive ? "Deactivate" : "Activate")
+                                                Image(systemName: "ellipsis")
+                                                    .foregroundStyle(.black)
+                                                    .padding(.leading, 12) // so it's easier to tap
+                                                    .padding(.bottom, 12)
                                             }
-
-                                            Button("Delete", role: .destructive) {
-                                                modelContext.delete(configuration)
-                                            }
-                                        } label: {
-                                            Image(systemName: "ellipsis")
-                                                .foregroundStyle(.black)
-                                                .padding(.leading, 12) // so it's easier to tap
-                                                .padding(.bottom, 12)
                                         }
-                                    }
 
-                                    Text("\(configuration.devices.count) device(s)")
-                                        .font(.subheadline)
-                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                        Text("\(configuration.devices.count) device(s)")
+                                            .font(.subheadline)
+                                            .frame(maxWidth: .infinity, alignment: .leading)
+                                    }
                                 }
                             }
                         }

@@ -11,39 +11,48 @@ struct DevicesView: View {
         VStack {
             ScrollView {
                 LazyVStack(spacing: 12) {
-                    ForEach(devices) { device in
+                    if devices.isEmpty {
                         Card(widthPercentage: 0.9) {
-                            VStack {
-                                HStack {
-                                    StatusIndicator(isActive: device.isActive(in: bluetoothManager), type: .device)
+                            Text("No devices are available")
+                                .foregroundStyle(.secondary)
+                                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+                        }
+                    } else {
+                        ForEach(devices) { device in
+                            Card(widthPercentage: 0.9) {
+                                VStack {
+                                    HStack {
+                                        StatusIndicator(isActive: device.isActive(in: bluetoothManager), type: .device)
 
-                                    Text(device.name)
-                                        .font(.headline)
-                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                        Text(device.name)
+                                            .font(.headline)
+                                            .frame(maxWidth: .infinity, alignment: .leading)
 
-                                    Spacer()
+                                        Spacer()
 
-                                    Menu {
-                                        Button("Delete", role: .destructive) {
-                                            modelContext.delete(device)
+                                        Menu {
+                                            Button("Delete", role: .destructive) {
+                                                modelContext.delete(device)
+                                            }
+                                        } label: {
+                                            Image(systemName: "ellipsis")
+                                                .foregroundStyle(.black)
+                                                .padding(.leading, 12) // so it's easier to tap
+                                                .padding(.bottom, 12)
                                         }
-                                    } label: {
-                                        Image(systemName: "ellipsis")
-                                            .foregroundStyle(.black)
-                                            .padding(.leading, 12) // so it's easier to tap
-                                            .padding(.bottom, 12)
                                     }
-                                }
 
-                                (Text("Paired On: ").fontWeight(.bold) + Text("\(device.pairedAt.formatted(date: .abbreviated, time: .shortened))"))
-                                    .font(.subheadline)
-                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                    (Text("Paired On: ").fontWeight(.bold) + Text("\(device.pairedAt.formatted(date: .abbreviated, time: .shortened))"))
+                                        .font(.subheadline)
+                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                }
+                            }
+                            .onTapGesture {
+                                selectedDevice = device
                             }
                         }
-                        .onTapGesture {
-                            selectedDevice = device
-                        }
                     }
+
                     NavigationLink(destination: PairDeviceView()) {
                         Text("+")
                             .frame(width: 80, height: 30)

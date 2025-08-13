@@ -47,7 +47,8 @@ struct DeviceDetailsModal: View {
                             .padding(.bottom)
                     }
                 } else {
-                    Text("Device offline")
+                    Text("Device is offline")
+                        .foregroundStyle(.secondary)
                         .padding()
                 }
 
