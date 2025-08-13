@@ -23,6 +23,12 @@ struct ConfigurationsView: View {
                                     Spacer()
 
                                     Menu {
+                                        Button {
+                                            configuration.toggleIsActive(in: modelContext)
+                                        } label: {
+                                            Text(configuration.isActive ? "Deactivate" : "Activate")
+                                        }
+
                                         Button("Delete", role: .destructive) {
                                             modelContext.delete(configuration)
                                         }

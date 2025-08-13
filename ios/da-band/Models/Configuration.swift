@@ -15,4 +15,20 @@ final class Configuration {
     init(name: String) {
         self.name = name
     }
+
+    func toggleIsActive(in modelContext: ModelContext) {
+        if isActive {
+            isActive = false
+        } else {
+            let descriptor = FetchDescriptor<Configuration>()
+            let allConfigurations = try? modelContext.fetch(descriptor)
+
+            // all other configurations will be disabled
+            allConfigurations?.forEach { $0.isActive = false }
+
+            isActive = true
+
+            try? modelContext.save()
+        }
+    }
 }
