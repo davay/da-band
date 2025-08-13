@@ -15,13 +15,10 @@ struct PairDeviceView: View {
     var body: some View {
         ZStack {
             VStack {
-                HStack {
-                    Text("Pair Device")
-                        .font(.title)
-                    Spacer()
-                }
-                .padding(.vertical, 8)
-                .padding(.horizontal)
+                Text("Pair Device")
+                    .font(.title)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.horizontal)
 
                 if bluetoothManager.bluetoothState != .poweredOn {
                     VStack {
