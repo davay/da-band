@@ -28,12 +28,12 @@ struct PairDeviceView: View {
                         Text("Bluetooth Required")
                             .font(.headline)
                         Text("Please enable Bluetooth to scan for devices")
-                            .foregroundColor(.secondary)
+                            .foregroundStyle(.secondary)
                     }
                     .padding()
                 } else if unpairedDevices.isEmpty {
                     Text("Searching for unpaired uMyo devices...")
-                        .foregroundColor(.secondary)
+                        .foregroundStyle(.secondary)
                         .frame(maxHeight: .infinity, alignment: .top)
                 }
 
@@ -51,7 +51,7 @@ struct PairDeviceView: View {
                                             .truncationMode(.middle)
                                         Text("Signal: \(device.rssi) dBm")
                                             .font(.caption)
-                                            .foregroundColor(.secondary)
+                                            .foregroundStyle(.secondary)
                                     }
                                     Spacer()
                                     Button("Connect") {

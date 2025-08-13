@@ -12,7 +12,17 @@ struct ConfigurationsView: View {
                     ForEach(configurations) { configuration in
                         Card(widthPercentage: 0.9) {
                             VStack {
-                                Text(configuration.name)
+                                HStack {
+                                    StatusIndicator(isActive: configuration.isActive, type: .configuration)
+
+                                    Text(configuration.name)
+                                        .font(.headline)
+                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                }
+
+                                Text("\(configuration.devices.count) device(s)")
+                                    .font(.subheadline)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
                             }
                         }
                     }

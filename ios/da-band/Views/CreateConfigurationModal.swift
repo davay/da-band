@@ -7,12 +7,13 @@ struct CreateConfigurationModal: View {
     @State private var configurationName: String = ""
     @Query private var devices: [Device]
     @State private var currentStage = 1
+    @State private var selectedDevices: Set<UUID> = []
     @Environment(BluetoothManager.self) private var bluetoothManager
+    @Environment(\.modelContext) private var modelContext
 
     var body: some View {
         Modal(onDismiss: onDismiss) {
             // stage 1
-
             if currentStage == 1 {
                 VStack {
                     Text("Create Configuration")
@@ -65,11 +66,22 @@ struct CreateConfigurationModal: View {
                                                     Text(device.name)
                                                         .font(.headline)
                                                         .frame(maxWidth: .infinity, alignment: .leading)
+
+                                                    Image(systemName: selectedDevices.contains(device.id) ? "checkmark.square.fill" : "square")
+                                                        .foregroundStyle(.gray)
+                                                        .font(.title2)
                                                 }
 
                                                 (Text("Paired On: ").fontWeight(.bold) + Text("\(device.pairedAt.formatted(date: .abbreviated, time: .shortened))"))
                                                     .font(.subheadline)
                                                     .frame(maxWidth: .infinity, alignment: .leading)
+                                            }
+                                        }
+                                        .onTapGesture {
+                                            if selectedDevices.contains(device.id) {
+                                                selectedDevices.remove(device.id)
+                                            } else {
+                                                selectedDevices.insert(device.id)
                                             }
                                         }
                                     }
@@ -78,6 +90,10 @@ struct CreateConfigurationModal: View {
                                 .padding(.top, 2)
                             }
                             .frame(maxHeight: min(CGFloat(devices.count * 80 + 20), 240))
+                        } else {
+                            Text("Please pair at least one device")
+                                .frame(maxWidth: .infinity, alignment: .center)
+                                .foregroundStyle(.secondary)
                         }
 
                         NavigationLink(destination: PairDeviceView()) {
@@ -85,6 +101,7 @@ struct CreateConfigurationModal: View {
                         }
                         .buttonStyle(.borderedProminent)
                         .tint(.black)
+                        .padding(.top)
 
                         HStack {
                             Button("Back") {
@@ -95,10 +112,16 @@ struct CreateConfigurationModal: View {
 
                             Spacer()
 
-                            Button("Create") {}
-                                .buttonStyle(.borderedProminent)
-                                .tint(.black)
-                                .disabled(configurationName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+                            Button("Create") {
+                                let configuration = Configuration(name: configurationName)
+                                let selectedDeviceObjects = devices.filter { selectedDevices.contains($0.id) }
+                                configuration.devices = selectedDeviceObjects
+                                modelContext.insert(configuration)
+                                onDismiss()
+                            }
+                            .buttonStyle(.borderedProminent)
+                            .tint(.black)
+                            .disabled(selectedDevices.isEmpty)
                         }
                     }
                     .padding(.top)

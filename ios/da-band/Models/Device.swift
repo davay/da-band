@@ -8,7 +8,8 @@ final class Device {
     var bluetoothId: String
     var pairedAt: Date = Date()
 
-    @Relationship var configurations: [Configuration] = []
+    // once a configuration is created, we can't add or remove devices
+    @Relationship(deleteRule: .cascade) var configurations: [Configuration] = []
     @Relationship(deleteRule: .cascade) var measurements: [Measurement] = []
 
     /// Initializes a new Device
@@ -21,7 +22,7 @@ final class Device {
         self.name = name
         self.bluetoothId = bluetoothId
     }
-    
+
     func isActive(in bluetoothManager: BluetoothManager) -> Bool {
         bluetoothManager.discoveredDevices.contains { $0.id == self.id }
     }

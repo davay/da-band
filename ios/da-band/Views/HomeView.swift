@@ -20,7 +20,7 @@ struct HomeView: View {
                     Button("Configurations") {
                         selectedTab = "configurations"
                     }
-                    .foregroundColor(selectedTab == "configurations" ? .white : .secondary)
+                    .foregroundStyle(selectedTab == "configurations" ? .white : .secondary)
                     .frame(maxWidth: .infinity)
                     .padding(12)
                     .background(selectedTab == "configurations" ? Color.black : Color.clear)
@@ -28,7 +28,7 @@ struct HomeView: View {
                     Button("Devices") {
                         selectedTab = "devices"
                     }
-                    .foregroundColor(selectedTab == "devices" ? .white : .secondary)
+                    .foregroundStyle(selectedTab == "devices" ? .white : .secondary)
                     .frame(maxWidth: .infinity)
                     .padding(12)
                     .background(selectedTab == "devices" ? Color.black : Color.clear)
