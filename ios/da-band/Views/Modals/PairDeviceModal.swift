@@ -70,7 +70,9 @@ struct PairDeviceModal: View {
                                 )
 
                                 modelContext.insert(newDevice)
+                                // this custom callback hides the modal
                                 onDismiss()
+                                // this built-in dismiss exits our current navigation stack
                                 dismiss()
                             }
                             .buttonStyle(.borderedProminent)
