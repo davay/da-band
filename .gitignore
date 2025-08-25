@@ -3,4 +3,5 @@
 __pycache__
 docs/site
 CLAUDE.md
-.nvim
+.nvim/
+xcuserdata/

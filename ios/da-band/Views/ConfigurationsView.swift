@@ -2,7 +2,7 @@ import SwiftData
 import SwiftUI
 
 struct ConfigurationsView: View {
-    @Query(sort: \Configuration.createdAt) private var configurations: [Configuration]
+    @Query(sort: \Configuration.createdAt, order: .reverse) private var configurations: [Configuration]
     @Binding var showCreateConfiguration: Bool
     @Environment(\.modelContext) private var modelContext
 

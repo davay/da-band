@@ -2,7 +2,7 @@ import SwiftData
 import SwiftUI
 
 struct DevicesView: View {
-    @Query(sort: \Device.pairedAt) private var devices: [Device]
+    @Query(sort: \Device.pairedAt, order: .reverse) private var devices: [Device]
     @Binding var selectedDevice: Device?
     @Environment(BluetoothManager.self) private var bluetoothManager
     @Environment(\.modelContext) private var modelContext
