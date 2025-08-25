@@ -56,9 +56,7 @@ struct ConfigurationDetailsView: View {
                         }
 
                         Text("Status: ").font(.headline) + Text(configuration.isActive ? "Active" : "Inactive")
-
                         Text("Created On: ").font(.headline) + Text(configuration.createdAt.formatted(date: .abbreviated, time: .shortened))
-
                         Text("Devices: ").font(.headline) + Text(configuration.devices.map(\.name).joined(separator: ", "))
                     }
                     .frame(maxWidth: .infinity, alignment: .topLeading)
@@ -123,7 +121,7 @@ struct ConfigurationDetailsView: View {
                                     ForEach(gestures) { gesture in
                                         // prevent clipping
                                         Card(widthPercentage: 0.99) {
-                                            VStack {
+                                            VStack(alignment: .leading) {
                                                 HStack {
                                                     Text(gesture.name)
                                                         .font(.headline)
@@ -141,6 +139,11 @@ struct ConfigurationDetailsView: View {
                                                             .padding(.bottom, 12)
                                                     }
                                                 }
+
+                                                Text("Created On: ").font(.headline) + Text(gesture.createdAt.formatted(date: .abbreviated, time: .shortened))
+                                                // must interpolate or cast using String(), else there wont be a compile error but it will fail to build due to timeout
+                                                Text("Samples Recorded: ").font(.headline) + Text("\(gesture.samples.count)")
+                                                Text("Times Triggered: ").font(.headline) + Text("\(gesture.timesTriggered)")
                                             }
                                         }
                                         // prevent clipping
