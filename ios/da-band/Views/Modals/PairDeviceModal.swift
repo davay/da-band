@@ -1,11 +1,13 @@
 import SwiftUI
 
 struct PairDeviceModal: View {
-    @State private var deviceNickname: String = ""
-    @Environment(\.modelContext) private var modelContext
-    @Environment(\.dismiss) private var dismiss
     let device: DiscoveredDevice
     let onDismiss: () -> Void
+
+    @State private var deviceNickname: String = ""
+
+    @Environment(\.modelContext) private var modelContext
+    @Environment(\.dismiss) private var dismiss
     @Environment(BluetoothManager.self) private var bluetoothManager
 
     // so that when a device reconnects the modal uses the new reference and show device data properly

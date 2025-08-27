@@ -1,9 +1,11 @@
 import SwiftUI
 
 struct DeviceDetailsModal: View {
-    @Environment(BluetoothManager.self) private var bluetoothManager
     let device: Device
     let onDismiss: () -> Void
+
+    @Environment(BluetoothManager.self) private var bluetoothManager
+
     var discoveredDevice: DiscoveredDevice? {
         bluetoothManager.getDiscoveredDevice(for: device.id)
     }
