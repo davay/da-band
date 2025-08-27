@@ -25,7 +25,12 @@ struct ConfigurationsView: View {
                                             StatusIndicator(isActive: configuration.isActive, type: .configuration)
 
                                             Text(configuration.name)
-                                                .font(.headline)
+                                                .font(.title2)
+
+                                            let deviceCount = configuration.devices.count
+                                            let gestureCount = configuration.gestures.count
+                                            Text("[\(deviceCount) device\(deviceCount == 1 ? "" : "s") • \(gestureCount) gesture\(gestureCount == 1 ? "" : "s")]")
+                                                .font(.subheadline)
                                                 .frame(maxWidth: .infinity, alignment: .leading)
 
                                             Spacer()
@@ -47,10 +52,13 @@ struct ConfigurationsView: View {
                                                     .padding(.bottom, 12)
                                             }
                                         }
+                                        .frame(maxWidth: .infinity, alignment: .leading)
 
-                                        Text("\(configuration.devices.count) device(s)")
-                                            .font(.subheadline)
-                                            .frame(maxWidth: .infinity, alignment: .leading)
+                                        VStack(alignment: .leading) {
+                                            Text("Created On: ").font(.headline) + Text(configuration.createdAt.formatted(date: .abbreviated, time: .shortened))
+                                            Text("Last Trained: ").font(.headline) + Text("Never")
+                                        }
+                                        .frame(maxWidth: .infinity, alignment: .leading)
                                     }
                                 }
                             }

@@ -7,7 +7,7 @@ final class Sample {
     var recordedAt: Date = Date()
     var duration: TimeInterval
 
-    @Relationship var gesture: Gesture
+    @Relationship var gesture: Gesture?
 
     @Relationship(deleteRule: .cascade) var measurements: [Measurement] = []
 

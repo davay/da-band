@@ -26,4 +26,8 @@ final class Device {
     func isActive(in bluetoothManager: BluetoothManager) -> Bool {
         bluetoothManager.discoveredDevices.contains { $0.id == self.id }
     }
+    
+    func batteryLevel(in bluetoothManager: BluetoothManager) -> Int {
+        bluetoothManager.discoveredDevices.first(where: { $0.id == self.id })?.sensorDataBuffer.latest?.batteryLevel ?? 0
+    }
 }

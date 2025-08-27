@@ -25,7 +25,7 @@ struct DevicesView: View {
                                         StatusIndicator(isActive: device.isActive(in: bluetoothManager), type: .device)
 
                                         Text(device.name)
-                                            .font(.headline)
+                                            .font(.title2)
                                             .frame(maxWidth: .infinity, alignment: .leading)
 
                                         Spacer()
@@ -42,9 +42,11 @@ struct DevicesView: View {
                                         }
                                     }
 
-                                    (Text("Paired On: ").fontWeight(.bold) + Text("\(device.pairedAt.formatted(date: .abbreviated, time: .shortened))"))
-                                        .font(.subheadline)
-                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                    VStack(alignment: .leading) {
+                                        Text("Paired On: ").font(.headline) + Text("\(device.pairedAt.formatted(date: .abbreviated, time: .shortened))")
+                                        Text("Battery Level: ").font(.headline) + Text("\(device.batteryLevel(in: bluetoothManager))")
+                                    }
+                                    .frame(maxWidth: .infinity, alignment: .leading)
                                 }
                             }
                             .onTapGesture {

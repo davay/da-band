@@ -5,9 +5,11 @@ struct CreateConfigurationModal: View {
     let onDismiss: () -> Void
 
     @State private var configurationName: String = ""
-    @Query private var devices: [Device]
     @State private var currentStage = 1
     @State private var selectedDevices: Set<UUID> = []
+
+    @Query(sort: \Device.pairedAt, order: .reverse) private var devices: [Device]
+
     @Environment(BluetoothManager.self) private var bluetoothManager
     @Environment(\.modelContext) private var modelContext
 

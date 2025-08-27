@@ -8,7 +8,7 @@ final class Gesture {
     var createdAt: Date = Date()
     var timesTriggered: Int = 0
 
-    @Relationship var configuration: Configuration
+    @Relationship var configuration: Configuration?
     @Relationship(deleteRule: .cascade) var samples: [Sample] = []
 
     init(name: String, configuration: Configuration) {

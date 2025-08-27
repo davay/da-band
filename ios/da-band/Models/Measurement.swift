@@ -29,8 +29,8 @@ final class Measurement {
     var normalizedQuaternionZ: Double
     var muscleLevel: Int16
 
-    @Relationship var sample: Sample
-    @Relationship var device: Device
+    @Relationship var sample: Sample?
+    @Relationship var device: Device?
 
     init(packetId: Int, batteryLevel: Int, spectrum0: Int16, muscleAvg: Int, spectrum1: Int16,
          spectrum2: Int16, spectrum3: Int16, quaternionW: Int16, quaternionX: Int16, quaternionY: Int16,
