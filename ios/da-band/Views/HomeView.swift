@@ -42,6 +42,8 @@ struct HomeView: View {
                     ConfigurationsView(showCreateConfiguration: $showCreateConfiguration).tag("configurations")
                     DevicesView(selectedDevice: $selectedDevice).tag("devices")
                 }
+                // in liquid glass theres this new toggle at the bottom when using tabviews now, removing it
+                .tabViewStyle(.page(indexDisplayMode: .never))
             }
 
             if let device = selectedDevice {
@@ -65,6 +67,19 @@ struct HomeView: View {
 
                 CreateConfigurationModal {
                     showCreateConfiguration = false
+                }
+            }
+
+            // build date
+            VStack {
+                Spacer()
+                HStack {
+                    Text("Build: \(Date().formatted(date: .abbreviated, time: .shortened))")
+                        .font(.caption2)
+                        .foregroundStyle(.secondary)
+                        .padding(.leading, 8)
+                        .padding(.bottom, 8)
+                    Spacer()
                 }
             }
         }

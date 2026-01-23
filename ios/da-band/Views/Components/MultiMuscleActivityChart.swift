@@ -10,8 +10,8 @@ struct MultiMuscleActivityChart: View {
                 .font(.headline)
 
             Chart {
-                // Align all lines to the right so they share the same "now" position.
-                // Without this, a reconnecting device starts at x=0 while others are at x=100,
+                // align all lines to the right so they share the same position.
+                // without this, a reconnecting device starts at x=0 while others are at x=100,
                 // making it look like they're at different points in time.
                 let maxCount = dataSeries.map { $0.dataPoints.count }.max() ?? 0
 
@@ -28,7 +28,7 @@ struct MultiMuscleActivityChart: View {
                 }
             }
             .frame(height: 100)
-            .chartXScale(domain: 0...100)  // Fixed width to match SensorDataBuffer.maxPoints
+            .chartXScale(domain: 0 ... 100)
             .chartYAxis {
                 AxisMarks(position: .leading)
             }
