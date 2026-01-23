@@ -5,3 +5,5 @@ docs/site
 CLAUDE.md
 .nvim/
 xcuserdata/
+ios/buildServer.json
+ios/da-band.xcodeproj

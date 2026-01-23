@@ -1,7 +1,7 @@
 import Charts
 import SwiftUI
 
-struct MuscleActivityChart: View {
+struct SingleMuscleActivityChart: View {
     let dataPoints: [SensorData]
 
     var body: some View {
@@ -27,6 +27,7 @@ struct MuscleActivityChart: View {
                     AxisGridLine()
                 }
             }
+            .chartXScale(domain: 0 ... 100)
             .padding()
         }
     }

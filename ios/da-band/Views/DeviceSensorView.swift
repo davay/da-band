@@ -6,7 +6,7 @@ struct DeviceSensorView: View {
 
     var body: some View {
         let content = Group {
-            MuscleActivityChart(dataPoints: sensorDataBuffer.dataPoints)
+            SingleMuscleActivityChart(dataPoints: sensorDataBuffer.dataPoints)
                 .onDisappear {
                     sensorDataBuffer.clear()
                 }

@@ -8,15 +8,19 @@ struct RecordSampleModal: View {
 
     @State private var recordingDate = Date()
 
-    // private var allDevicesAvailable: Bool {
-    //     configuration.devices.allSatisfy { configDevice in
-    //         bluetoothManager.discoveredDevices.contains { discoveredDevice in
-    //             discoveredDevice.id == configDevice.id
-    //         }
-    //     }
-    // }
-    //
-    //
+    private var dataSeries: [DeviceDataSeries] {
+        configuration.devices.compactMap { device in
+            guard let discovered = bluetoothManager.getDiscoveredDevice(for: device.id) else {
+                return nil
+            }
+            return DeviceDataSeries(
+                id: device.id,
+                name: device.name,
+                dataPoints: discovered.sensorDataBuffer.dataPoints
+            )
+        }
+    }
+
     var body: some View {
         Modal(onDismiss: onDismiss) {
             VStack {
@@ -25,18 +29,7 @@ struct RecordSampleModal: View {
                     .fontWeight(.bold)
                     .padding()
 
-                ScrollView {
-                    LazyVStack {
-                        ForEach(configuration.devices) { device in
-                            Text("\(device.name)")
-
-                            if let discoveredDevice = bluetoothManager.getDiscoveredDevice(for: device.id) {
-                                DeviceSensorView(sensorDataBuffer: discoveredDevice.sensorDataBuffer, axis: .horizontal)
-                            }
-                        }
-                        // .drawingGroup()
-                    }
-                }
+                MultiMuscleActivityChart(dataSeries: dataSeries)
             }
         }
     }

@@ -38,7 +38,7 @@ struct PairDeviceModal: View {
                     .padding(.horizontal)
                     .padding(.bottom)
 
-                    MuscleActivityChart(dataPoints: currentDevice.sensorDataBuffer.dataPoints)
+                    SingleMuscleActivityChart(dataPoints: currentDevice.sensorDataBuffer.dataPoints)
                         .onDisappear {
                             currentDevice.sensorDataBuffer.clear()
                         }

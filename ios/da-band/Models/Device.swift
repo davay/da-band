@@ -14,7 +14,8 @@ final class Device {
 
     /// Initializes a new Device
     /// - Parameters:
-    ///     - id: Unique ID for the device. Pass peripheral identifier from CBPeripheral. Same device should always result in the same ID.
+    ///     - id: Unique ID for the device. Pass peripheral identifier from CBPeripheral.
+    ///         Same device should always result in the same ID.
     ///     - name: Display name of the device.
     ///     - bluetoothId: Local name of the device.
     init(id: UUID, name: String, bluetoothId: String) {
@@ -26,8 +27,9 @@ final class Device {
     func isActive(in bluetoothManager: BluetoothManager) -> Bool {
         bluetoothManager.discoveredDevices.contains { $0.id == self.id }
     }
-    
+
     func batteryLevel(in bluetoothManager: BluetoothManager) -> Int {
-        bluetoothManager.discoveredDevices.first(where: { $0.id == self.id })?.sensorDataBuffer.latest?.batteryLevel ?? 0
+        bluetoothManager.discoveredDevices.first(where: { $0.id == self.id })?
+            .sensorDataBuffer.latest?.batteryLevel ?? 0
     }
 }
