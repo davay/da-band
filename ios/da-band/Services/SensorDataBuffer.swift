@@ -1,9 +1,10 @@
 import Foundation
 
+@Observable
 class SensorDataBuffer {
     var dataPoints: [SensorData] = []
     private let maxPoints: Int
-    
+
     init(maxPoints: Int = 100) {
         self.maxPoints = maxPoints
     }

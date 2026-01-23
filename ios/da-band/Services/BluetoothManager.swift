@@ -75,7 +75,7 @@ class BluetoothManager: NSObject, CBCentralManagerDelegate {
         discoveredDevices.removeAll()
         isScanning = true
         centralManager.scanForPeripherals(withServices: nil,
-                                          options: [CBCentralManagerScanOptionAllowDuplicatesKey: true])
+                                          options: [CBCentralManagerScanOptionAllowDuplicatesKey: false])
     }
 
     private func parseManufacturerData(manufacturerData: Data?) -> SensorData? {

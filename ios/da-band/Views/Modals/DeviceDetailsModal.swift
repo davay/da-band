@@ -38,16 +38,7 @@ struct DeviceDetailsModal: View {
                     .padding(.horizontal)
                     .padding(.bottom)
 
-                    MuscleActivityChart(dataPoints: discoveredDevice.sensorDataBuffer.dataPoints)
-                        .onDisappear {
-                            discoveredDevice.sensorDataBuffer.clear()
-                        }
-
-                    // ideally this should only ever be missing for a split second that it wouldn't be noticable
-                    if let latestData = discoveredDevice.sensorDataBuffer.latest {
-                        OrientationPreview(sensorData: latestData)
-                            .padding(.bottom)
-                    }
+                    DeviceSensorView(sensorDataBuffer: discoveredDevice.sensorDataBuffer)
                 } else {
                     Text("Device is offline")
                         .foregroundStyle(.secondary)
@@ -66,5 +57,6 @@ struct DeviceDetailsModal: View {
                 .padding()
             }
         }
+        // .drawingGroup()
     }
 }

@@ -110,5 +110,6 @@ struct PairDeviceModal: View {
                 }
             }
         }
+        // .drawingGroup()
     }
 }
