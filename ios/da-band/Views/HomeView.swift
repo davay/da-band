@@ -40,7 +40,7 @@ struct HomeView: View {
 
                 TabView(selection: $selectedTab) {
                     ConfigurationsView(showCreateConfiguration: $showCreateConfiguration).tag("configurations")
-                    DevicesView(selectedDevice: $selectedDevice).tag("devices")
+                    DevicesView(selectedDevice: $selectedDevice, isModalOpen: selectedDevice != nil).tag("devices")
                 }
                 // in liquid glass theres this new toggle at the bottom when using tabviews now, removing it
                 .tabViewStyle(.page(indexDisplayMode: .never))

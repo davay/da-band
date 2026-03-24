@@ -1,3 +1,4 @@
+import Charts
 import SwiftUI
 
 struct DeviceSensorView: View {
@@ -5,7 +6,7 @@ struct DeviceSensorView: View {
     var axis: Axis = .vertical
 
     var body: some View {
-        let content = Group {
+        TimelineView(.periodic(from: .now, by: Constants.Chart.refreshInterval)) { _ in let content = Group {
             SingleMuscleActivityChart(dataPoints: sensorDataBuffer.dataPoints)
                 .onDisappear {
                     sensorDataBuffer.clear()
@@ -15,12 +16,24 @@ struct DeviceSensorView: View {
                 OrientationPreview(sensorData: latestData)
                     .padding(.bottom)
             }
+
+            // Debug chart for packets/sec
+            VStack(alignment: .leading) {
+                Text("Packets/sec: \(sensorDataBuffer.packetsPerSecond)")
+                    .font(.caption2)
+                Chart(Array(sensorDataBuffer.packetsPerSecondHistory.enumerated()), id: \.offset) { index, value in
+                    LineMark(x: .value("Time", index), y: .value("PPS", value))
+                }
+                .frame(height: 60)
+            }
+            .padding(.horizontal)
         }
 
         if axis == .horizontal {
             HStack { content }
         } else {
             VStack { content }
+        }
         }
     }
 }

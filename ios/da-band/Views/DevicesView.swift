@@ -4,6 +4,7 @@ import SwiftUI
 struct DevicesView: View {
     @Query(sort: \Device.pairedAt, order: .reverse) private var devices: [Device]
     @Binding var selectedDevice: Device?
+    var isModalOpen: Bool
     @Environment(BluetoothManager.self) private var bluetoothManager
     @Environment(\.modelContext) private var modelContext
 
@@ -22,7 +23,7 @@ struct DevicesView: View {
                             Card(widthPercentage: 0.9) {
                                 VStack {
                                     HStack {
-                                        StatusIndicator(isActive: device.isActive(in: bluetoothManager), type: .device)
+                                        StatusIndicator(isActive: isModalOpen ? false : device.isActive(in: bluetoothManager), type: .device)
 
                                         Text(device.name)
                                             .font(.title2)
@@ -44,7 +45,7 @@ struct DevicesView: View {
 
                                     VStack(alignment: .leading) {
                                         Text("Paired On: ").font(.headline) + Text("\(device.pairedAt.formatted(date: .abbreviated, time: .shortened))")
-                                        Text("Battery Level: ").font(.headline) + Text("\(device.batteryLevel(in: bluetoothManager))")
+                                        Text("Battery Level: ").font(.headline) + Text(isModalOpen ? "-" : "\(device.batteryLevel(in: bluetoothManager))")
                                     }
                                     .frame(maxWidth: .infinity, alignment: .leading)
                                 }

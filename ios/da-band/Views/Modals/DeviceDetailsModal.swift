@@ -32,7 +32,7 @@ struct DeviceDetailsModal: View {
                 if let discoveredDevice = discoveredDevice {
                     VStack(alignment: .leading) {
                         Text("Signal Strength: ").font(.headline) + Text("\(discoveredDevice.rssi) dBm")
-                        Text("Battery Level: ").font(.headline) + Text("\(discoveredDevice.sensorDataBuffer.latest?.batteryLevel ?? 0)")
+                        Text("Battery Level: ").font(.headline) + Text("\(discoveredDevice.batteryLevel)")
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.horizontal)

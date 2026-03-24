@@ -30,6 +30,6 @@ final class Device {
 
     func batteryLevel(in bluetoothManager: BluetoothManager) -> Int {
         bluetoothManager.discoveredDevices.first(where: { $0.id == self.id })?
-            .sensorDataBuffer.latest?.batteryLevel ?? 0
+            .batteryLevel ?? 0
     }
 }

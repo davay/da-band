@@ -32,21 +32,23 @@ struct PairDeviceModal: View {
 
                     VStack(alignment: .leading) { // without this one the signal is a bit indented
                         Text("Signal Strength: ").font(.headline) + Text("\(currentDevice.rssi) dBm")
-                        Text("Battery Level: ").font(.headline) + Text("\(currentDevice.sensorDataBuffer.latest?.batteryLevel ?? 0)")
+                        Text("Battery Level: ").font(.headline) + Text("\(currentDevice.batteryLevel)")
                     }
                     .frame(maxWidth: .infinity, alignment: .leading) // somehow without this the text wouldnt be aligned
                     .padding(.horizontal)
                     .padding(.bottom)
 
-                    SingleMuscleActivityChart(dataPoints: currentDevice.sensorDataBuffer.dataPoints)
-                        .onDisappear {
-                            currentDevice.sensorDataBuffer.clear()
-                        }
+                    TimelineView(.periodic(from: .now, by: Constants.Chart.refreshInterval)) { _ in
+                        SingleMuscleActivityChart(dataPoints: currentDevice.sensorDataBuffer.dataPoints)
+                            .onDisappear {
+                                currentDevice.sensorDataBuffer.clear()
+                            }
 
-                    // ideally this should only ever be missing for a split second that it wouldn't be noticable
-                    if let latestData = currentDevice.sensorDataBuffer.latest {
-                        OrientationPreview(sensorData: latestData)
-                            .padding(.bottom)
+                        // ideally this should only ever be missing for a split second that it wouldn't be noticable
+                        if let latestData = currentDevice.sensorDataBuffer.latest {
+                            OrientationPreview(sensorData: latestData)
+                                .padding(.bottom)
+                        }
                     }
 
                     VStack(alignment: .leading) {

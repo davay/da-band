@@ -1,15 +1,26 @@
 import CoreBluetooth
 import Foundation
+import os
 import SwiftData
+
+private let logger = Logger(subsystem: "im.devinl.da-band", category: "SensorData")
 
 @Observable
 class BluetoothManager: NSObject, CBCentralManagerDelegate {
-    private var centralManager: CBCentralManager?
+    // MARK: - Observed
+
     var discoveredDevices: [DiscoveredDevice] = []
     var isScanning = false
     var bluetoothState: CBManagerState = .unknown
+
+    // MARK: - Internals
+
+    @ObservationIgnored private var centralManager: CBCentralManager?
+    @ObservationIgnored private var cleanupTimer: Timer?
+    @ObservationIgnored private var restartScanTimer: Timer? // anti-throttling measure
     private let deviceTimeout: TimeInterval = 1
-    private var cleanupTimer: Timer?
+    private let cleanupInterval: TimeInterval = 0.9
+    private let scanRestartInterval: TimeInterval = 10.0
 
     override init() {
         super.init()
@@ -49,17 +60,14 @@ class BluetoothManager: NSObject, CBCentralManagerDelegate {
 
         // update existing device or add new one
         if let existingIndex = discoveredDevices.firstIndex(where: { $0.id == peripheral.identifier }) {
-            discoveredDevices[existingIndex].rssi = RSSI
-            discoveredDevices[existingIndex].lastSeen = CFAbsoluteTimeGetCurrent()
-            discoveredDevices[existingIndex].sensorDataBuffer.addDataPoint(sensorData)
-
+            discoveredDevices[existingIndex].update(rssi: RSSI, sensorData: sensorData)
         } else {
             let device = DiscoveredDevice(
                 peripheral: peripheral,
                 name: deviceName,
                 rssi: RSSI
             )
-            device.sensorDataBuffer.addDataPoint(sensorData)
+            device.update(rssi: RSSI, sensorData: sensorData)
             discoveredDevices.append(device)
         }
     }
@@ -75,7 +83,15 @@ class BluetoothManager: NSObject, CBCentralManagerDelegate {
         discoveredDevices.removeAll()
         isScanning = true
         centralManager.scanForPeripherals(withServices: nil,
-                                          options: [CBCentralManagerScanOptionAllowDuplicatesKey: false])
+                                          options: [CBCentralManagerScanOptionAllowDuplicatesKey: true])
+    }
+
+    private func restartScanning() {
+        guard isScanning, let centralManager = centralManager else { return }
+        logger.debug("restarting scan to reset iOS BLE throttle")
+        centralManager.stopScan()
+        centralManager.scanForPeripherals(withServices: nil,
+                                          options: [CBCentralManagerScanOptionAllowDuplicatesKey: true])
     }
 
     private func parseManufacturerData(manufacturerData: Data?) -> SensorData? {
@@ -124,7 +140,7 @@ class BluetoothManager: NSObject, CBCentralManagerDelegate {
         // Calculate normalized values using helper methods
         let normalizedQuaternion = SensorData.normalizeQuaternion(w: quaternionW, x: quaternionX, y: quaternionY, z: quaternionZ)
 
-        let sensorData = SensorData(
+        return SensorData(
             packetId: packetId,
             batteryLevel: batteryLevel,
             spectrum0: spectrum0,
@@ -145,8 +161,6 @@ class BluetoothManager: NSObject, CBCentralManagerDelegate {
             normalizedQuaternionY: normalizedQuaternion.y,
             normalizedQuaternionZ: normalizedQuaternion.z
         )
-
-        return sensorData
     }
 
     func getDiscoveredDevice(for deviceId: UUID) -> DiscoveredDevice? {
@@ -154,19 +168,22 @@ class BluetoothManager: NSObject, CBCentralManagerDelegate {
     }
 
     private func startCleanupTimer() {
-        cleanupTimer = Timer.scheduledTimer(withTimeInterval: 0.9, repeats: true) { _ in
+        cleanupTimer = Timer.scheduledTimer(withTimeInterval: cleanupInterval, repeats: true) { _ in
             self.removeStaleDevices()
+        }
+        restartScanTimer = Timer.scheduledTimer(withTimeInterval: scanRestartInterval, repeats: true) { _ in
+            self.restartScanning()
         }
     }
 
     private func removeStaleDevices() {
         let now = CFAbsoluteTimeGetCurrent()
-        discoveredDevices.removeAll { device in
-            now - device.lastSeen > deviceTimeout
-        }
+        guard discoveredDevices.contains(where: { now - $0.lastSeen > deviceTimeout }) else { return }
+        discoveredDevices.removeAll { now - $0.lastSeen > deviceTimeout }
     }
 
     deinit {
         cleanupTimer?.invalidate()
+        restartScanTimer?.invalidate()
     }
 }

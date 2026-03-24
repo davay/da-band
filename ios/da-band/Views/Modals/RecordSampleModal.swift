@@ -29,7 +29,9 @@ struct RecordSampleModal: View {
                     .fontWeight(.bold)
                     .padding()
 
-                MultiMuscleActivityChart(dataSeries: dataSeries)
+                TimelineView(.periodic(from: .now, by: Constants.Chart.refreshInterval)) { _ in
+                    MultiMuscleActivityChart(dataSeries: dataSeries)
+                }
             }
         }
     }

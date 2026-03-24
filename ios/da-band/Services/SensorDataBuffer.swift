@@ -1,31 +1,77 @@
 import Foundation
 
+/// Circular buffer
 @Observable
 class SensorDataBuffer {
-    var dataPoints: [SensorData] = []
-    private let maxPoints: Int
+    // MARK: - Observed
+
+    var packetsPerSecond: Int = 0
+    var packetsPerSecondHistory: [Int] = []
+
+    // MARK: - Internal
+
+    @ObservationIgnored private var buffer: [SensorData?]
+    @ObservationIgnored private var head: Int = 0
+    @ObservationIgnored private var count: Int = 0
+    @ObservationIgnored private var lastRateUpdate: CFAbsoluteTime = 0
+    @ObservationIgnored private var packetCount: Int = 0
+    private let capacity: Int
+    private let maxHistoryCount: Int = 30
 
     init(maxPoints: Int = 100) {
-        self.maxPoints = maxPoints
+        capacity = maxPoints
+        buffer = Array(repeating: nil, count: maxPoints)
+    }
+
+    /// Returns data points in chronological order (oldest first)
+    var dataPoints: [SensorData] {
+        guard count > 0 else { return [] }
+
+        var result = [SensorData]()
+        result.reserveCapacity(count)
+
+        let start = (head - count + capacity) % capacity
+        for i in 0 ..< count {
+            let index = (start + i) % capacity
+            if let data = buffer[index] {
+                result.append(data)
+            }
+        }
+        return result
     }
 
     var latest: SensorData? {
-        dataPoints.last
+        guard count > 0 else { return nil }
+        let latestIndex = (head - 1 + capacity) % capacity
+        return buffer[latestIndex]
     }
 
     func addDataPoint(_ sensorData: SensorData) {
-        dataPoints.append(sensorData)
+        buffer[head] = sensorData
+        head = (head + 1) % capacity
+        if count < capacity {
+            count += 1
+        }
 
-        // remove old points if we exceed max
-        // TODO: because removeFirst shifts all remaining elements, this is O(n) at time of insert, though its O(1) when grabbing the buffer.
-        // We can swap this around if we implement index-based circular buffer which in theory is more performant, but difference shouldn't be huge.
-        // We grab the buffer each frame (~60/sec) while we probably add a point slightly more often than that.
-        if dataPoints.count > maxPoints {
-            dataPoints.removeFirst()
+        // Update rate every second
+        packetCount += 1
+        let now = CFAbsoluteTimeGetCurrent()
+        if now - lastRateUpdate >= 1.0 {
+            packetsPerSecond = packetCount
+
+            // without this cap, the chart rendering this history causes slowdowns if left open for long enough
+            packetsPerSecondHistory.append(packetCount)
+            if packetsPerSecondHistory.count > maxHistoryCount {
+                packetsPerSecondHistory.removeFirst()
+            }
+            packetCount = 0
+            lastRateUpdate = now
         }
     }
 
     func clear() {
-        dataPoints.removeAll()
+        buffer = Array(repeating: nil, count: capacity)
+        head = 0
+        count = 0
     }
 }
