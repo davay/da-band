@@ -15,7 +15,7 @@ struct SensorData {
     let quaternionY: Int16
     let quaternionZ: Int16
 
-    // computed data
+    // computed data, for ML
     let normalizedSpectrum0: Double
     let normalizedSpectrum1: Double
     let normalizedSpectrum2: Double
@@ -25,19 +25,21 @@ struct SensorData {
     let normalizedQuaternionY: Double
     let normalizedQuaternionZ: Double
 
-    // as computed in the uMyo library -- using unnormalized spectrums
-    // may not be needed? we can try two models one with and one without
+    /// as computed in the uMyo library -- using unnormalized spectrums
+    /// may not be needed? we can try two models one with and one without
     var muscleLevel: Int {
         // prevent arithmetic overflow
         return Int(spectrum2) + 2 * Int(spectrum3)
     }
 
-    // most of these is AI generated, I don't understand quaternions
+    /// most of these is AI generated, I don't understand quaternions
+    /// this is only used in the orientation preview
     var quaternionRotation: Angle {
         let angle = 2 * acos(min(1.0, abs(normalizedQuaternionW))) // Clamp to prevent NaN
         return .radians(angle)
     }
 
+    /// only used in the orientation preview
     var quaternionAxis: (x: CGFloat, y: CGFloat, z: CGFloat) {
         let sinHalfAngle = sqrt(1 - normalizedQuaternionW * normalizedQuaternionW)
 

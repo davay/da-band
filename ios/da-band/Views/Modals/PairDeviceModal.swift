@@ -10,7 +10,7 @@ struct PairDeviceModal: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(BluetoothManager.self) private var bluetoothManager
 
-    // so that when a device reconnects the modal uses the new reference and show device data properly
+    /// so that when a device reconnects the modal uses the new reference and show device data properly
     var currentDevice: DiscoveredDevice? {
         bluetoothManager.getDiscoveredDevice(for: device.id)
     }
@@ -30,7 +30,7 @@ struct PairDeviceModal: View {
                         .padding(.horizontal)
                         .padding(.bottom)
 
-                    VStack(alignment: .leading) { // without this one the signal is a bit indented
+                    VStack(alignment: .leading) { // without this alignment the signal is a bit indented
                         Text("Signal Strength: ").font(.headline) + Text("\(currentDevice.rssi) dBm")
                         Text("Battery Level: ").font(.headline) + Text("\(currentDevice.batteryLevel)")
                     }

@@ -10,7 +10,7 @@ final class Device {
 
     // once a configuration is created, we can't add or remove devices
     @Relationship(deleteRule: .cascade) var configurations: [Configuration] = []
-    @Relationship(deleteRule: .cascade) var measurements: [Measurement] = []
+    @Relationship(deleteRule: .cascade) var measurements: [Measurement] = [] // TODO: I don't remember why this measurement relationship is here, maybe so i can query all measurements for a given device across all samples?
 
     /// Initializes a new Device
     /// - Parameters:

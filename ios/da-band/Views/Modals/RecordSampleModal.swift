@@ -7,6 +7,7 @@ struct RecordSampleModal: View {
     @Environment(BluetoothManager.self) private var bluetoothManager
 
     @State private var recordingDate = Date()
+    @State private var countdown: Int? = 3
 
     private var dataSeries: [DeviceDataSeries] {
         configuration.devices.compactMap { device in
@@ -29,10 +30,28 @@ struct RecordSampleModal: View {
                     .fontWeight(.bold)
                     .padding()
 
-                TimelineView(.periodic(from: .now, by: Constants.Chart.refreshInterval)) { _ in
-                    MultiMuscleActivityChart(dataSeries: dataSeries)
+                if let count = countdown {
+                    Text("\(count)")
+                        .font(.system(size: 80, weight: .bold, design: .rounded))
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                } else {
+                    TimelineView(.periodic(from: .now, by: Constants.Chart.refreshInterval)) { _ in
+                        MultiMuscleActivityChart(dataSeries: dataSeries)
+                    }
                 }
+
+                // HStack {
+                //     Button()
+                // }
             }
+        }
+        .task {
+            for count in stride(from: 3, through: 1, by: -1) {
+                countdown = count
+                try? await Task.sleep(for: .seconds(1))
+            }
+            countdown = nil
         }
     }
 }

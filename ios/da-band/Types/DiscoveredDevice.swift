@@ -24,7 +24,7 @@ class DiscoveredDevice: Identifiable {
     @ObservationIgnored var lastSeen: CFAbsoluteTime = CFAbsoluteTimeGetCurrent()
     @ObservationIgnored private var lastUIUpdate: CFAbsoluteTime = 0
     @ObservationIgnored private let uiUpdateInterval: CFAbsoluteTime = 1.0
-    @ObservationIgnored private var pendingRssi: NSNumber
+    @ObservationIgnored private var pendingRssi: NSNumber // Pending for UI re-render throttling reasons -- the non-pending rssi/batteryLevel is observed
     @ObservationIgnored private var pendingBatteryLevel: Int = 0
 
     init(peripheral: CBPeripheral, name: String, rssi: NSNumber) {
@@ -35,7 +35,8 @@ class DiscoveredDevice: Identifiable {
         sensorDataBuffer = SensorDataBuffer()
     }
 
-    /// Called on every callback
+    /// Called on every callback, updates last seen, rssi, batterylevel,
+    /// and adds a datapoint to the sensorDataBuffer
     func update(rssi: NSNumber, sensorData: SensorData) {
         lastSeen = CFAbsoluteTimeGetCurrent()
         pendingRssi = rssi
