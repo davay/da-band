@@ -6,7 +6,7 @@ struct DeviceSensorView: View {
     var axis: Axis = .vertical
 
     var body: some View {
-        TimelineView(.periodic(from: .now, by: Constants.Chart.refreshInterval)) { _ in let content = Group {
+        TimelineView(.periodic(from: .now, by: Constants.chartRefreshInterval)) { _ in let content = Group {
             SingleMuscleActivityChart(dataPoints: sensorDataBuffer.dataPoints)
                 .onDisappear {
                     sensorDataBuffer.clear()

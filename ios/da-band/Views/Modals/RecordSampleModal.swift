@@ -11,8 +11,11 @@ struct RecordSampleModal: View {
     @State private var recordingStartTime: CFAbsoluteTime?
     @State private var frozenState: (series: [DeviceDataSeries], referenceTime: CFAbsoluteTime)?
     @State private var isRecordingDone = false
+    @State private var savedCount = 0
+    @State private var currentTakeSaved = false
+    @State private var recordingID = 0
 
-    private let recordingWindowSeconds = Constants.Recording.sampleDuration
+    private let recordingWindowSeconds = Constants.sampleDuration
 
     private var liveSeries: [DeviceDataSeries] {
         configuration.devices.compactMap { device in
@@ -47,6 +50,16 @@ struct RecordSampleModal: View {
         }
     }
 
+    private func restart() {
+        recordingDate = Date()
+        countdown = 3
+        recordingStartTime = nil
+        frozenState = nil
+        isRecordingDone = false
+        currentTakeSaved = false
+        recordingID += 1
+    }
+
     var body: some View {
         Modal(onDismiss: onDismiss) {
             VStack {
@@ -54,9 +67,10 @@ struct RecordSampleModal: View {
                     .font(.title3)
                     .fontWeight(.bold)
 
-                Text("Perform gesture once · Activity and orientation will be recorded")
+                Text(savedCount == 0 ? "Perform gesture once · Activity and orientation will be recorded" : "\(savedCount) sample\(savedCount == 1 ? "" : "s") saved")
                     .font(.caption)
                     .foregroundStyle(.secondary)
+                    .animation(.easeOut(duration: Constants.animationDuration), value: savedCount)
 
                 // start from countdown, to empty chart slowly being filled, to frozen
                 Group {
@@ -74,7 +88,7 @@ struct RecordSampleModal: View {
                             referenceTime: frozen.referenceTime
                         )
                     } else {
-                        TimelineView(.periodic(from: .now, by: Constants.Chart.refreshInterval)) { _ in
+                        TimelineView(.periodic(from: .now, by: Constants.chartRefreshInterval)) { _ in
                             MultiMuscleActivityChart(
                                 dataSeries: recordingSeries,
                                 windowSeconds: recordingWindowSeconds
@@ -82,32 +96,50 @@ struct RecordSampleModal: View {
                         }
                     }
                 }
-                .animation(.easeOut(duration: 0.25), value: countdown)
+                .animation(.easeOut(duration: Constants.animationDuration), value: countdown)
                 .frame(height: 250)
 
                 HStack {
-                    Button("Discard") {}
-                        .buttonStyle(.borderedProminent)
-                        .tint(.black)
+                    if currentTakeSaved {
+                        Button("Done") { onDismiss() }
+                            .buttonStyle(.borderedProminent)
+                            .tint(.black)
+                            .transition(.move(edge: .leading).combined(with: .opacity))
 
-                    Spacer()
+                        Spacer()
 
-                    Button("Retry") {}
-                        .buttonStyle(.borderedProminent)
-                        .tint(.black)
+                        Button("Record Another") { restart() }
+                            .buttonStyle(.borderedProminent)
+                            .tint(.black)
+                            .transition(.move(edge: .trailing).combined(with: .opacity))
+                    } else {
+                        Button("Exit") { onDismiss() }
+                            .buttonStyle(.borderedProminent)
+                            .tint(.black)
+                            .transition(.move(edge: .leading).combined(with: .opacity))
 
-                    Spacer()
+                        Spacer()
 
-                    Button("Keep") {}
-                        .buttonStyle(.borderedProminent)
-                        .tint(.black)
+                        Button("Retry") { restart() }
+                            .buttonStyle(.borderedProminent)
+                            .tint(.black)
+                            .transition(.opacity)
+
+                        Spacer()
+
+                        Button("Keep") { savedCount += 1; currentTakeSaved = true }
+                            .buttonStyle(.borderedProminent)
+                            .tint(.black)
+                            .transition(.move(edge: .trailing).combined(with: .opacity))
+                    }
                 }
+                .animation(.easeOut(duration: Constants.animationDuration), value: currentTakeSaved)
                 .disabled(!isRecordingDone)
                 .padding([.top, .horizontal])
             }
             .padding(.vertical)
         }
-        .task {
+        .task(id: recordingID) { // id here is so that the task is cancelled and restarted when id changes, otherweise it only runs once on appear
             for count in stride(from: 3, through: 1, by: -1) {
                 countdown = count
                 try? await Task.sleep(for: .seconds(1))

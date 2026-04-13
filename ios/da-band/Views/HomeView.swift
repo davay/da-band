@@ -77,10 +77,9 @@ struct HomeView: View {
                     Text("Build: \(Date().formatted(date: .abbreviated, time: .shortened))")
                         .font(.caption2)
                         .foregroundStyle(.secondary)
-                        .padding(.leading, 8)
-                        .padding(.bottom, 8)
                     Spacer()
                 }
+                .padding([.horizontal, .bottom])
             }
         }
         // .hideNavigationBar()

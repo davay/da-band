@@ -38,7 +38,7 @@ struct PairDeviceModal: View {
                     .padding(.horizontal)
                     .padding(.bottom)
 
-                    TimelineView(.periodic(from: .now, by: Constants.Chart.refreshInterval)) { _ in
+                    TimelineView(.periodic(from: .now, by: Constants.chartRefreshInterval)) { _ in
                         SingleMuscleActivityChart(dataPoints: currentDevice.sensorDataBuffer.dataPoints)
                             .onDisappear {
                                 currentDevice.sensorDataBuffer.clear()
