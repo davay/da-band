@@ -3,16 +3,13 @@ import SwiftUI
 
 struct MultiMuscleActivityChart: View {
     let dataSeries: [DeviceDataSeries]
-
-    private let windowSeconds: Double = 5
+    var windowSeconds: Double
+    var referenceTime: CFAbsoluteTime?
 
     var body: some View {
-        let now = CFAbsoluteTimeGetCurrent()
+        let now = referenceTime ?? CFAbsoluteTimeGetCurrent()
 
         return VStack {
-            Text("Muscle Activity")
-                .font(.headline)
-
             Chart {
                 ForEach(dataSeries) { series in
                     let points = series.dataPoints.filter { now - $0.timestamp <= windowSeconds }
@@ -25,7 +22,6 @@ struct MultiMuscleActivityChart: View {
                     }
                 }
             }
-            .frame(height: 100)
             .chartXScale(domain: -windowSeconds ... 0.0)
             .chartLegend(position: .top, alignment: .top)
             .chartYAxis {

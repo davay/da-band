@@ -110,7 +110,8 @@ struct ConfigurationDetailsView: View {
                                                 VStack(alignment: .leading) {
                                                     HStack {
                                                         Text(gesture.name)
-                                                            .font(.headline)
+                                                            .font(.title3)
+                                                            .underline()
 
                                                         Spacer()
 

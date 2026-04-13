@@ -5,7 +5,7 @@ struct CreateConfigurationModal: View {
     let onDismiss: () -> Void
 
     @State private var configurationName: String = ""
-    @State private var currentStage = 1
+    @State private var modalStage = 1
     @State private var selectedDevices: Set<UUID> = []
 
     @Query(sort: \Device.pairedAt, order: .reverse) private var devices: [Device]
@@ -16,7 +16,7 @@ struct CreateConfigurationModal: View {
     var body: some View {
         Modal(onDismiss: onDismiss) {
             // stage 1
-            if currentStage == 1 {
+            if modalStage == 1 {
                 VStack {
                     Text("Create Configuration")
                         .font(.title3)
@@ -39,7 +39,7 @@ struct CreateConfigurationModal: View {
                             Spacer()
 
                             Button("Continue") {
-                                currentStage += 1
+                                modalStage += 1
                             }
                             .buttonStyle(.borderedProminent)
                             .tint(.black)
@@ -107,7 +107,7 @@ struct CreateConfigurationModal: View {
 
                         HStack {
                             Button("Back") {
-                                currentStage -= 1
+                                modalStage -= 1
                             }
                             .buttonStyle(.borderedProminent)
                             .tint(.black)
