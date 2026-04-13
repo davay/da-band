@@ -141,6 +141,7 @@ class BluetoothManager: NSObject, CBCentralManagerDelegate {
         let normalizedQuaternion = SensorData.normalizeQuaternion(w: quaternionW, x: quaternionX, y: quaternionY, z: quaternionZ)
 
         return SensorData(
+            timestamp: CFAbsoluteTimeGetCurrent(),
             packetId: packetId,
             batteryLevel: batteryLevel,
             spectrum0: spectrum0,

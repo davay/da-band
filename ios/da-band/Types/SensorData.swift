@@ -2,6 +2,8 @@ import Foundation
 import SwiftUI
 
 struct SensorData {
+    let timestamp: CFAbsoluteTime
+
     // raw data
     let packetId: Int
     let batteryLevel: Int

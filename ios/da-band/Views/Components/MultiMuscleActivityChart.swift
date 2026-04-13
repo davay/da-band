@@ -4,23 +4,21 @@ import SwiftUI
 struct MultiMuscleActivityChart: View {
     let dataSeries: [DeviceDataSeries]
 
+    private let windowSeconds: Double = 5
+
     var body: some View {
-        VStack {
+        let now = CFAbsoluteTimeGetCurrent()
+
+        return VStack {
             Text("Muscle Activity")
                 .font(.headline)
 
             Chart {
-                // align all lines to the right so they share the same position.
-                // without this, a reconnecting device starts at x=0 while others are at x=100,
-                // making it look like they're at different points in time.
-                let maxCount = dataSeries.map { $0.dataPoints.count }.max() ?? 0
-
                 ForEach(dataSeries) { series in
-                    let offset = maxCount - series.dataPoints.count
-
-                    ForEach(Array(series.dataPoints.enumerated()), id: \.offset) { index, data in
+                    let points = series.dataPoints.filter { now - $0.timestamp <= windowSeconds }
+                    ForEach(Array(points.enumerated()), id: \.offset) { _, data in
                         LineMark(
-                            x: .value("Sample", index + offset),
+                            x: .value("Time", data.timestamp - now),
                             y: .value("Muscle Level", data.muscleLevel)
                         )
                         .foregroundStyle(by: .value("Device", series.name))
@@ -28,7 +26,8 @@ struct MultiMuscleActivityChart: View {
                 }
             }
             .frame(height: 100)
-            .chartXScale(domain: 0 ... 100)
+            .chartXScale(domain: -windowSeconds ... 0.0)
+            .chartLegend(position: .top, alignment: .top)
             .chartYAxis {
                 AxisMarks(position: .leading)
             }
