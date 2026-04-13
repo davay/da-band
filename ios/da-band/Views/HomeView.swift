@@ -74,12 +74,13 @@ struct HomeView: View {
             VStack {
                 Spacer()
                 HStack {
+                    Spacer()
+
                     Text("Build: \(Date().formatted(date: .abbreviated, time: .shortened))")
                         .font(.caption2)
                         .foregroundStyle(.secondary)
-                    Spacer()
                 }
-                .padding([.horizontal, .bottom])
+                .padding(.horizontal, 20)
             }
         }
         // .hideNavigationBar()
