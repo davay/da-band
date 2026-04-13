@@ -1,0 +1,34 @@
+import Charts
+import SwiftUI
+
+struct SingleMuscleActivityChart: View {
+    let dataPoints: [SensorData]
+
+    var body: some View {
+        VStack {
+            Text("Muscle Activity")
+                .font(.headline)
+
+            Chart {
+                ForEach(Array(dataPoints.enumerated()), id: \.offset) { index, sensorData in
+                    LineMark(
+                        x: .value("Sample", index),
+                        y: .value("Muscle Level", sensorData.muscleLevel)
+                    )
+                    .foregroundStyle(.gray)
+                }
+            }
+            .frame(height: 100)
+            .chartYAxis {
+                AxisMarks(position: .leading)
+            }
+            .chartXAxis {
+                AxisMarks(position: .bottom) { _ in
+                    AxisGridLine()
+                }
+            }
+            .chartXScale(domain: 0 ... 100)
+            .padding()
+        }
+    }
+}
