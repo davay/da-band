@@ -20,10 +20,11 @@ struct DevicesView: View {
                         }
                     } else {
                         ForEach(devices) { device in
+                            let isActive = !isModalOpen && device.isActive(in: bluetoothManager)
                             Card(widthPercentage: 0.9) {
                                 VStack {
                                     HStack {
-                                        StatusIndicator(isActive: isModalOpen ? false : device.isActive(in: bluetoothManager), type: .device)
+                                        StatusIndicator(isActive: isActive, type: .device)
 
                                         Text(device.name)
                                             .font(.title2)
@@ -44,8 +45,8 @@ struct DevicesView: View {
                                     }
 
                                     VStack(alignment: .leading) {
-                                        Text("Paired On: ").font(.headline) + Text("\(device.pairedAt.formatted(date: .abbreviated, time: .shortened))")
-                                        Text("Battery Level: ").font(.headline) + Text(isModalOpen ? "-" : "\(device.batteryLevel(in: bluetoothManager))")
+                                        Text("Paired On: ").font(.headline) + Text(device.pairedAt.formatted(date: .abbreviated, time: .shortened))
+                                        Text("Battery Level: ").font(.headline) + Text(isActive ? "\(device.batteryLevel(in: bluetoothManager))" : "-")
                                     }
                                     .frame(maxWidth: .infinity, alignment: .leading)
                                 }
