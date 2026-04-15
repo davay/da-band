@@ -50,7 +50,11 @@ struct ConfigurationDetailsView: View {
                             .buttonStyle(.borderedProminent)
                         }
 
-                        Text("Status: ").font(.headline) + Text(configuration.isActive ? "Active" : "Inactive")
+                        HStack(spacing: 4) {
+                            Text("Status:").font(.headline)
+                            StatusIndicator(isActive: configuration.isActive, type: .configuration)
+                            Text(configuration.isActive ? "Active" : "Inactive")
+                        }
                         Text("Created On: ").font(.headline) + Text(configuration.createdAt.formatted(date: .abbreviated, time: .shortened))
                         HStack {
                             Text("Devices:").font(.headline)
@@ -199,15 +203,19 @@ struct ConfigurationDetailsView: View {
             TextField("", text: $newConfigurationName)
             Button("Cancel") {}
             Button("Rename") {
-                configuration.name = newConfigurationName
+                if !newConfigurationName.trimmingCharacters(in: .whitespaces).isEmpty {
+                    configuration.name = newConfigurationName
+                }
             }
         }
         .alert("Rename Gesture", isPresented: $showRenameGestureAlert) {
             TextField("", text: $newGestureName)
             Button("Cancel") {}
             Button("Rename") {
-                gestureToRename?.name = newGestureName
-                gestureToRename = nil
+                if !newGestureName.trimmingCharacters(in: .whitespaces).isEmpty {
+                    gestureToRename?.name = newGestureName
+                    gestureToRename = nil
+                }
             }
         }
     }

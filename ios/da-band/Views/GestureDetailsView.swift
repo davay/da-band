@@ -162,7 +162,9 @@ struct GestureDetailsView: View {
             TextField("", text: $newGestureName)
             Button("Cancel") {}
             Button("Rename") {
-                gesture.name = newGestureName
+                if !newGestureName.trimmingCharacters(in: .whitespaces).isEmpty {
+                    gesture.name = newGestureName
+                }
             }
         }
     }

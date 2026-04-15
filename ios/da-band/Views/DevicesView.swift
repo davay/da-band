@@ -88,8 +88,10 @@ struct DevicesView: View {
             TextField("", text: $newDeviceName)
             Button("Cancel") {} // in an alert, the isPresented binding automatically gets set to false whenever any button is pressed, so this is just a no-op
             Button("Rename") {
-                deviceToRename?.name = newDeviceName
-                deviceToRename = nil
+                if !newDeviceName.trimmingCharacters(in: .whitespaces).isEmpty {
+                    deviceToRename?.name = newDeviceName
+                    deviceToRename = nil
+                }
             }
         }
     }

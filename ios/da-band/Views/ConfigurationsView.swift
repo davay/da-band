@@ -100,8 +100,10 @@ struct ConfigurationsView: View {
             TextField("", text: $newConfigurationName)
             Button("Cancel") {}
             Button("Rename") {
-                configurationToRename?.name = newConfigurationName
-                configurationToRename = nil
+                if !newConfigurationName.trimmingCharacters(in: .whitespaces).isEmpty {
+                    configurationToRename?.name = newConfigurationName
+                    configurationToRename = nil
+                }
             }
         }
     }
