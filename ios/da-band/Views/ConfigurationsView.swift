@@ -5,6 +5,9 @@ struct ConfigurationsView: View {
     @Query(sort: \Configuration.createdAt, order: .reverse) private var configurations: [Configuration]
     @Binding var showCreateConfigurationModal: Bool
     @Environment(\.modelContext) private var modelContext
+    @State private var configurationToRename: Configuration?
+    @State private var newConfigurationName = ""
+    @State private var showRenameAlert = false
 
     var body: some View {
         VStack {
@@ -24,14 +27,18 @@ struct ConfigurationsView: View {
                                         HStack {
                                             StatusIndicator(isActive: configuration.isActive, type: .configuration)
 
-                                            Text(configuration.name)
-                                                .font(.title2)
-
                                             let deviceCount = configuration.devices.count
                                             let gestureCount = configuration.gestures.count
-                                            Text("[\(deviceCount) device\(deviceCount == 1 ? "" : "s") • \(gestureCount) gesture\(gestureCount == 1 ? "" : "s")]")
-                                                .font(.subheadline)
-                                                .frame(maxWidth: .infinity, alignment: .leading)
+                                            ScrollView(.horizontal, showsIndicators: false) {
+                                                HStack(spacing: 6) {
+                                                    Text(configuration.name)
+                                                        .font(.title2)
+                                                        .fixedSize()
+                                                    Text("[\(deviceCount) device\(deviceCount == 1 ? "" : "s") • \(gestureCount) gesture\(gestureCount == 1 ? "" : "s")]")
+                                                        .font(.subheadline)
+                                                        .fixedSize()
+                                                }
+                                            }
 
                                             Spacer()
 
@@ -40,6 +47,12 @@ struct ConfigurationsView: View {
                                                     configuration.toggleIsActive(in: modelContext)
                                                 } label: {
                                                     Text(configuration.isActive ? "Deactivate" : "Activate")
+                                                }
+
+                                                Button("Rename") {
+                                                    newConfigurationName = configuration.name
+                                                    configurationToRename = configuration
+                                                    showRenameAlert = true
                                                 }
 
                                                 Button("Delete", role: .destructive) {
@@ -66,6 +79,10 @@ struct ConfigurationsView: View {
                         }
                     }
 
+                    Text("Only one configuration can be active at a time")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+
                     Button {
                         showCreateConfigurationModal = true
                     } label: {
@@ -77,6 +94,14 @@ struct ConfigurationsView: View {
                 }
                 // prevent clipping
                 .padding(.top, 2)
+            }
+        }
+        .alert("Rename Configuration", isPresented: $showRenameAlert) {
+            TextField("", text: $newConfigurationName)
+            Button("Cancel") {}
+            Button("Rename") {
+                configurationToRename?.name = newConfigurationName
+                configurationToRename = nil
             }
         }
     }

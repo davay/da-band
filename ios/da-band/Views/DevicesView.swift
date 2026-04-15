@@ -7,6 +7,9 @@ struct DevicesView: View {
     var isModalOpen: Bool
     @Environment(BluetoothManager.self) private var bluetoothManager
     @Environment(\.modelContext) private var modelContext
+    @State private var deviceToRename: Device?
+    @State private var newDeviceName = ""
+    @State private var showRenameAlert = false
 
     var body: some View {
         VStack {
@@ -26,13 +29,21 @@ struct DevicesView: View {
                                     HStack {
                                         StatusIndicator(isActive: isConnected, type: .device)
 
-                                        Text(device.name)
-                                            .font(.title2)
-                                            .frame(maxWidth: .infinity, alignment: .leading)
+                                        ScrollView(.horizontal, showsIndicators: false) {
+                                            Text(device.name)
+                                                .font(.title2)
+                                                .lineLimit(1)
+                                                .fixedSize()
+                                        }
 
                                         Spacer()
 
                                         Menu {
+                                            Button("Rename") {
+                                                newDeviceName = device.name
+                                                deviceToRename = device
+                                                showRenameAlert = true
+                                            }
                                             Button("Delete", role: .destructive) {
                                                 modelContext.delete(device)
                                             }
@@ -58,6 +69,10 @@ struct DevicesView: View {
                         }
                     }
 
+                    Text("Deleting a device removes all associated configurations and samples")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+
                     NavigationLink(destination: PairDeviceView()) {
                         Text("+")
                             .frame(width: 80, height: 30)
@@ -67,6 +82,14 @@ struct DevicesView: View {
                 }
                 // prevents clipping
                 .padding(.top, 2)
+            }
+        }
+        .alert("Rename Device", isPresented: $showRenameAlert) {
+            TextField("", text: $newDeviceName)
+            Button("Cancel") {} // in an alert, the isPresented binding automatically gets set to false whenever any button is pressed, so this is just a no-op
+            Button("Rename") {
+                deviceToRename?.name = newDeviceName
+                deviceToRename = nil
             }
         }
     }

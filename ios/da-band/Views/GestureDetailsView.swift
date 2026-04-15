@@ -7,6 +7,8 @@ struct GestureDetailsView: View {
     @State private var showRecordSampleModal = false
     @State private var showDevicesDisconnectedAlert = false
     @State private var selectedSample: Sample?
+    @State private var newGestureName = ""
+    @State private var showRenameAlert = false
 
     @Environment(\.modelContext) private var modelContext
     @Environment(BluetoothManager.self) private var bluetoothManager
@@ -33,7 +35,8 @@ struct GestureDetailsView: View {
                             Spacer()
 
                             Button {
-                                print("TODO: Edit")
+                                newGestureName = gesture.name
+                                showRenameAlert = true
                             } label: {
                                 Image(systemName: "square.and.pencil")
                                     .font(.title2)
@@ -150,6 +153,13 @@ struct GestureDetailsView: View {
                 SampleDetailsModal(sample: sample) {
                     selectedSample = nil
                 }
+            }
+        }
+        .alert("Rename Gesture", isPresented: $showRenameAlert) {
+            TextField("", text: $newGestureName)
+            Button("Cancel") {}
+            Button("Rename") {
+                gesture.name = newGestureName
             }
         }
     }

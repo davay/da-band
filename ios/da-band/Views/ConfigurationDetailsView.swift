@@ -5,7 +5,13 @@ struct ConfigurationDetailsView: View {
     let configuration: Configuration
 
     @State private var showCreateGestureModal = false
+    @State private var newConfigurationName = ""
+    @State private var showRenameConfigurationAlert = false
+    @State private var gestureToRename: Gesture?
+    @State private var newGestureName = ""
+    @State private var showRenameGestureAlert = false
     @Environment(\.modelContext) private var modelContext
+    @Environment(BluetoothManager.self) private var bluetoothManager
 
     var body: some View {
         ZStack {
@@ -16,16 +22,20 @@ struct ConfigurationDetailsView: View {
                     .padding(.horizontal)
 
                 Card(widthPercentage: 0.9) {
-                    VStack(alignment: .leading) {
+                    VStack(alignment: .leading, spacing: 0) { // so the status indicators are inline
                         HStack {
-                            Text("\(configuration.name)")
-                                .font(.title2)
-                                .underline()
+                            ScrollView(.horizontal, showsIndicators: false) {
+                                Text("\(configuration.name)")
+                                    .font(.title2)
+                                    .underline()
+                                    .fixedSize()
+                            }
 
                             Spacer()
 
                             Button {
-                                print("TODO: Edit")
+                                newConfigurationName = configuration.name
+                                showRenameConfigurationAlert = true
                             } label: {
                                 Image(systemName: "square.and.pencil")
                                     .font(.title2)
@@ -42,7 +52,21 @@ struct ConfigurationDetailsView: View {
 
                         Text("Status: ").font(.headline) + Text(configuration.isActive ? "Active" : "Inactive")
                         Text("Created On: ").font(.headline) + Text(configuration.createdAt.formatted(date: .abbreviated, time: .shortened))
-                        Text("Devices: ").font(.headline) + Text(configuration.devices.map(\.name).joined(separator: ", "))
+                        HStack {
+                            Text("Devices:").font(.headline)
+                            ScrollView(.horizontal, showsIndicators: false) {
+                                HStack {
+                                    ForEach(configuration.devices) { device in
+                                        HStack(spacing: 4) {
+                                            StatusIndicator(isActive: device.isConnected(in: bluetoothManager), type: .device)
+                                            Text(device.name)
+                                                .lineLimit(1)
+                                                .fixedSize()
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                     .frame(maxWidth: .infinity, alignment: .topLeading)
                 }
@@ -116,6 +140,11 @@ struct ConfigurationDetailsView: View {
                                                         Spacer()
 
                                                         Menu {
+                                                            Button("Rename") {
+                                                                newGestureName = gesture.name
+                                                                gestureToRename = gesture
+                                                                showRenameGestureAlert = true
+                                                            }
                                                             Button("Delete", role: .destructive) {
                                                                 modelContext.delete(gesture)
                                                             }
@@ -159,6 +188,21 @@ struct ConfigurationDetailsView: View {
                 CreateGestureModal(currentConfiguration: configuration) {
                     showCreateGestureModal = false
                 }
+            }
+        }
+        .alert("Rename Configuration", isPresented: $showRenameConfigurationAlert) {
+            TextField("", text: $newConfigurationName)
+            Button("Cancel") {}
+            Button("Rename") {
+                configuration.name = newConfigurationName
+            }
+        }
+        .alert("Rename Gesture", isPresented: $showRenameGestureAlert) {
+            TextField("", text: $newGestureName)
+            Button("Cancel") {}
+            Button("Rename") {
+                gestureToRename?.name = newGestureName
+                gestureToRename = nil
             }
         }
     }
