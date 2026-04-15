@@ -65,6 +65,8 @@ struct ConfigurationDetailsView: View {
                                         }
                                     }
                                 }
+                                // fix clipping
+                                .padding(.leading, 1)
                             }
                         }
                     }
