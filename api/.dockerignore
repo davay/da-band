@@ -1,0 +1,8 @@
+compose.yml
+Dockerfile
+.dockerignore
+.env
+.venv/
+__pycache__/
+*.pyc
+*.egg-info/

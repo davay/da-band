@@ -1,0 +1,20 @@
+[project]
+name = "da-band"
+version = "0.1.0"
+requires-python = "~=3.12.0"
+dependencies = [
+  "fastapi[standard]",
+  "torch==2.7.0",        # coremltools 9.0 max supported; https://github.com/apple/coremltools/releases/tag/9.0
+  "pandas",
+  "numpy",
+  "scikit-learn==1.5.2", # last update that mentions an updated support for scikit-learn was https://github.com/apple/coremltools/releases/tag/8.0
+  "coremltools==9.0", # technically still beta, but eh
+]
+
+[tool.uv.sources]
+torch = [{ index = "pytorch-cu128", marker = "sys_platform == 'linux'" }] # latest pytorch-cu130 doesnt seem to publish wheel for torch 2.7.0 https://download.pytorch.org/whl/cu130/torch/
+
+[[tool.uv.index]]
+name = "pytorch-cu128"
+url = "https://download.pytorch.org/whl/cu128"
+explicit = true
