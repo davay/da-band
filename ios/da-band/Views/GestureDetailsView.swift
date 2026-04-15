@@ -88,7 +88,8 @@ struct GestureDetailsView: View {
                                                 } label: {
                                                     Image(systemName: "ellipsis")
                                                         .foregroundStyle(.black)
-                                                        .padding(.leading, 12) // makes it easier to tap, does nothing visually
+                                                        .padding(.leading, 12) // so it's easier to tap
+                                                        .contentShape(Rectangle()) // so it's easier to tap
                                                 }
                                             }
                                         }

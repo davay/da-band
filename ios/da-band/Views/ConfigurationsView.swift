@@ -50,6 +50,7 @@ struct ConfigurationsView: View {
                                                     .foregroundStyle(.black)
                                                     .padding(.leading, 12) // so it's easier to tap
                                                     .padding(.bottom, 12)
+                                                    .contentShape(Rectangle()) // so it's easier to tap
                                             }
                                         }
                                         .frame(maxWidth: .infinity, alignment: .leading)
