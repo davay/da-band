@@ -27,7 +27,7 @@ final class Measurement {
     var normalizedQuaternionX: Double
     var normalizedQuaternionY: Double
     var normalizedQuaternionZ: Double
-    var muscleLevel: Int16
+    var muscleLevel: Int
 
     @Relationship var sample: Sample?
     @Relationship var device: Device?
@@ -37,7 +37,7 @@ final class Measurement {
          quaternionZ: Int16, normalizedSpectrum0: Double, normalizedSpectrum1: Double,
          normalizedSpectrum2: Double, normalizedSpectrum3: Double, normalizedQuaternionW: Double,
          normalizedQuaternionX: Double, normalizedQuaternionY: Double, normalizedQuaternionZ: Double,
-         muscleLevel: Int16, sample: Sample, device: Device)
+         muscleLevel: Int, sample: Sample, device: Device)
     {
         self.packetId = packetId
         self.batteryLevel = batteryLevel

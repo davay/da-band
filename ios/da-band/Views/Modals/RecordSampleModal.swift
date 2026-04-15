@@ -2,9 +2,11 @@ import SwiftUI
 
 struct RecordSampleModal: View {
     let configuration: Configuration
+    let gesture: Gesture
     let onDismiss: () -> Void
 
     @Environment(BluetoothManager.self) private var bluetoothManager
+    @Environment(\.modelContext) private var modelContext
 
     @State private var recordingDate = Date()
     @State private var countdown: Int? = 3
@@ -15,7 +17,7 @@ struct RecordSampleModal: View {
     @State private var currentTakeSaved = false
     @State private var recordingID = 0
 
-    private let recordingWindowSeconds = Constants.sampleDuration
+    private let sampleDuration = Constants.sampleDuration
 
     private var liveSeries: [DeviceDataSeries] {
         configuration.devices.compactMap { device in
@@ -84,14 +86,14 @@ struct RecordSampleModal: View {
                     } else if let frozen = frozenState {
                         MultiMuscleActivityChart(
                             dataSeries: frozen.series,
-                            windowSeconds: recordingWindowSeconds,
+                            windowSeconds: sampleDuration,
                             referenceTime: frozen.referenceTime
                         )
                     } else {
                         TimelineView(.periodic(from: .now, by: Constants.chartRefreshInterval)) { _ in
                             MultiMuscleActivityChart(
                                 dataSeries: recordingSeries,
-                                windowSeconds: recordingWindowSeconds
+                                windowSeconds: sampleDuration
                             )
                         }
                     }
@@ -127,10 +129,50 @@ struct RecordSampleModal: View {
 
                         Spacer()
 
-                        Button("Keep") { savedCount += 1; currentTakeSaved = true }
-                            .buttonStyle(.borderedProminent)
-                            .tint(.black)
-                            .transition(.move(edge: .trailing).combined(with: .opacity))
+                        Button("Keep") {
+                            // create sample
+                            let sample = Sample(duration: sampleDuration, gesture: gesture)
+                            modelContext.insert(sample)
+
+                            // create a measurement per data point per device and save to sample
+                            guard let series = frozenState?.series else { return }
+                            for deviceSeries in series {
+                                guard let device = configuration.devices.first(where: { $0.id == deviceSeries.id }) else { continue }
+                                for point in deviceSeries.dataPoints {
+                                    let measurement = Measurement(
+                                        packetId: point.packetId,
+                                        batteryLevel: point.batteryLevel,
+                                        spectrum0: point.spectrum0,
+                                        muscleAvg: point.muscleAvg,
+                                        spectrum1: point.spectrum1,
+                                        spectrum2: point.spectrum2,
+                                        spectrum3: point.spectrum3,
+                                        quaternionW: point.quaternionW,
+                                        quaternionX: point.quaternionX,
+                                        quaternionY: point.quaternionY,
+                                        quaternionZ: point.quaternionZ,
+                                        normalizedSpectrum0: point.normalizedSpectrum0,
+                                        normalizedSpectrum1: point.normalizedSpectrum1,
+                                        normalizedSpectrum2: point.normalizedSpectrum2,
+                                        normalizedSpectrum3: point.normalizedSpectrum3,
+                                        normalizedQuaternionW: point.normalizedQuaternionW,
+                                        normalizedQuaternionX: point.normalizedQuaternionX,
+                                        normalizedQuaternionY: point.normalizedQuaternionY,
+                                        normalizedQuaternionZ: point.normalizedQuaternionZ,
+                                        muscleLevel: point.muscleLevel,
+                                        sample: sample,
+                                        device: device
+                                    )
+                                    modelContext.insert(measurement)
+                                }
+                            }
+
+                            savedCount += 1
+                            currentTakeSaved = true
+                        }
+                        .buttonStyle(.borderedProminent)
+                        .tint(.black)
+                        .transition(.move(edge: .trailing).combined(with: .opacity))
                     }
                 }
                 .animation(.easeOut(duration: Constants.animationDuration), value: currentTakeSaved)
@@ -146,7 +188,7 @@ struct RecordSampleModal: View {
             }
             countdown = nil
             recordingStartTime = CFAbsoluteTimeGetCurrent()
-            try? await Task.sleep(for: .seconds(recordingWindowSeconds))
+            try? await Task.sleep(for: .seconds(sampleDuration))
             frozenState = (series: recordingSeries, referenceTime: CFAbsoluteTimeGetCurrent())
             isRecordingDone = true
         }

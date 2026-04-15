@@ -4,7 +4,7 @@ import SwiftUI
 struct ConfigurationDetailsView: View {
     let configuration: Configuration
 
-    @State private var showCreateGesture = false
+    @State private var showCreateGestureModal = false
     @Environment(\.modelContext) private var modelContext
 
     var body: some View {
@@ -91,7 +91,7 @@ struct ConfigurationDetailsView: View {
                             Spacer()
 
                             Button("+ Add Gesture") {
-                                showCreateGesture = true
+                                showCreateGestureModal = true
                             }
                             .buttonStyle(.borderedProminent)
                         }
@@ -122,7 +122,7 @@ struct ConfigurationDetailsView: View {
                                                         } label: {
                                                             Image(systemName: "ellipsis")
                                                                 .foregroundStyle(.black)
-                                                                .padding(.leading, 12)
+                                                                .padding(.leading, 12) // makes it easier to tap, does nothing visually
                                                                 .padding(.bottom, 12)
                                                         }
                                                     }
@@ -148,15 +148,15 @@ struct ConfigurationDetailsView: View {
             // so the text doesnt get pushed up when the keyboard is summoned
             .ignoresSafeArea(.keyboard)
 
-            if showCreateGesture {
+            if showCreateGestureModal {
                 Color.black.opacity(0.4)
                     .ignoresSafeArea()
                     .onTapGesture {
-                        showCreateGesture = false
+                        showCreateGestureModal = false
                     }
 
                 CreateGestureModal(currentConfiguration: configuration) {
-                    showCreateGesture = false
+                    showCreateGestureModal = false
                 }
             }
         }

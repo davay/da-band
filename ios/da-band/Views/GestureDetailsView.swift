@@ -4,7 +4,9 @@ import SwiftUI
 struct GestureDetailsView: View {
     let gesture: Gesture
 
-    @State private var showRecordSample = false
+    @State private var showRecordSampleModal = false
+
+    @Environment(\.modelContext) private var modelContext
 
     var body: some View {
         ZStack {
@@ -49,7 +51,9 @@ struct GestureDetailsView: View {
                             Spacer()
 
                             Button {
-                                print("TODO")
+                                for sample in gesture.samples {
+                                    modelContext.delete(sample)
+                                }
                             } label: {
                                 Image(systemName: "trash")
                                     .font(.title2)
@@ -57,7 +61,7 @@ struct GestureDetailsView: View {
                             }
 
                             Button("+ Record Sample") {
-                                showRecordSample = true
+                                showRecordSampleModal = true
                             }
                             .buttonStyle(.borderedProminent)
                         }
@@ -68,7 +72,30 @@ struct GestureDetailsView: View {
                                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
                         } else {
                             ScrollView {
-                                LazyVStack {}
+                                LazyVStack {
+                                    ForEach(gesture.samples.sorted(by: { $0.recordedAt > $1.recordedAt })) { sample in
+                                        // prevent clipping
+                                        Card(widthPercentage: 0.99) {
+                                            HStack {
+                                                Text(sample.recordedAt.formatted(date: .abbreviated, time: .standard))
+
+                                                Spacer()
+
+                                                Menu {
+                                                    Button("Delete", role: .destructive) {
+                                                        modelContext.delete(sample)
+                                                    }
+                                                } label: {
+                                                    Image(systemName: "ellipsis")
+                                                        .foregroundStyle(.black)
+                                                        .padding(.leading, 12) // makes it easier to tap, does nothing visually
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                // prevent clipping
+                                .padding(.top, 2)
                             }
                         }
                     }
@@ -78,16 +105,17 @@ struct GestureDetailsView: View {
 
             // this is because of that data refresh issue, configuration is marked as optional
             // but it is guaranteed to exist
+            // COMMENT FROM MONTHS LATER: what data refresh issue again??? note to self: describe issues better
             if let configuration = gesture.configuration {
-                if showRecordSample {
+                if showRecordSampleModal {
                     Color.black.opacity(0.4)
                         .ignoresSafeArea()
                         .onTapGesture {
-                            showRecordSample = false
+                            showRecordSampleModal = false
                         }
 
-                    RecordSampleModal(configuration: configuration) {
-                        showRecordSample = false
+                    RecordSampleModal(configuration: configuration, gesture: gesture) {
+                        showRecordSampleModal = false
                     }
                 }
             }

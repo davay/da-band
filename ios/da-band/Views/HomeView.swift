@@ -4,7 +4,7 @@ import SwiftUI
 struct HomeView: View {
     @State private var selectedTab = "configurations"
     @State private var selectedDevice: Device?
-    @State private var showCreateConfiguration = false
+    @State private var showCreateConfigurationModal = false
 
     init() {
         UISegmentedControl.appearance().setTitleTextAttributes([
@@ -39,7 +39,7 @@ struct HomeView: View {
                 .padding(.horizontal, 20)
 
                 TabView(selection: $selectedTab) {
-                    ConfigurationsView(showCreateConfiguration: $showCreateConfiguration).tag("configurations")
+                    ConfigurationsView(showCreateConfigurationModal: $showCreateConfigurationModal).tag("configurations")
                     DevicesView(selectedDevice: $selectedDevice, isModalOpen: selectedDevice != nil).tag("devices")
                 }
                 // in liquid glass theres this new toggle at the bottom when using tabviews now, removing it
@@ -58,15 +58,15 @@ struct HomeView: View {
                 }
             }
 
-            if showCreateConfiguration {
+            if showCreateConfigurationModal {
                 Color.black.opacity(0.4)
                     .ignoresSafeArea()
                     .onTapGesture {
-                        showCreateConfiguration = false
+                        showCreateConfigurationModal = false
                     }
 
                 CreateConfigurationModal {
-                    showCreateConfiguration = false
+                    showCreateConfigurationModal = false
                 }
             }
 

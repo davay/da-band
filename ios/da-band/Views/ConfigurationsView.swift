@@ -3,7 +3,7 @@ import SwiftUI
 
 struct ConfigurationsView: View {
     @Query(sort: \Configuration.createdAt, order: .reverse) private var configurations: [Configuration]
-    @Binding var showCreateConfiguration: Bool
+    @Binding var showCreateConfigurationModal: Bool
     @Environment(\.modelContext) private var modelContext
 
     var body: some View {
@@ -66,7 +66,7 @@ struct ConfigurationsView: View {
                     }
 
                     Button {
-                        showCreateConfiguration = true
+                        showCreateConfigurationModal = true
                     } label: {
                         Text("+")
                             .frame(width: 80, height: 30)
