@@ -18,8 +18,8 @@ class BluetoothManager: NSObject, CBCentralManagerDelegate {
     @ObservationIgnored private var centralManager: CBCentralManager?
     @ObservationIgnored private var cleanupTimer: Timer?
     @ObservationIgnored private var restartScanTimer: Timer? // anti-throttling measure
-    private let deviceTimeout: TimeInterval = 1
-    private let cleanupInterval: TimeInterval = 0.9
+    private let deviceTimeout: TimeInterval = 0.5
+    private let cleanupInterval: TimeInterval = 0.45
     private let scanRestartInterval: TimeInterval = 10.0
 
     override init() {

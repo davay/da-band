@@ -63,7 +63,7 @@ struct CreateConfigurationModal: View {
                                         Card(widthPercentage: 0.99) {
                                             VStack {
                                                 HStack {
-                                                    StatusIndicator(isActive: device.isActive(in: bluetoothManager), type: .device)
+                                                    StatusIndicator(isActive: device.isConnected(in: bluetoothManager), type: .device)
 
                                                     Text(device.name)
                                                         .font(.headline)

@@ -24,7 +24,7 @@ final class Device {
         self.bluetoothId = bluetoothId
     }
 
-    func isActive(in bluetoothManager: BluetoothManager) -> Bool {
+    func isConnected(in bluetoothManager: BluetoothManager) -> Bool {
         bluetoothManager.discoveredDevices.contains { $0.id == self.id }
     }
 

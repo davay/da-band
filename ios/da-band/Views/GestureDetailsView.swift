@@ -5,9 +5,15 @@ struct GestureDetailsView: View {
     let gesture: Gesture
 
     @State private var showRecordSampleModal = false
+    @State private var showDevicesDisconnectedAlert = false
     @State private var selectedSample: Sample?
 
     @Environment(\.modelContext) private var modelContext
+    @Environment(BluetoothManager.self) private var bluetoothManager
+
+    private var allDevicesConnected: Bool {
+        gesture.configuration?.devices.allSatisfy { $0.isConnected(in: bluetoothManager) } ?? false
+    }
 
     var body: some View {
         ZStack {
@@ -62,9 +68,18 @@ struct GestureDetailsView: View {
                             }
 
                             Button("+ Record Sample") {
-                                showRecordSampleModal = true
+                                if allDevicesConnected {
+                                    showRecordSampleModal = true
+                                } else {
+                                    showDevicesDisconnectedAlert = true
+                                }
                             }
                             .buttonStyle(.borderedProminent)
+                            .alert("Devices Offline", isPresented: $showDevicesDisconnectedAlert) {
+                                Button("OK", role: .cancel) {}
+                            } message: {
+                                Text("All devices in this configuration must be connected to record a sample.")
+                            }
                         }
 
                         if gesture.samples.isEmpty {
