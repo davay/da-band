@@ -102,7 +102,7 @@ struct RecordSampleModal: View {
                             .tint(.black)
                             .transition(.move(edge: .trailing).combined(with: .opacity))
                     } else {
-                        Button("Exit") { onDismiss() }
+                        Button("Discard") { onDismiss() }
                             .buttonStyle(.borderedProminent)
                             .tint(.black)
                             .transition(.move(edge: .leading).combined(with: .opacity))

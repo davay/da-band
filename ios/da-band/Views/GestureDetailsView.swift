@@ -5,7 +5,7 @@ struct GestureDetailsView: View {
     let gesture: Gesture
 
     @State private var showRecordSampleModal = false
-    @State private var selectedSample: Sample? = nil
+    @State private var selectedSample: Sample?
 
     @Environment(\.modelContext) private var modelContext
 
