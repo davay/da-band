@@ -3,6 +3,14 @@ import SwiftUI
 
 struct HomeView: View {
     @State private var selectedTab = "configurations"
+
+    private var buildDate: Date {
+        guard let executableURL = Bundle.main.executableURL,
+              let attributes = try? FileManager.default.attributesOfItem(atPath: executableURL.path),
+              let date = attributes[.modificationDate] as? Date
+        else { return .distantPast }
+        return date
+    }
     @State private var selectedDevice: Device?
     @State private var showCreateConfigurationModal = false
 
@@ -70,7 +78,7 @@ struct HomeView: View {
                 HStack {
                     Spacer()
 
-                    Text("Build: \(Date().formatted(date: .abbreviated, time: .shortened))")
+                    Text("Build: \(buildDate.formatted(date: .abbreviated, time: .shortened))")
                         .font(.caption2)
                         .foregroundStyle(.secondary)
                 }
