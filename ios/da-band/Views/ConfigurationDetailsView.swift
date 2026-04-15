@@ -133,9 +133,12 @@ struct ConfigurationDetailsView: View {
                                             Card(widthPercentage: 0.99) {
                                                 VStack(alignment: .leading) {
                                                     HStack {
-                                                        Text(gesture.name)
-                                                            .font(.title3)
-                                                            .underline()
+                                                        ScrollView(.horizontal, showsIndicators: false) {
+                                                            Text(gesture.name)
+                                                                .font(.title3)
+                                                                .underline()
+                                                                .fixedSize()
+                                                        }
 
                                                         Spacer()
 

@@ -28,9 +28,12 @@ struct GestureDetailsView: View {
                 Card(widthPercentage: 0.9) {
                     VStack(alignment: .leading) {
                         HStack {
-                            Text("\(gesture.name)")
-                                .font(.title2)
-                                .underline()
+                            ScrollView(.horizontal, showsIndicators: false) {
+                                Text("\(gesture.name)")
+                                    .font(.title2)
+                                    .underline()
+                                    .fixedSize()
+                            }
 
                             Spacer()
 
