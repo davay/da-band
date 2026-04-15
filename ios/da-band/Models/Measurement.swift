@@ -5,6 +5,8 @@ import SwiftData
 final class Measurement {
     var id: UUID = UUID()
 
+    var timestamp: CFAbsoluteTime
+
     // raw sensor data
     var packetId: Int
     var batteryLevel: Int
@@ -32,13 +34,14 @@ final class Measurement {
     @Relationship var sample: Sample?
     @Relationship var device: Device?
 
-    init(packetId: Int, batteryLevel: Int, spectrum0: Int16, muscleAvg: Int, spectrum1: Int16,
+    init(timestamp: CFAbsoluteTime, packetId: Int, batteryLevel: Int, spectrum0: Int16, muscleAvg: Int, spectrum1: Int16,
          spectrum2: Int16, spectrum3: Int16, quaternionW: Int16, quaternionX: Int16, quaternionY: Int16,
          quaternionZ: Int16, normalizedSpectrum0: Double, normalizedSpectrum1: Double,
          normalizedSpectrum2: Double, normalizedSpectrum3: Double, normalizedQuaternionW: Double,
          normalizedQuaternionX: Double, normalizedQuaternionY: Double, normalizedQuaternionZ: Double,
          muscleLevel: Int, sample: Sample, device: Device)
     {
+        self.timestamp = timestamp
         self.packetId = packetId
         self.batteryLevel = batteryLevel
         self.spectrum0 = spectrum0

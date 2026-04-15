@@ -64,7 +64,6 @@ struct PairDeviceView: View {
                     .padding(.top, 2)
                 }
             }
-            // .hideNavigationBar()
 
             if let device = selectedDevice {
                 Color.black.opacity(0.4)

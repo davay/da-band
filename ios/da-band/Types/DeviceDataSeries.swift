@@ -2,6 +2,6 @@ import Foundation
 
 struct DeviceDataSeries: Identifiable {
     let id: UUID
-    let name: String
+    let deviceName: String
     let dataPoints: [SensorData]
 }

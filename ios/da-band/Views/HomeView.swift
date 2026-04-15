@@ -6,12 +6,6 @@ struct HomeView: View {
     @State private var selectedDevice: Device?
     @State private var showCreateConfigurationModal = false
 
-    init() {
-        UISegmentedControl.appearance().setTitleTextAttributes([
-            .font: UIFont.preferredFont(forTextStyle: .title2),
-        ], for: .normal)
-    }
-
     var body: some View {
         // this logic is here so that the picker can be greyed out too
         ZStack {
@@ -83,7 +77,6 @@ struct HomeView: View {
                 .padding(.horizontal, 20)
             }
         }
-        // .hideNavigationBar()
     }
 }
 

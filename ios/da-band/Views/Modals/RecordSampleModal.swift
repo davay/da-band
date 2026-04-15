@@ -11,7 +11,7 @@ struct RecordSampleModal: View {
     @State private var recordingDate = Date()
     @State private var countdown: Int? = 3
     @State private var recordingStartTime: CFAbsoluteTime?
-    @State private var frozenState: (series: [DeviceDataSeries], referenceTime: CFAbsoluteTime)?
+    @State private var recordedState: (series: [DeviceDataSeries], endTime: CFAbsoluteTime)?
     @State private var isRecordingDone = false
     @State private var savedCount = 0
     @State private var currentTakeSaved = false
@@ -20,26 +20,13 @@ struct RecordSampleModal: View {
     private let sampleDuration = Constants.sampleDuration
 
     private var liveSeries: [DeviceDataSeries] {
-        configuration.devices.compactMap { device in
-            guard let discovered = bluetoothManager.getDiscoveredDevice(for: device.id) else {
-                return nil
-            }
+        guard let startTime = recordingStartTime else { return [] }
+        return configuration.devices.compactMap { device in
+            guard let discovered = bluetoothManager.getDiscoveredDevice(for: device.id) else { return nil }
             return DeviceDataSeries(
                 id: device.id,
-                name: device.name,
-                dataPoints: discovered.sensorDataBuffer.dataPoints
-            )
-        }
-    }
-
-    /// essentially a snapshot from the liveseries
-    private var recordingSeries: [DeviceDataSeries] {
-        guard let startTime = recordingStartTime else { return [] }
-        return liveSeries.map { series in
-            DeviceDataSeries(
-                id: series.id,
-                name: series.name,
-                dataPoints: series.dataPoints.filter { $0.timestamp >= startTime }
+                deviceName: device.name,
+                dataPoints: discovered.sensorDataBuffer.dataPoints.filter { $0.timestamp >= startTime }
             )
         }
     }
@@ -56,7 +43,7 @@ struct RecordSampleModal: View {
         recordingDate = Date()
         countdown = 3
         recordingStartTime = nil
-        frozenState = nil
+        recordedState = nil
         isRecordingDone = false
         currentTakeSaved = false
         recordingID += 1
@@ -74,7 +61,7 @@ struct RecordSampleModal: View {
                     .foregroundStyle(.secondary)
                     .animation(.easeOut(duration: Constants.animationDuration), value: savedCount)
 
-                // start from countdown, to empty chart slowly being filled, to frozen
+                // countdown → live recording → recorded snapshot
                 Group {
                     if let count = countdown {
                         Text("\(count)..")
@@ -83,16 +70,16 @@ struct RecordSampleModal: View {
                             .id(count)
                             .transition(.opacity)
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    } else if let frozen = frozenState {
+                    } else if let recorded = recordedState {
                         MultiMuscleActivityChart(
-                            dataSeries: frozen.series,
+                            dataSeries: recorded.series,
                             windowSeconds: sampleDuration,
-                            referenceTime: frozen.referenceTime
+                            endTime: recorded.endTime
                         )
                     } else {
                         TimelineView(.periodic(from: .now, by: Constants.chartRefreshInterval)) { _ in
                             MultiMuscleActivityChart(
-                                dataSeries: recordingSeries,
+                                dataSeries: liveSeries,
                                 windowSeconds: sampleDuration
                             )
                         }
@@ -135,11 +122,12 @@ struct RecordSampleModal: View {
                             modelContext.insert(sample)
 
                             // create a measurement per data point per device and save to sample
-                            guard let series = frozenState?.series else { return }
+                            guard let series = recordedState?.series else { return }
                             for deviceSeries in series {
                                 guard let device = configuration.devices.first(where: { $0.id == deviceSeries.id }) else { continue }
                                 for point in deviceSeries.dataPoints {
                                     let measurement = Measurement(
+                                        timestamp: point.timestamp,
                                         packetId: point.packetId,
                                         batteryLevel: point.batteryLevel,
                                         spectrum0: point.spectrum0,
@@ -189,7 +177,7 @@ struct RecordSampleModal: View {
             countdown = nil
             recordingStartTime = CFAbsoluteTimeGetCurrent()
             try? await Task.sleep(for: .seconds(sampleDuration))
-            frozenState = (series: recordingSeries, referenceTime: CFAbsoluteTimeGetCurrent())
+            recordedState = (series: liveSeries, endTime: CFAbsoluteTimeGetCurrent())
             isRecordingDone = true
         }
     }

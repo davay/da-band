@@ -5,6 +5,7 @@ struct GestureDetailsView: View {
     let gesture: Gesture
 
     @State private var showRecordSampleModal = false
+    @State private var selectedSample: Sample? = nil
 
     @Environment(\.modelContext) private var modelContext
 
@@ -93,6 +94,9 @@ struct GestureDetailsView: View {
                                                 }
                                             }
                                         }
+                                        .onTapGesture {
+                                            selectedSample = sample
+                                        }
                                     }
                                 }
                                 // prevent clipping
@@ -118,6 +122,18 @@ struct GestureDetailsView: View {
                     RecordSampleModal(configuration: configuration, gesture: gesture) {
                         showRecordSampleModal = false
                     }
+                }
+            }
+
+            if let sample = selectedSample {
+                Color.black.opacity(0.4)
+                    .ignoresSafeArea()
+                    .onTapGesture {
+                        selectedSample = nil
+                    }
+
+                SampleDetailsModal(sample: sample) {
+                    selectedSample = nil
                 }
             }
         }

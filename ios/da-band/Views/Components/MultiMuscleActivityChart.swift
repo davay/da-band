@@ -4,21 +4,21 @@ import SwiftUI
 struct MultiMuscleActivityChart: View {
     let dataSeries: [DeviceDataSeries]
     var windowSeconds: Double
-    var referenceTime: CFAbsoluteTime?
+    var endTime: CFAbsoluteTime?
 
     var body: some View {
-        let now = referenceTime ?? CFAbsoluteTimeGetCurrent()
+        let endTime = endTime ?? CFAbsoluteTimeGetCurrent() // during live recording, end time is not provided, so the chart's right edge tracks the current time and it "scrolls"
 
         return VStack {
             Chart {
                 ForEach(dataSeries) { series in
-                    let points = series.dataPoints.filter { now - $0.timestamp <= windowSeconds }
+                    let points = series.dataPoints.filter { endTime - $0.timestamp <= windowSeconds }
                     ForEach(Array(points.enumerated()), id: \.offset) { _, data in
                         LineMark(
-                            x: .value("Time", data.timestamp - now),
+                            x: .value("Time", data.timestamp - endTime),
                             y: .value("Muscle Level", data.muscleLevel)
                         )
-                        .foregroundStyle(by: .value("Device", series.name))
+                        .foregroundStyle(by: .value("Device", series.deviceName))
                     }
                 }
             }
