@@ -1,5 +1,8 @@
+import os
 import SwiftData
 import SwiftUI
+
+private let logger = Logger(subsystem: "im.devinl.da-band", category: "SensorData")
 
 struct ConfigurationDetailsView: View {
     let configuration: Configuration
@@ -10,6 +13,7 @@ struct ConfigurationDetailsView: View {
     @State private var gestureToRename: Gesture?
     @State private var newGestureName = ""
     @State private var showRenameGestureAlert = false
+    @State private var trainingResult: String?
     @Environment(\.modelContext) private var modelContext
     @Environment(BluetoothManager.self) private var bluetoothManager
 
@@ -95,12 +99,21 @@ struct ConfigurationDetailsView: View {
                             }
 
                             Button("Train Model") {
-                                print("TODO: Train Model")
+                                Task {
+                                    do {
+                                        let data = try await APIClient.trainModel(configuration: configuration)
+                                        trainingResult = String(data: data, encoding: .utf8)
+                                    } catch {
+                                        logger.debug("\(error)")
+                                    }
+                                }
                             }
                             .buttonStyle(.borderedProminent)
                         }
 
-                        if configuration.models.isEmpty {
+                        if let result = trainingResult {
+                            Text(result)
+                        } else if configuration.models.isEmpty {
                             Text("No models are available")
                                 .foregroundStyle(.secondary)
                                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
