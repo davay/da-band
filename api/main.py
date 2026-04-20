@@ -1,6 +1,8 @@
 from fastapi import FastAPI
 
-app = FastAPI()
+# Although Caddy strips the /da-band prefix before forwarding requests,
+# root_path is still needed so the OpenAPI docs generate correct public URLs.
+app = FastAPI(root_path="/da-band")
 
 
 @app.get("/")

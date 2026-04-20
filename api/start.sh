@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ "$(uname)" = "Linux" ] && command -v nvidia-smi &>/dev/null; then
-  echo "Linux with NVIDIA GPU detected; Starting Docker in detached mode..."
+  echo "Linux with NVIDIA GPU detected; Running Docker Compose in detached mode..."
   docker compose up --build -d
 else
   # for macs
