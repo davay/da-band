@@ -2,18 +2,16 @@ import os
 import SwiftData
 import SwiftUI
 
-private let logger = Logger(subsystem: "im.devinl.da-band", category: "SensorData")
-
 struct ConfigurationDetailsView: View {
     let configuration: Configuration
 
     @State private var showCreateGestureModal = false
+    @State private var showTrainModelModal = false
     @State private var newConfigurationName = ""
     @State private var showRenameConfigurationAlert = false
     @State private var gestureToRename: Gesture?
     @State private var newGestureName = ""
     @State private var showRenameGestureAlert = false
-    @State private var trainingResult: String?
     @Environment(\.modelContext) private var modelContext
     @Environment(BluetoothManager.self) private var bluetoothManager
 
@@ -99,21 +97,12 @@ struct ConfigurationDetailsView: View {
                             }
 
                             Button("Train Model") {
-                                Task {
-                                    do {
-                                        let data = try await APIClient.trainModel(configuration: configuration)
-                                        trainingResult = String(data: data, encoding: .utf8)
-                                    } catch {
-                                        logger.debug("\(error)")
-                                    }
-                                }
+                                showTrainModelModal = true
                             }
                             .buttonStyle(.borderedProminent)
                         }
 
-                        if let result = trainingResult {
-                            Text(result)
-                        } else if configuration.models.isEmpty {
+                        if configuration.models.isEmpty {
                             Text("No models are available")
                                 .foregroundStyle(.secondary)
                                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
@@ -200,13 +189,11 @@ struct ConfigurationDetailsView: View {
             // so the text doesnt get pushed up when the keyboard is summoned
             .ignoresSafeArea(.keyboard)
 
-            if showCreateGestureModal {
-                Color.black.opacity(0.4)
-                    .ignoresSafeArea()
-                    .onTapGesture {
-                        showCreateGestureModal = false
-                    }
+            ModalOverlay(isPresented: $showTrainModelModal) {
+                TrainModelModal { showTrainModelModal = false }
+            }
 
+            ModalOverlay(isPresented: $showCreateGestureModal) {
                 CreateGestureModal(currentConfiguration: configuration) {
                     showCreateGestureModal = false
                 }

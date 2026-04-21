@@ -133,29 +133,15 @@ struct GestureDetailsView: View {
             // but it is guaranteed to exist
             // COMMENT FROM MONTHS LATER: what data refresh issue again??? note to self: describe issues better
             if let configuration = gesture.configuration {
-                if showRecordSampleModal {
-                    Color.black.opacity(0.4)
-                        .ignoresSafeArea()
-                        .onTapGesture {
-                            showRecordSampleModal = false
-                        }
-
+                ModalOverlay(isPresented: $showRecordSampleModal) {
                     RecordSampleModal(configuration: configuration, gesture: gesture) {
                         showRecordSampleModal = false
                     }
                 }
             }
 
-            if let sample = selectedSample {
-                Color.black.opacity(0.4)
-                    .ignoresSafeArea()
-                    .onTapGesture {
-                        selectedSample = nil
-                    }
-
-                SampleDetailsModal(sample: sample) {
-                    selectedSample = nil
-                }
+            ModalOverlay(item: $selectedSample) { sample in
+                SampleDetailsModal(sample: sample) { selectedSample = nil }
             }
         }
         .alert("Rename Gesture", isPresented: $showRenameAlert) {

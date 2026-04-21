@@ -18,6 +18,9 @@ struct SensorData {
     let quaternionZ: Int16
 
     // computed data, for ML
+    // note that: (1) quaternions mathematically are already bound to [-1, 1], but
+    // here its transmited as Int16 (-32,768 to 32,767) -- so this normalization is really just
+    // protocol decoding to [-1, 1] (2) the spectrums are actually being normalized to [0,1]
     let normalizedSpectrum0: Double
     let normalizedSpectrum1: Double
     let normalizedSpectrum2: Double

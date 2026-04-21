@@ -48,25 +48,11 @@ struct HomeView: View {
                 .tabViewStyle(.page(indexDisplayMode: .never))
             }
 
-            if let device = selectedDevice {
-                Color.black.opacity(0.4)
-                    .ignoresSafeArea()
-                    .onTapGesture {
-                        selectedDevice = nil
-                    }
-
-                DeviceDetailsModal(device: device) {
-                    selectedDevice = nil
-                }
+            ModalOverlay(item: $selectedDevice) { device in
+                DeviceDetailsModal(device: device) { selectedDevice = nil }
             }
 
-            if showCreateConfigurationModal {
-                Color.black.opacity(0.4)
-                    .ignoresSafeArea()
-                    .onTapGesture {
-                        showCreateConfigurationModal = false
-                    }
-
+            ModalOverlay(isPresented: $showCreateConfigurationModal) {
                 CreateConfigurationModal {
                     showCreateConfigurationModal = false
                 }

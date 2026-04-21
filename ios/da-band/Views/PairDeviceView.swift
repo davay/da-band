@@ -65,16 +65,8 @@ struct PairDeviceView: View {
                 }
             }
 
-            if let device = selectedDevice {
-                Color.black.opacity(0.4)
-                    .ignoresSafeArea()
-                    .onTapGesture {
-                        selectedDevice = nil
-                    }
-
-                PairDeviceModal(device: device) {
-                    selectedDevice = nil
-                }
+            ModalOverlay(item: $selectedDevice) { device in
+                PairDeviceModal(device: device) { selectedDevice = nil }
             }
         }
     }

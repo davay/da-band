@@ -83,27 +83,6 @@ struct PairDeviceModal: View {
                             .tint(.black)
                             .disabled(deviceNickname.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
                         }
-
-                        // Text("Packet ID: \(device.latestSensorData.packetId)")
-                        // Text("Battery Level: \(device.latestSensorData.batteryLevel)")
-                        // Text("Spectrum 0: \(device.latestSensorData.spectrum0)")
-                        // Text("Muscle Average: \(device.latestSensorData.muscleAvg)")
-                        // Text("Spectrum 1: \(device.latestSensorData.spectrum1)")
-                        // Text("Spectrum 2: \(device.latestSensorData.spectrum2)")
-                        // Text("Spectrum 3: \(device.latestSensorData.spectrum3)")
-                        // Text("Quaternion W: \(device.latestSensorData.quaternionW)")
-                        // Text("Quaternion X: \(device.latestSensorData.quaternionX)")
-                        // Text("Quaternion Y: \(device.latestSensorData.quaternionY)")
-                        // Text("Quaternion Z: \(device.latestSensorData.quaternionZ)")
-                        // Text("Normalized Spectrum 0: \(device.latestSensorData.normalizedSpectrum0)")
-                        // Text("Normalized Spectrum 1: \(device.latestSensorData.normalizedSpectrum1)")
-                        // Text("Normalized Spectrum 2: \(device.latestSensorData.normalizedSpectrum2)")
-                        // Text("Normalized Spectrum 3: \(device.latestSensorData.normalizedSpectrum3)")
-                        // Text("Normalized Quaternion W: \(device.latestSensorData.normalizedQuaternionW)")
-                        // Text("Normalized Quaternion X: \(device.latestSensorData.normalizedQuaternionX)")
-                        // Text("Normalized Quaternion Y: \(device.latestSensorData.normalizedQuaternionY)")
-                        // Text("Normalized Quaternion Z: \(device.latestSensorData.normalizedQuaternionZ)")
-                        // Text("Muscle Level: \(device.latestSensorData.muscleLevel)")
                     }
                     .padding()
                 } else {

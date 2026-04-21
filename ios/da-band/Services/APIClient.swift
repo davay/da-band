@@ -6,7 +6,7 @@ private let logger = Logger(subsystem: "im.devinl.da-band", category: "SensorDat
 enum APIClient {
     private static let baseURL = "https://api.devinl.im/da-band"
 
-    static func trainModel(configuration _: Configuration) async throws -> Data {
+    static func trainModel() async throws -> Data {
         guard let URL = URL(string: baseURL) else {
             throw URLError(.badURL)
         }

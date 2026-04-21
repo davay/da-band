@@ -15,9 +15,25 @@ private struct DeviceSensorSection: View {
             if let latestData = sensorDataBuffer.latest {
                 OrientationPreview(sensorData: latestData)
                     .padding(.bottom)
+
+                // debugging quaternions
+                VStack {
+                    Text("Raw Quaternions")
+                        .font(.caption2).bold()
+                    Text("W: \(latestData.quaternionW)  X: \(latestData.quaternionX)  Y: \(latestData.quaternionY)  Z: \(latestData.quaternionZ)")
+                        .font(.caption2)
+                        .fontDesign(.monospaced)
+                    Text("Normalized Quaternions")
+                        .font(.caption2).bold()
+                        .padding(.top, 2)
+                    Text("W: \(latestData.normalizedQuaternionW, specifier: "%.3f")  X: \(latestData.normalizedQuaternionX, specifier: "%.3f")  Y: \(latestData.normalizedQuaternionY, specifier: "%.3f")  Z: \(latestData.normalizedQuaternionZ, specifier: "%.3f")")
+                        .font(.caption2)
+                        .fontDesign(.monospaced)
+                }
+                .padding([.horizontal, .bottom])
             }
 
-            // Debug chart for packets/sec
+            // debugging ble connection
             VStack(alignment: .leading) {
                 Text("Packets/sec: \(sensorDataBuffer.packetsPerSecond)")
                     .font(.caption2)
