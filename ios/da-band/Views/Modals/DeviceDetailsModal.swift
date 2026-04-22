@@ -35,12 +35,25 @@ private struct DeviceSensorSection: View {
 
             // debugging ble connection
             VStack(alignment: .leading) {
-                Text("Packets/sec: \(sensorDataBuffer.packetsPerSecond)")
+                let avg = sensorDataBuffer.packetsPerSecondHistory.reduce(0, +) / max(1, sensorDataBuffer.packetsPerSecondHistory.count)
+                Text("Packets/sec: \(sensorDataBuffer.packetsPerSecond)  (\(Constants.ppsHistoryWindow)s avg: \(avg))")
                     .font(.caption2)
                 Chart(Array(sensorDataBuffer.packetsPerSecondHistory.enumerated()), id: \.offset) { index, value in
                     LineMark(x: .value("Time", index), y: .value("PPS", value))
                 }
                 .frame(height: 60)
+                .chartXScale(domain: 0...Constants.ppsHistoryWindow)
+                .chartYAxis {
+                    AxisMarks(position: .leading) { _ in
+                        AxisGridLine(stroke: StrokeStyle(lineWidth: 0.5))
+                        AxisValueLabel()
+                    }
+                }
+                .chartXAxis {
+                    AxisMarks(position: .bottom) { _ in
+                        AxisGridLine(stroke: StrokeStyle(lineWidth: 0.5))
+                    }
+                }
             }
             .padding(.horizontal)
         }

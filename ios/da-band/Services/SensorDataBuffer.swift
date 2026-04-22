@@ -16,7 +16,7 @@ class SensorDataBuffer {
     @ObservationIgnored private var lastRateUpdate: CFAbsoluteTime = 0
     @ObservationIgnored private var packetCount: Int = 0
     private let capacity: Int
-    private let maxHistoryCount: Int = 30
+    private let maxHistoryCount: Int = Constants.ppsHistoryWindow
 
     init(maxPoints: Int = 100) {
         capacity = maxPoints
