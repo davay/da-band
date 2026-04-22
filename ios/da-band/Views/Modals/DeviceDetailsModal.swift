@@ -35,7 +35,8 @@ private struct DeviceSensorSection: View {
 
             // debugging ble connection
             VStack(alignment: .leading) {
-                let avg = sensorDataBuffer.packetsPerSecondHistory.reduce(0, +) / max(1, sensorDataBuffer.packetsPerSecondHistory.count)
+                let nonZero = sensorDataBuffer.packetsPerSecondHistory.filter { $0 > 0 }
+                let avg = nonZero.isEmpty ? 0 : nonZero.reduce(0, +) / nonZero.count
                 Text("Packets/sec: \(sensorDataBuffer.packetsPerSecond)  (\(Constants.ppsHistoryWindow)s avg: \(avg))")
                     .font(.caption2)
                 Chart(Array(sensorDataBuffer.packetsPerSecondHistory.enumerated()), id: \.offset) { index, value in
