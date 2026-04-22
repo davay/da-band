@@ -25,11 +25,14 @@ struct MultiMuscleActivityChart: View {
             .chartXScale(domain: -windowSeconds ... 0.0)
             .chartLegend(position: .top, alignment: .top)
             .chartYAxis {
-                AxisMarks(position: .leading)
+                AxisMarks(position: .leading) { _ in
+                    AxisGridLine(stroke: StrokeStyle(lineWidth: 0.5))
+                    AxisValueLabel()
+                }
             }
             .chartXAxis {
                 AxisMarks(position: .bottom) { _ in
-                    AxisGridLine()
+                    AxisGridLine(stroke: StrokeStyle(lineWidth: 0.5))
                 }
             }
             .padding()
