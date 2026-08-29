@@ -33,10 +33,8 @@ struct ConfigurationsView: View {
                                                 HStack(spacing: 6) {
                                                     Text(configuration.name)
                                                         .font(.title2)
-                                                        .fixedSize()
                                                     Text("[\(deviceCount) device\(deviceCount == 1 ? "" : "s") • \(gestureCount) gesture\(gestureCount == 1 ? "" : "s")]")
                                                         .font(.subheadline)
-                                                        .fixedSize()
                                                 }
                                             }
 

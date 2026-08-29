@@ -32,7 +32,6 @@ struct GestureDetailsView: View {
                                 Text("\(gesture.name)")
                                     .font(.title2)
                                     .underline()
-                                    .fixedSize()
                             }
 
                             Spacer()

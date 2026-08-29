@@ -32,8 +32,6 @@ struct DevicesView: View {
                                         ScrollView(.horizontal, showsIndicators: false) {
                                             Text(device.name)
                                                 .font(.title2)
-                                                .lineLimit(1)
-                                                .fixedSize()
                                         }
 
                                         Spacer()

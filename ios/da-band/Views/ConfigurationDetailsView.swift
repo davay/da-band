@@ -30,7 +30,6 @@ struct ConfigurationDetailsView: View {
                                 Text("\(configuration.name)")
                                     .font(.title2)
                                     .underline()
-                                    .fixedSize()
                             }
 
                             Spacer()
@@ -66,8 +65,6 @@ struct ConfigurationDetailsView: View {
                                         HStack(spacing: 4) {
                                             StatusIndicator(isActive: device.isConnected(in: bluetoothManager), type: .device)
                                             Text(device.name)
-                                                .lineLimit(1)
-                                                .fixedSize()
                                         }
                                     }
                                 }
@@ -142,10 +139,15 @@ struct ConfigurationDetailsView: View {
                                                 VStack(alignment: .leading) {
                                                     HStack {
                                                         ScrollView(.horizontal, showsIndicators: false) {
-                                                            Text(gesture.name)
-                                                                .font(.title3)
-                                                                .underline()
-                                                                .fixedSize()
+                                                            HStack {
+                                                                Text(gesture.name)
+                                                                    .font(.title3)
+                                                                    .underline()
+
+                                                                Spacer()
+
+                                                                Text("some action")
+                                                            }
                                                         }
 
                                                         Spacer()
